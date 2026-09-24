@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Dashboard | Al Baraq</title>
+
+</head>
+
+
+<body>
+
+    <h1>
+        Al Baraq Dashboard
+    </h1>
+
+    <p>
+        Welcome, {{ request.user.username }}.
+    </p>
+
+    <p>
+        You are successfully authenticated.
+    </p>
+
+    <a href="{% url 'dashboard:logout' %}">
+        Logout
+    </a>
+
+</body>
+
+</html>

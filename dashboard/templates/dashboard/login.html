@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Dashboard Login | Al Baraq</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+
+            min-height: 100vh;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-family:
+                Arial,
+                Helvetica,
+                sans-serif;
+
+            background: #f5f6f8;
+
+            color: #111827;
+
+        }
+
+        .login-container {
+
+            width: 100%;
+            max-width: 420px;
+
+            padding: 20px;
+
+        }
+
+        .login-card {
+
+            background: white;
+
+            padding: 40px;
+
+            border-radius: 14px;
+
+            border: 1px solid #e5e7eb;
+
+            box-shadow:
+                0 15px 40px
+                rgba(0, 0, 0, 0.08);
+
+        }
+
+        .brand {
+
+            text-align: center;
+
+            margin-bottom: 35px;
+
+        }
+
+        .brand h1 {
+
+            font-size: 25px;
+
+            margin-bottom: 6px;
+
+        }
+
+        .brand p {
+
+            font-size: 13px;
+
+            color: #6b7280;
+
+        }
+
+        .form-group {
+
+            margin-bottom: 20px;
+
+        }
+
+        label {
+
+            display: block;
+
+            font-size: 14px;
+
+            font-weight: 600;
+
+            margin-bottom: 8px;
+
+        }
+
+        input {
+
+            width: 100%;
+
+            padding: 12px 14px;
+
+            border: 1px solid #d1d5db;
+
+            border-radius: 8px;
+
+            font-size: 14px;
+
+            outline: none;
+
+        }
+
+        input:focus {
+
+            border-color: #111827;
+
+        }
+
+        .error {
+
+            background: #fef2f2;
+
+            color: #b91c1c;
+
+            border: 1px solid #fecaca;
+
+            padding: 10px 12px;
+
+            border-radius: 7px;
+
+            font-size: 13px;
+
+            margin-bottom: 20px;
+
+        }
+
+        button {
+
+            width: 100%;
+
+            padding: 13px;
+
+            border: none;
+
+            border-radius: 8px;
+
+            background: #111827;
+
+            color: white;
+
+            font-size: 14px;
+
+            font-weight: 600;
+
+            cursor: pointer;
+
+        }
+
+        button:hover {
+
+            background: #1f2937;
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <div class="login-container">
+
+        <div class="login-card">
+
+
+            <div class="brand">
+
+                <h1>
+                    Al Baraq
+                </h1>
+
+                <p>
+                    Catalogue Management Dashboard
+                </p>
+
+            </div>
+
+
+            {% if error %}
+
+                <div class="error">
+
+                    {{ error }}
+
+                </div>
+
+            {% endif %}
+
+
+            <form
+                method="POST"
+            >
+
+                {% csrf_token %}
+
+
+                <div class="form-group">
+
+                    <label for="username">
+
+                        Username
+
+                    </label>
+
+                    <input
+                        type="text"
+                        id="username"
+                        name="username"
+                        placeholder="Enter username"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="password">
+
+                        Password
+
+                    </label>
+
+                    <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        placeholder="Enter password"
+                        required
+                    >
+
+                </div>
+
+
+                <button type="submit">
+
+                    Login
+
+                </button>
+
+            </form>
+
+
+        </div>
+
+    </div>
+
+
+</body>
+
+</html>
