@@ -54,3 +54,8 @@ def logout_view(request):
     logout(request)
 
     return redirect("dashboard:login")
+
+@login_required
+def home(request):
+  # request.user contains role and details
+  return render(request, "dashboard/home.html", {"user": request.user})
