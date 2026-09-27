@@ -1,39 +1,29 @@
 <!DOCTYPE html>
-
 <html lang="en">
-
 <head>
-
     <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard | Al Baraq</title>
-
 </head>
-
-
 <body>
+    <h1>Al Baraq Dashboard</h1>
 
-    <h1>
-        Al Baraq Dashboard
-    </h1>
+    <p>Welcome, {{ request.user.username }}.</p>
+    <p>Role: <strong>{{ request.user.get_role_display }}</strong></p>
+    <p>You are successfully authenticated.</p>
+
+    <!-- Expose User Management link only to System Admins -->
+    {% if request.user.is_system_admin %}
+        <hr>
+        <h3>Administration</h3>
+        <p>
+            <a href="{% url 'accounts:user_list' %}">Manage Users (System Admin)</a>
+        </p>
+        <hr>
+    {% endif %}
 
     <p>
-        Welcome, {{ request.user.username }}.
+        <a href="{% url 'dashboard:logout' %}">Logout</a>
     </p>
-
-    <p>
-        You are successfully authenticated.
-    </p>
-
-    <a href="{% url 'dashboard:logout' %}">
-        Logout
-    </a>
-
 </body>
-
 </html>

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ title }}</title>
+    <style>
+        body { font-family: sans-serif; margin: 30px; }
+        form { max-width: 450px; display: flex; flex-direction: column; gap: 12px; }
+        label { font-weight: bold; margin-bottom: 2px; }
+        input, select { padding: 8px; width: 100%; box-sizing: border-box; }
+        .errorlist { color: red; margin: 0; padding-left: 20px; }
+    </style>
+</head>
+<body>
+    <h2>{{ title }}</h2>
+    <p><a href="{% url 'accounts:user_list' %}">← Back to Users</a></p>
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" style="padding: 10px; cursor: pointer;">Save User</button>
+    </form>
+</body>
+</html>

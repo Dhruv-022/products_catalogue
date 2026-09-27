@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ target_user.username }} | Profile Details</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #f8fafc; color: #0f172a; margin: 0; padding: 40px; }
+        .container { max-width: 650px; margin: 0 auto; }
+        .card { background: #fff; border: 1px solid #e2e8f0; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); padding: 32px; }
+        .header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 24px; border-bottom: 1px solid #f1f5f9; padding-bottom: 16px; }
+        .title { margin: 0; font-size: 22px; font-weight: 700; }
+        .subtitle { color: #64748b; font-size: 14px; margin-top: 4px; }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px; }
+        .field-group label { display: block; font-size: 12px; color: #64748b; font-weight: 600; text-transform: uppercase; margin-bottom: 4px; }
+        .field-group p { margin: 0; font-size: 15px; font-weight: 500; }
+        .actions { display: flex; gap: 12px; margin-top: 24px; border-top: 1px solid #f1f5f9; padding-top: 20px; }
+        .btn { padding: 8px 16px; border-radius: 6px; font-weight: 500; font-size: 14px; text-decoration: none; cursor: pointer; border: 1px solid transparent; }
+        .btn-outline { border: 1px solid #cbd5e1; background: #fff; color: #334155; }
+        .btn-primary { background: #2563eb; color: #fff; }
+        .btn-danger { background: #ef4444; color: #fff; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <p style="margin-bottom: 16px;"><a href="{% url 'accounts:user_list' %}" style="color: #64748b; text-decoration: none; font-size: 14px;">← Back to Users List</a></p>
+        <div class="card">
+            <div class="header">
+                <div>
+                    <h2 class="title">{{ target_user.full_name }}</h2>
+                    <div class="subtitle">@{{ target_user.username }}</div>
+                </div>
+                <span style="font-size: 12px; padding: 4px 8px; border-radius: 9999px; font-weight: 600; background: {% if target_user.is_active %}#dcfce7; color: #166534;{% else %}#fee2e2; color: #991b1b;{% endif %}">
+                    {% if target_user.is_active %}Active{% else %}Inactive{% endif %}
+                </span>
+            </div>
+
+            <div class="grid">
+                <div class="field-group">
+                    <label>Database ID</label>
+                    <p>#{{ target_user.id }}</p>
+                </div>
+                <div class="field-group">
+                    <label>Role</label>
+                    <p>{{ target_user.get_role_display }}</p>
+                </div>
+                <div class="field-group">
+                    <label>Email Address</label>
+                    <p>{{ target_user.email }}</p>
+                </div>
+                <div class="field-group">
+                    <label>Middle Name</label>
+                    <p>{{ target_user.middle_name|default:"—" }}</p>
+                </div>
+                <div class="field-group">
+                    <label>Date Joined</label>
+                    <p>{{ target_user.date_joined|date:"d M Y, H:i" }}</p>
+                </div>
+                <div class="field-group">
+                    <label>Last Updated</label>
+                    <p>{{ target_user.updated_at|date:"d M Y, H:i" }}</p>
+                </div>
+                <div class="field-group">
+                    <label>Last Login</label>
+                    <p>{{ target_user.last_login|default:"Never logged in" }}</p>
+                </div>
+            </div>
+
+            <div class="actions">
+                <a href="{% url 'accounts:user_edit' target_user.id %}" class="btn btn-outline">Edit Account</a>
+                {% if target_user != request.user %}
+                    <a href="{% url 'accounts:user_delete' target_user.id %}" class="btn btn-danger">Delete Account</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</body>
+</html>

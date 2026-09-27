@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Management | System Admin</title>
+    <style>
+        :root {
+            --bg-color: #f8fafc;
+            --surface: #ffffff;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --success: #16a34a;
+            --danger: #dc2626;
+            --danger-hover: #b91c1c;
+        }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: var(--bg-color); color: var(--text-main); margin: 0; padding: 40px; }
+        .container { max-width: 1100px; margin: 0 auto; }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
+        .title-group h2 { margin: 0; font-size: 24px; font-weight: 700; }
+        .title-group a { color: var(--text-muted); text-decoration: none; font-size: 14px; }
+        .title-group a:hover { color: var(--primary); }
+        .btn { display: inline-flex; align-items: center; padding: 8px 16px; border-radius: 6px; font-weight: 500; font-size: 14px; text-decoration: none; cursor: pointer; border: 1px solid transparent; }
+        .btn-primary { background: var(--primary); color: #fff; }
+        .btn-primary:hover { background: var(--primary-hover); }
+        .btn-danger { background: #fee2e2; color: var(--danger); border-color: #fecaca; }
+        .btn-danger:hover { background: #fecaca; }
+        .card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); overflow: hidden; }
+        table { width: 100%; border-collapse: collapse; text-align: left; font-size: 14px; }
+        th { background: #f1f5f9; padding: 12px 16px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; font-size: 12px; letter-spacing: 0.05em; border-bottom: 1px solid var(--border); }
+        td { padding: 16px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+        tr:last-child td { border-bottom: none; }
+        tr:hover { background: #f8fafc; }
+        .user-link { font-weight: 600; color: var(--primary); text-decoration: none; }
+        .user-link:hover { text-decoration: underline; }
+        .badge { display: inline-block; padding: 4px 8px; border-radius: 9999px; font-size: 12px; font-weight: 500; }
+        .badge-active { background: #dcfce7; color: #15803d; }
+        .badge-inactive { background: #fee2e2; color: #b91c1c; }
+        .actions { display: flex; gap: 8px; align-items: center; }
+        .action-link { color: var(--text-muted); text-decoration: none; font-size: 13px; font-weight: 500; }
+        .action-link:hover { color: var(--text-main); }
+        .messages { margin-bottom: 20px; list-style: none; padding: 0; }
+        .alert { padding: 12px 16px; border-radius: 6px; font-size: 14px; margin-bottom: 10px; }
+        .alert-success { background: #dcfce7; color: #166534; }
+        .alert-error { background: #fee2e2; color: #991b1b; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <div class="header">
+            <div class="title-group">
+                <a href="{% url 'dashboard:home' %}">← Dashboard</a>
+                <h2>User Management</h2>
+            </div>
+            <a href="{% url 'accounts:user_create' %}" class="btn btn-primary">+ Create User</a>
+        </div>
+
+        <div class="card">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Username</th>
+                        <th>Full Name</th>
+                        <th>Email</th>
+                        <th>Role</th>
+                        <th>Status</th>
+                        <th>Date Joined</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for u in users %}
+                    <tr>
+                        <td style="color: var(--text-muted);">#{{ u.id }}</td>
+                        <td>
+                            <!-- Clicking username navigates to detailed view -->
+                            <a href="{% url 'accounts:user_detail' u.id %}" class="user-link">{{ u.username }}</a>
+                            {% if u == request.user %}
+                                <span style="font-size: 11px; background: #e0f2fe; color: #0369a1; padding: 2px 6px; border-radius: 4px; margin-left: 4px;">You</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ u.full_name }}</td>
+                        <td>{{ u.email }}</td>
+                        <td><strong>{{ u.get_role_display }}</strong></td>
+                        <td>
+                            {% if u.is_active %}
+                                <span class="badge badge-active">Active</span>
+                            {% else %}
+                                <span class="badge badge-inactive">Inactive</span>
+                            {% endif %}
+                        </td>
+                        <td style="color: var(--text-muted);">{{ u.date_joined|date:"d M Y" }}</td>
+                        <td>
+                            <div class="actions">
+                                <a href="{% url 'accounts:user_edit' u.id %}" class="action-link">Edit</a>
+                                {% if u != request.user %}
+                                    <span style="color: var(--border);">|</span>
+                                    <a href="{% url 'accounts:user_toggle_status' u.id %}" class="action-link">
+                                        {% if u.is_active %}Deactivate{% else %}Activate{% endif %}
+                                    </a>
+                                    <span style="color: var(--border);">|</span>
+                                    <a href="{% url 'accounts:user_delete' u.id %}" class="action-link" style="color: var(--danger);">Delete</a>
+                                {% endif %}
+                            </div>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr><td colspan="8" style="text-align: center; color: var(--text-muted); padding: 30px;">No users found.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>
