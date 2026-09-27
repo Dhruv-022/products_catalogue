@@ -56,3 +56,12 @@ def admin_only_test(request):
       f"System Administration Portal. Access granted to"
       f" {request.user.username}."
   )
+
+
+from accounts.decorators import owner_required
+
+
+@owner_required
+def owner_dashboard(request):
+  """Dedicated dashboard view exclusively for the Owner role."""
+  return render(request, "dashboard/owner_home.html", {"user": request.user})

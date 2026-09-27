@@ -3,6 +3,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from accounts.decorators import system_admin_required
 from accounts.forms import CustomUserCreationForm, CustomUserEditForm
 from accounts.models import User
+from django.contrib.auth.decorators import login_required
 
 
 @system_admin_required
@@ -102,8 +103,15 @@ def login_view(request):
 
     if user is not None:
       login(request, user)
-      next_url = request.GET.get("next") or "dashboard:home"
-      return redirect(next_url)
+
+      # Smart role-based redirection post-login
+      if user.role == User.Role.OWNER:
+        return redirect("dashboard:owner_dashboard")
+      elif user.role == User.Role.SYSTEM_ADMIN:
+        return redirect("dashboard:home")
+      else:
+        # Default fallback for Managers/Staff
+        return redirect("dashboard:home")
 
     return render(
         request,
@@ -114,7 +122,7 @@ def login_view(request):
   return render(request, "dashboard/login.html")
 
 
-@system_admin_required
+@login_required
 def logout_view(request):
   logout(request)
   return redirect("dashboard:login")

@@ -44,3 +44,9 @@ def owner_or_admin_required(view_func):
   from accounts.models import User
 
   return role_required([User.Role.SYSTEM_ADMIN, User.Role.OWNER])(view_func)
+
+def owner_required(view_func):
+  """Quick shorthand decorator for Owner role only."""
+  from accounts.models import User
+
+  return role_required([User.Role.OWNER])(view_func)

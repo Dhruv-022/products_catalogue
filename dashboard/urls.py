@@ -11,4 +11,5 @@ urlpatterns = [
 
     path("catalogue-test/", views.catalogue_management_test, name="cat_test"),
     path("admin-test/", views.admin_only_test, name="admin_test"),
+    path("owner/", views.owner_dashboard, name="owner_dashboard"),
 ]
