@@ -1,9 +1,41 @@
-{% extends 'public/base.html' %}
-{% block title %}Home | Al Baraq{% endblock %}
-{% block content %}
-    <div style="text-align: center; padding: 60px 0;">
-        <h1 style="font-size: 40px; margin-bottom: 16px;">Welcome to Al Baraq Catalogue</h1>
-        <p style="color: #64748b; font-size: 18px; max-width: 600px; margin: 0 auto 32px auto;">Explore our exclusive collection of products, curated with quality and elegance.</p>
-        <a href="{% url 'public:products' %}" style="background: #2563eb; color: white; padding: 12px 24px; border-radius: 6px; text-decoration: none; font-weight: 600;">Browse Products</a>
-    </div>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Al Baraq</title>
+</head>
+
+<body>
+
+    {% extends "public/base.html" %}
+
+
+{% block title %}
+    Home | Al Baraq
 {% endblock %}
+
+
+{% block content %}
+
+<section>
+
+    <h1>
+        Welcome to Al Baraq
+    </h1>
+
+    <p>
+        Your trusted destination for quality electrical products.
+    </p>
+
+</section>
+
+{% endblock %}
+</body>
+
+</html>

@@ -1,21 +1,58 @@
+from django.db.models import Prefetch
 from django.shortcuts import render
 
-
-def home_view(request):
-  """Public Home Page"""
-  return render(request, "public/home.html")
+from products.models import Category, SubCategory
 
 
-def products_view(request):
-  """Public Products Catalogue Page"""
-  return render(request, "public/products.html")
+def home(request):
+
+    return render(
+        request,
+        "public/home.html"
+    )
 
 
-def about_view(request):
-  """About Us Page"""
-  return render(request, "public/about.html")
+def about(request):
+
+    return render(
+        request,
+        "public/about.html"
+    )
 
 
-def contact_view(request):
-  """Contact Us Page"""
-  return render(request, "public/contact.html")
+def products(request):
+
+    active_subcategories = (
+        SubCategory.objects
+        .filter(is_active=True)
+        .order_by("display_order", "name")
+    )
+
+    categories = (
+        Category.objects
+        .filter(is_active=True)
+        .prefetch_related(
+            Prefetch(
+                "subcategories",
+                queryset=active_subcategories,
+            )
+        )
+        .order_by("display_order", "name")
+    )
+
+    return render(
+        request,
+        "public/products.html",
+        {
+            "categories": categories,
+        },
+    )
+
+
+def contact(request):
+
+    return render(
+        request,
+        "public/contact.html"
+    )
+

@@ -1,10 +1,544 @@
-{% extends 'public/base.html' %}
-{% block title %}Products | Al Baraq{% endblock %}
-{% block content %}
-    <h2>Our Products Catalogue</h2>
-    <p style="color: #64748b; margin-bottom: 30px;">Discover our wide selection of items.</p>
-    
-    <div style="background: #fff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 40px; text-align: center; color: #64748b;">
-        <p>Product categories and inventory items will appear here soon.</p>
-    </div>
-{% endblock %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Products | Al Baraq</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+
+            font-family:
+                Arial,
+                Helvetica,
+                sans-serif;
+
+            background: #f5f7fa;
+
+            color: #111827;
+
+        }
+
+        .navbar {
+
+            height: 70px;
+
+            background: white;
+
+            border-bottom: 1px solid #e5e7eb;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            padding: 0 60px;
+
+        }
+
+        .brand {
+
+            font-size: 22px;
+
+            font-weight: 700;
+
+        }
+
+        .nav-links {
+
+            display: flex;
+
+            gap: 35px;
+
+        }
+
+        .nav-links a {
+
+            text-decoration: none;
+
+            color: #374151;
+
+            font-size: 15px;
+
+        }
+
+        .nav-links a:hover {
+
+            color: #2563eb;
+
+        }
+
+        .container {
+
+            max-width: 1200px;
+
+            margin: 0 auto;
+
+            padding: 50px 30px;
+
+        }
+
+        .page-header {
+
+            margin-bottom: 35px;
+
+        }
+
+        .page-header h1 {
+
+            font-size: 34px;
+
+            margin-bottom: 10px;
+
+        }
+
+        .page-header p {
+
+            color: #6b7280;
+
+            font-size: 16px;
+
+        }
+
+        .categories {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, minmax(0, 1fr));
+
+            gap: 22px;
+
+        }
+
+        .category-card {
+
+            background: white;
+
+            border: 1px solid #e5e7eb;
+
+            border-radius: 12px;
+
+            padding: 25px;
+
+            cursor: pointer;
+
+            transition:
+                transform 0.15s ease,
+                box-shadow 0.15s ease;
+
+        }
+
+        .category-card:hover {
+
+            transform: translateY(-3px);
+
+            box-shadow:
+                0 8px 25px
+                rgba(0, 0, 0, 0.08);
+
+        }
+
+        .category-card h3 {
+
+            font-size: 19px;
+
+            margin-bottom: 8px;
+
+        }
+
+        .category-card p {
+
+            color: #6b7280;
+
+            font-size: 14px;
+
+            line-height: 1.5;
+
+        }
+
+        .category-action {
+
+            display: inline-block;
+
+            margin-top: 18px;
+
+            color: #2563eb;
+
+            font-size: 14px;
+
+            font-weight: 600;
+
+        }
+
+        /* Modal */
+
+        .modal {
+
+            display: none;
+
+            position: fixed;
+
+            inset: 0;
+
+            background:
+                rgba(0, 0, 0, 0.45);
+
+            align-items: center;
+
+            justify-content: center;
+
+            padding: 20px;
+
+            z-index: 1000;
+
+        }
+
+        .modal.active {
+
+            display: flex;
+
+        }
+
+        .modal-content {
+
+            width: 100%;
+
+            max-width: 550px;
+
+            background: white;
+
+            border-radius: 14px;
+
+            padding: 30px;
+
+            box-shadow:
+                0 20px 50px
+                rgba(0, 0, 0, 0.2);
+
+        }
+
+        .modal-header {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            margin-bottom: 25px;
+
+        }
+
+        .modal-header h2 {
+
+            font-size: 24px;
+
+        }
+
+        .close-btn {
+
+            border: none;
+
+            background: none;
+
+            font-size: 28px;
+
+            cursor: pointer;
+
+            color: #6b7280;
+
+        }
+
+        .subcategories {
+
+            display: grid;
+
+            gap: 10px;
+
+        }
+
+        .subcategory {
+
+            padding: 14px 16px;
+
+            background: #f8fafc;
+
+            border: 1px solid #e5e7eb;
+
+            border-radius: 8px;
+
+            font-size: 15px;
+
+        }
+
+        .no-subcategories {
+
+            color: #6b7280;
+
+            font-size: 14px;
+
+        }
+
+        @media (max-width: 800px) {
+
+            .categories {
+
+                grid-template-columns: 1fr 1fr;
+
+            }
+
+            .navbar {
+
+                padding: 0 25px;
+
+            }
+
+        }
+
+        @media (max-width: 550px) {
+
+            .categories {
+
+                grid-template-columns: 1fr;
+
+            }
+
+            .nav-links {
+
+                gap: 15px;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- Navbar -->
+
+    <nav class="navbar">
+
+        <div class="brand">
+            Al Baraq
+        </div>
+
+        <div class="nav-links">
+
+            <a href="{% url 'public:home' %}">
+                Home
+            </a>
+
+            <a href="{% url 'public:about' %}">
+                About Us
+            </a>
+
+            <a href="{% url 'public:products' %}">
+                Products
+            </a>
+
+            <a href="{% url 'public:contact' %}">
+                Contact Us
+            </a>
+
+        </div>
+
+    </nav>
+
+
+    <!-- Main Content -->
+
+    <main class="container">
+
+        <section class="page-header">
+
+            <h1>
+                Products
+            </h1>
+
+            <p>
+                Explore our product catalogue by category.
+            </p>
+
+        </section>
+
+
+        <section class="categories">
+
+            {% for category in categories %}
+
+                <div
+                    class="category-card"
+                    onclick="openCategory('{{ category.id }}')"
+                >
+
+                    <h3>
+                        {{ category.name }}
+                    </h3>
+
+                    {% if category.description %}
+
+                        <p>
+                            {{ category.description }}
+                        </p>
+
+                    {% endif %}
+
+                    <span class="category-action">
+                        View Sub-Categories →
+                    </span>
+
+                </div>
+
+            {% empty %}
+
+                <p>
+                    No products categories are currently available.
+                </p>
+
+            {% endfor %}
+
+        </section>
+
+    </main>
+
+
+    <!-- Category Modal -->
+
+    {% for category in categories %}
+
+        <div
+            class="modal"
+            id="modal-{{ category.id }}"
+            onclick="closeOutside(event, '{{ category.id }}')"
+        >
+
+            <div
+                class="modal-content"
+                onclick="event.stopPropagation()"
+            >
+
+                <div class="modal-header">
+
+                    <h2>
+                        {{ category.name }}
+                    </h2>
+
+                    <button
+                        class="close-btn"
+                        onclick="closeCategory('{{ category.id }}')"
+                    >
+                        &times;
+                    </button>
+
+                </div>
+
+
+                <div class="subcategories">
+
+                    {% for subcategory in category.subcategories.all %}
+
+                        <div class="subcategory">
+
+                            {{ subcategory.name }}
+
+                        </div>
+
+                    {% empty %}
+
+                        <p class="no-subcategories">
+                            No sub-categories are currently available
+                            for this category.
+                        </p>
+
+                    {% endfor %}
+
+                </div>
+
+            </div>
+
+        </div>
+
+    {% endfor %}
+
+
+    <script>
+
+        function openCategory(categoryId) {
+
+            document
+                .getElementById("modal-" + categoryId)
+                .classList
+                .add("active");
+
+        }
+
+
+        function closeCategory(categoryId) {
+
+            document
+                .getElementById("modal-" + categoryId)
+                .classList
+                .remove("active");
+
+        }
+
+
+        function closeOutside(event, categoryId) {
+
+            if (event.target === event.currentTarget) {
+
+                closeCategory(categoryId);
+
+            }
+
+        }
+
+
+        document.addEventListener(
+            "keydown",
+            function(event) {
+
+                if (event.key === "Escape") {
+
+                    document
+                        .querySelectorAll(".modal.active")
+                        .forEach(
+                            function(modal) {
+
+                                modal.classList.remove("active");
+
+                            }
+                        );
+
+                }
+
+            }
+        );
+
+    </script>
+
+
+</body>
+
+</html>

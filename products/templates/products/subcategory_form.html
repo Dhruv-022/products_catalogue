@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>{{ title }} | Al Baraq</title>
+
+    <style>
+
+        body {
+            font-family:
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                Roboto,
+                sans-serif;
+
+            background: #f8fafc;
+
+            color: #0f172a;
+
+            margin: 0;
+
+            padding: 40px;
+        }
+
+
+        .container {
+            max-width: 650px;
+
+            margin: 0 auto;
+        }
+
+
+        .back {
+            display: inline-block;
+
+            margin-bottom: 20px;
+
+            color: #64748b;
+
+            text-decoration: none;
+
+            font-size: 14px;
+        }
+
+
+        .back:hover {
+            color: #2563eb;
+        }
+
+
+        .card {
+            background: white;
+
+            border: 1px solid #e2e8f0;
+
+            border-radius: 10px;
+
+            padding: 30px;
+
+            box-shadow:
+                0 1px 3px
+                rgba(0, 0, 0, 0.05);
+        }
+
+
+        h1 {
+            margin-top: 0;
+
+            margin-bottom: 25px;
+
+            font-size: 26px;
+        }
+
+
+        form p {
+            margin-bottom: 18px;
+        }
+
+
+        label {
+            display: block;
+
+            margin-bottom: 6px;
+
+            font-size: 14px;
+
+            font-weight: 600;
+        }
+
+
+        input,
+        textarea,
+        select {
+
+            width: 100%;
+
+            padding: 10px 12px;
+
+            box-sizing: border-box;
+
+            border: 1px solid #cbd5e1;
+
+            border-radius: 6px;
+
+            font-size: 14px;
+
+            background: white;
+        }
+
+
+        textarea {
+            min-height: 100px;
+
+            resize: vertical;
+        }
+
+
+        input:focus,
+        textarea:focus,
+        select:focus {
+
+            outline: none;
+
+            border-color: #2563eb;
+
+            box-shadow:
+                0 0 0 2px
+                rgba(37, 99, 235, 0.1);
+        }
+
+
+        .errorlist {
+
+            color: #dc2626;
+
+            margin: 5px 0;
+
+            padding-left: 20px;
+
+            font-size: 13px;
+        }
+
+
+        .helptext {
+
+            display: block;
+
+            margin-top: 5px;
+
+            color: #64748b;
+
+            font-size: 12px;
+        }
+
+
+        .actions {
+
+            display: flex;
+
+            gap: 10px;
+
+            margin-top: 25px;
+
+            padding-top: 20px;
+
+            border-top: 1px solid #e2e8f0;
+        }
+
+
+        button,
+        .cancel {
+
+            padding: 10px 16px;
+
+            border-radius: 6px;
+
+            font-size: 14px;
+
+            font-weight: 600;
+
+            cursor: pointer;
+
+            text-decoration: none;
+        }
+
+
+        button {
+
+            border: none;
+
+            background: #2563eb;
+
+            color: white;
+        }
+
+
+        button:hover {
+
+            background: #1d4ed8;
+        }
+
+
+        .cancel {
+
+            border: 1px solid #cbd5e1;
+
+            background: white;
+
+            color: #334155;
+        }
+
+
+        .cancel:hover {
+
+            background: #f8fafc;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<div class="container">
+
+    <a
+        href="{% url 'products:subcategory_list' %}"
+        class="back"
+    >
+        ← Back to Sub-Categories
+    </a>
+
+
+    <div class="card">
+
+        <h1>
+            {{ title }}
+        </h1>
+
+
+        <form
+            method="POST"
+            enctype="multipart/form-data"
+        >
+
+            {% csrf_token %}
+
+            {{ form.as_p }}
+
+
+            <div class="actions">
+
+                <button type="submit">
+                    Save Sub-Category
+                </button>
+
+
+                <a
+                    href="{% url 'products:subcategory_list' %}"
+                    class="cancel"
+                >
+                    Cancel
+                </a>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+</body>
+
+</html>

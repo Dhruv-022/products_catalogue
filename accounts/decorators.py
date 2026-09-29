@@ -45,8 +45,21 @@ def owner_or_admin_required(view_func):
 
   return role_required([User.Role.SYSTEM_ADMIN, User.Role.OWNER])(view_func)
 
-def owner_required(view_func):
-  """Quick shorthand decorator for Owner role only."""
-  from accounts.models import User
 
-  return role_required([User.Role.OWNER])(view_func)
+def can_manage_user(requesting_user, target_user):
+    """
+    Determine whether requesting_user is allowed
+    to manage target_user.
+    """
+
+    from accounts.models import User
+
+    # System Admin can manage everyone.
+    if requesting_user.role == User.Role.SYSTEM_ADMIN:
+        return True
+
+    # Owner can manage Owners only.
+    if requesting_user.role == User.Role.OWNER:
+        return target_user.role == User.Role.OWNER
+
+    return False

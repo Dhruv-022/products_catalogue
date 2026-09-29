@@ -14,8 +14,19 @@ urlpatterns = [
         include("dashboard.urls")
     ),
 
-    path("accounts/", include("accounts.urls")),
+    path(
+        "accounts/",
+        include("accounts.urls")
+    ),
 
-    path("", include("public.urls")),
+    path(
+        "products/",
+        include("products.urls")
+    ),
+
+    path(
+        "",
+        include("public.urls")
+    ),
 
 ]

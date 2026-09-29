@@ -7,8 +7,18 @@ from django.shortcuts import redirect, render
 
 @login_required
 def home(request):
-  return render(request, "dashboard/home.html", {"user": request.user})
+    if request.user.get_role_display() == "Owner":
+        return render(
+            request,
+            "dashboard/owner_home.html",
+            {"user": request.user}
+        )
 
+    return render(
+        request,
+        "dashboard/home.html",
+        {"user": request.user}
+    )
 
 def login_view(request):
   if request.user.is_authenticated:
@@ -56,12 +66,3 @@ def admin_only_test(request):
       f"System Administration Portal. Access granted to"
       f" {request.user.username}."
   )
-
-
-from accounts.decorators import owner_required
-
-
-@owner_required
-def owner_dashboard(request):
-  """Dedicated dashboard view exclusively for the Owner role."""
-  return render(request, "dashboard/owner_home.html", {"user": request.user})
