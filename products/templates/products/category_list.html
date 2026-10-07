@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -12,168 +13,1262 @@
 
     <title>Category Management | Al Baraq</title>
 
+    <style>
+
+        /* =========================================================
+           GLOBAL RESET & LIGHT THEME BACKGROUND
+        ========================================================= */
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            min-height: 100vh;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: #f8fafc;
+            background-image: 
+                radial-gradient(circle at 15% 15%, rgba(37, 99, 235, 0.05) 0%, transparent 40%),
+                radial-gradient(circle at 85% 85%, rgba(96, 165, 250, 0.07) 0%, transparent 40%);
+            color: #0f172a;
+            padding-bottom: 40px;
+        }
+
+
+        /* =========================================================
+           NAVBAR STYLING WITH AUDIT TICKER & DROPDOWN
+        ========================================================= */
+
+        .navbar {
+            height: 66px;
+            background: #ffffff;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 32px;
+            box-shadow: 0 2px 12px rgba(15, 23, 42, 0.03);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            gap: 20px;
+        }
+
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            color: #0f172a;
+            flex-shrink: 0;
+        }
+
+        .navbar-logo-container {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            overflow: hidden;
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 6px rgba(37, 99, 235, 0.1);
+        }
+
+        .navbar-logo-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .brand-text {
+            font-size: 19px;
+            font-weight: 850;
+            letter-spacing: -0.5px;
+        }
+
+        .brand-text .highlight {
+            color: #2563eb;
+        }
+
+        /* Inline Typewriter Audit Ticker */
+
+        .navbar-ticker-area {
+            flex-grow: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            padding: 0 16px;
+        }
+
+        .typewriter-text {
+            font-size: 13.5px;
+            font-weight: 600;
+            color: #2563eb;
+            background: rgba(37, 99, 235, 0.06);
+            border: 1px solid rgba(37, 99, 235, 0.15);
+            padding: 6px 16px;
+            border-radius: 20px;
+            white-space: nowrap;
+            overflow: hidden;
+            border-right: 2px solid #2563eb;
+            display: none;
+        }
+
+        @keyframes blinkCursor {
+            0%, 100% { border-color: #2563eb; }
+            50% { border-color: transparent; }
+        }
+
+        .typewriter-text.typing {
+            animation: blinkCursor 0.75s step-end infinite;
+        }
+
+        .navbar-right-controls {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-shrink: 0;
+            position: relative;
+        }
+
+        /* Notification Bell Button */
+
+        .audit-log-btn {
+            position: relative;
+            background: rgba(37, 99, 235, 0.06);
+            border: 1px solid rgba(37, 99, 235, 0.18);
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: #2563eb;
+            transition: all 0.25s ease;
+        }
+
+        .audit-log-btn:hover {
+            background: #2563eb;
+            color: #ffffff;
+            border-color: #2563eb;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+        }
+
+        .audit-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: #dc2626;
+            color: #ffffff;
+            font-size: 10.5px;
+            font-weight: 800;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid #ffffff;
+        }
+
+        /* Audit Log Dropdown Menu */
+
+        .audit-dropdown {
+            position: absolute;
+            top: 48px;
+            right: 0;
+            width: 330px;
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 14px;
+            box-shadow: 0 10px 25px rgba(15, 23, 42, 0.1);
+            padding: 16px;
+            display: none;
+            z-index: 200;
+        }
+
+        .audit-dropdown.active {
+            display: block;
+        }
+
+        .audit-dropdown-header {
+            font-size: 13px;
+            font-weight: 800;
+            color: #0f172a;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #f1f5f9;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .audit-list {
+            list-style: none;
+            max-height: 220px;
+            overflow-y: auto;
+        }
+
+        .audit-item {
+            font-size: 13px;
+            color: #334155;
+            padding: 8px 0;
+            border-bottom: 1px solid #f8fafc;
+            line-height: 1.4;
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+        }
+
+        .audit-item:last-child {
+            border-bottom: none;
+        }
+
+        .audit-bullet-icon {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #2563eb;
+            margin-top: 5px;
+            flex-shrink: 0;
+            box-shadow: 0 0 6px rgba(37, 99, 235, 0.4);
+        }
+
+        .empty-audit {
+            font-size: 12.5px;
+            color: #94a3b8;
+            text-align: center;
+            padding: 12px 0;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: #2563eb;
+            font-size: 14px;
+            font-weight: 750;
+            text-decoration: none;
+            padding: 8px 14px;
+            border-radius: 9px;
+            background: rgba(37, 99, 235, 0.06);
+            border: 1px solid rgba(37, 99, 235, 0.18);
+            transition: all 0.25s ease;
+        }
+
+        .back-link:hover {
+            background: #2563eb;
+            color: #ffffff;
+            transform: translateX(-2px);
+        }
+
+
+        /* =========================================================
+           CONTAINER & HEADER
+        ========================================================= */
+
+        .container {
+            max-width: 1140px;
+            margin: 0 auto;
+            padding: 28px 24px;
+        }
+
+        .page-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .page-title h1 {
+            font-size: clamp(22px, 3vw, 28px);
+            font-weight: 850;
+            letter-spacing: -0.6px;
+            color: #0f172a;
+        }
+
+        .page-title p {
+            color: #64748b;
+            font-size: 14px;
+            margin-top: 2px;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+
+        /* =========================================================
+           BUTTON STYLES
+        ========================================================= */
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 9px 16px;
+            border-radius: 9px;
+            font-size: 13.5px;
+            font-weight: 750;
+            cursor: pointer;
+            text-decoration: none;
+            border: 1px solid transparent;
+            transition: all 0.2s ease;
+        }
+
+        .btn-primary {
+            background: #2563eb;
+            color: #ffffff;
+            box-shadow: 0 2px 8px rgba(37, 99, 235, 0.2);
+        }
+
+        .btn-primary:hover {
+            background: #1d4ed8;
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background: #ffffff;
+            color: #475569;
+            border-color: #cbd5e1;
+        }
+
+        .btn-secondary:hover {
+            background: #f1f5f9;
+            color: #0f172a;
+        }
+
+        .btn-warning {
+            background: rgba(217, 119, 6, 0.08);
+            color: #d97706;
+            border-color: rgba(217, 119, 6, 0.25);
+        }
+
+        .btn-warning:hover {
+            background: #d97706;
+            color: #ffffff;
+        }
+
+        .btn-sm {
+            padding: 5px 10px;
+            font-size: 12.5px;
+            border-radius: 6px;
+        }
+
+        .btn-danger-sm {
+            background: rgba(220, 38, 38, 0.06);
+            color: #dc2626;
+            border-color: rgba(220, 38, 38, 0.2);
+        }
+
+        .btn-danger-sm:hover {
+            background: #dc2626;
+            color: #ffffff;
+        }
+
+
+        /* =========================================================
+           TOGGLE SWITCH STYLING
+        ========================================================= */
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 42px;
+            height: 22px;
+            margin: 0;
+            flex-shrink: 0;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #cbd5e1;
+            transition: .3s ease;
+            border-radius: 22px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .3s ease;
+            border-radius: 50%;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+        }
+
+        input:checked + .slider {
+            background-color: #2563eb;
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(20px);
+        }
+
+
+        /* =========================================================
+           DATA TABLE STYLING
+        ========================================================= */
+
+        .table-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 14px;
+            box-shadow: 0 4px 16px rgba(15, 23, 42, 0.03);
+            overflow: hidden;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            table-layout: fixed;
+        }
+
+        /* Fixed column proportions ensuring category names never truncate */
+        .data-table th:nth-child(1) { width: 50px; }   /* S.No. */
+        .data-table th:nth-child(2) { width: 220px; }  /* Name */
+        .data-table th:nth-child(3) { width: auto; }   /* Description */
+        .data-table th:nth-child(4) { width: 80px; }   /* Items */
+        .data-table th:nth-child(5) { width: 65px; }   /* Order */
+        .data-table th:nth-child(6) { width: 110px; }  /* Status */
+        .data-table th:nth-child(7) { width: 210px; }  /* Actions */
+
+        .data-table th {
+            background: #f8fafc;
+            color: #475569;
+            font-size: 12px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            padding: 14px 18px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .data-table td {
+            padding: 14px 18px;
+            font-size: 14px;
+            color: #0f172a;
+            border-bottom: 1px solid #f1f5f9;
+            vertical-align: middle;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .data-table td.name-cell {
+            white-space: normal;
+            word-break: break-word;
+        }
+
+        .data-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .data-table tr:hover td {
+            background: #f8fafc;
+        }
+
+        .sno-badge {
+            font-weight: 700;
+            color: #64748b;
+        }
+
+        /* Default Primary Blue Category Name Style */
+        .category-name {
+            font-size: 14.5px;
+            font-weight: 850;
+            color: #2563eb;
+            transition: color 0.2s ease;
+        }
+
+        /* Muted Grey Category Name when Inactive */
+        .category-name.inactive {
+            color: #94a3b8;
+        }
+
+        /* Minimalist Sub-Category Count Badge (Number Only) */
+        .subcategory-count-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            font-size: 13px;
+            font-weight: 800;
+            color: #2563eb;
+            background: rgba(37, 99, 235, 0.08);
+            border: 1px solid rgba(37, 99, 235, 0.2);
+            padding: 4px 12px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .subcategory-count-badge:hover {
+            background: #2563eb;
+            color: #ffffff;
+            box-shadow: 0 2px 8px rgba(37, 99, 235, 0.25);
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 750;
+            min-width: 82px;
+            text-align: center;
+        }
+
+        .status-badge.active {
+            background: #dcfce7;
+            color: #15803d;
+        }
+
+        .status-badge.hidden {
+            background: #f1f5f9;
+            color: #64748b;
+        }
+
+        .status-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .status-badge.active .status-dot {
+            background: #16a34a;
+        }
+
+        .status-badge.hidden .status-dot {
+            background: #94a3b8;
+        }
+
+        .action-cell {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding-right: 12px;
+        }
+
+
+        /* =========================================================
+           POPUP MODAL STYLING FOR SUB-CATEGORIES
+        ========================================================= */
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(15, 23, 42, 0.45);
+            backdrop-filter: blur(4px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-card {
+            background: #ffffff;
+            border-radius: 16px;
+            width: 100%;
+            max-width: 580px;
+            box-shadow: 0 20px 40px rgba(15, 23, 42, 0.15);
+            overflow: hidden;
+            animation: modalFadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes modalFadeIn {
+            from { opacity: 0; transform: scale(0.96) translateY(8px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        .modal-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #f8fafc;
+        }
+
+        .modal-title-area h3 {
+            font-size: 17px;
+            font-weight: 850;
+            color: #0f172a;
+        }
+
+        .modal-title-area p {
+            font-size: 13px;
+            color: #64748b;
+            margin-top: 2px;
+        }
+
+        .modal-close-btn {
+            background: none;
+            border: none;
+            font-size: 22px;
+            color: #94a3b8;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .modal-close-btn:hover {
+            color: #0f172a;
+        }
+
+        .modal-body {
+            padding: 20px 24px;
+            max-height: 360px;
+            overflow-y: auto;
+        }
+
+        .modal-subcat-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .modal-subcat-table th {
+            font-size: 11.5px;
+            font-weight: 800;
+            text-transform: uppercase;
+            color: #64748b;
+            letter-spacing: 0.5px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #e2e8f0;
+            text-align: left;
+        }
+
+        .modal-subcat-table td {
+            padding: 12px 0;
+            border-bottom: 1px solid #f1f5f9;
+            font-size: 13.5px;
+            vertical-align: middle;
+        }
+
+        .modal-footer {
+            padding: 16px 24px;
+            border-top: 1px solid #e2e8f0;
+            background: #f8fafc;
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+
+        /* =========================================================
+           EMPTY STATE STYLING
+        ========================================================= */
+
+        .empty-state {
+            text-align: center;
+            padding: 48px 24px;
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 14px;
+            color: #64748b;
+        }
+
+        .empty-state h3 {
+            font-size: 18px;
+            color: #0f172a;
+            margin-bottom: 6px;
+        }
+
+
+        /* =========================================================
+           RESPONSIVE MEDIA QUERIES
+        ========================================================= */
+
+        @media (max-width: 768px) {
+
+            .navbar {
+                padding: 0 20px;
+            }
+
+            .container {
+                padding: 20px 16px;
+            }
+
+            .table-card {
+                overflow-x: auto;
+            }
+
+            .navbar-ticker-area {
+                display: none;
+            }
+
+        }
+
+    </style>
+
 </head>
 
 
 <body>
 
-    <p>
-        <a href="{% url 'dashboard:home' %}">
-            ← Dashboard
-        </a>
-    </p>
-
-
-    <h1>
-        Category Management
-    </h1>
-
-
-    <p>
-        <a href="{% url 'products:category_create' %}">
-            + Create Category
-        </a>
-    </p>
-
-
+    <!-- Django Message Source Container for JS -->
     {% if messages %}
-
         {% for message in messages %}
-
-            <p>
-                {{ message }}
-            </p>
-
+            <div id="latest-django-msg" data-message="{{ message }}" style="display: none;"></div>
         {% endfor %}
-
     {% endif %}
 
+    <!-- =========================================================
+         NAVBAR
+    ========================================================= -->
 
-    <hr>
+    <nav class="navbar">
 
+        <div class="navbar-brand">
+            <div class="navbar-logo-container">
+                <img 
+                    src="/media/logo/logo.png" 
+                    alt="Al Baraq Logo" 
+                    class="navbar-logo-img"
+                >
+            </div>
+            <span class="brand-text">Al Baraq <span class="highlight">Dashboard</span></span>
+        </div>
 
-    {% if categories %}
+        <!-- Dynamic Inline Typewriter Ticker in Header Space -->
+        <div class="navbar-ticker-area">
+            <div id="typewriter-ticker" class="typewriter-text"></div>
+        </div>
 
-        <table border="1" cellpadding="10">
+        <div class="navbar-right-controls">
 
-            <thead>
+            <!-- Permanent Theme-Matched Notification Bell Button & Badge -->
+            <button id="audit-log-toggle" class="audit-log-btn" title="Notification Log">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                    <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                </svg>
+                <span id="audit-badge" class="audit-badge">0</span>
+            </button>
 
-                <tr>
+            <!-- Dropdown Menu for Action History -->
+            <div id="audit-dropdown" class="audit-dropdown">
+                <div class="audit-dropdown-header">
+                    <span>Recent Actions Log</span>
+                </div>
+                <ul id="audit-list" class="audit-list">
+                    <li class="empty-audit">No actions taken in this session.</li>
+                </ul>
+            </div>
 
-                    <th>ID</th>
+            <a href="{% url 'dashboard:home' %}" class="back-link">
+                ← Back to Dashboard
+            </a>
 
-                    <th>Name</th>
+        </div>
 
-                    <th>Description</th>
-
-                    <th>Display Order</th>
-
-                    <th>Status</th>
-
-                    <th>Actions</th>
-
-                </tr>
-
-            </thead>
-
-
-            <tbody>
-
-                {% for category in categories %}
-
-                    <tr>
-
-                        <td>
-                            #{{ category.id }}
-                        </td>
-
-
-                        <td>
-                            {{ category.name }}
-                        </td>
-
-
-                        <td>
-                            {{ category.description|default:"—" }}
-                        </td>
-
-
-                        <td>
-                            {{ category.display_order }}
-                        </td>
+    </nav>
 
 
-                        <td>
+    <!-- =========================================================
+         MAIN CONTAINER
+    ========================================================= -->
 
-                            {% if category.is_active %}
-
-                                Active
-
-                            {% else %}
-
-                                Hidden
-
-                            {% endif %}
-
-                        </td>
+    <main class="container">
 
 
-                        <td>
+        <!-- Page Header & Action Controls -->
 
-                            <a
-                                href="{% url 'products:category_edit' category.id %}"
-                            >
-                                Edit
-                            </a>
+        <div class="page-header">
+
+            <div class="page-title">
+                <h1>Category Management</h1>
+                <p>Organize top-level catalogue categories and global visibility.</p>
+            </div>
+
+            <div class="header-actions">
+
+                {% if has_active_categories %}
+
+                    <!-- Show 'Hide All' when any category is active -->
+                    <form method="POST" action="{% url 'products:category_toggle_all_status' %}" style="display: inline;">
+                        {% csrf_token %}
+                        <input type="hidden" name="action" value="hide_all">
+                        <button
+                            type="submit"
+                            class="btn btn-warning"
+                            onclick="return confirm('Are you sure you want to hide all categories from the catalogue?');"
+                        >
+                            Hide All
+                        </button>
+                    </form>
+
+                {% elif has_hidden_categories %}
+
+                    <!-- Show 'Show All' ONLY when categories are hidden -->
+                    <form method="POST" action="{% url 'products:category_toggle_all_status' %}" style="display: inline;">
+                        {% csrf_token %}
+                        <input type="hidden" name="action" value="show_all">
+                        <button
+                            type="submit"
+                            class="btn btn-secondary"
+                        >
+                            Show All
+                        </button>
+                    </form>
+
+                {% endif %}
+
+                <!-- Create Category Button -->
+
+                <a href="{% url 'products:category_create' %}" class="btn btn-primary">
+                    + Create Category
+                </a>
+
+            </div>
+
+        </div>
 
 
-                            |
+        <!-- Category Data Table -->
+
+        {% if categories %}
+
+            <div class="table-card">
+
+                <table class="data-table">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>S.No.</th>
+
+                            <th>Name</th>
+
+                            <th>Description</th>
+
+                            <th>Items</th>
+
+                            <th>Order</th>
+
+                            <th>Status</th>
+
+                            <th>Actions</th>
+
+                        </tr>
+
+                    </thead>
 
 
-                            <form
-    method="POST"
-    action="{% url 'products:category_toggle_status' category.id %}"
-    style="display: inline;"
->
-    {% csrf_token %}
+                    <tbody>
 
-    <button type="submit">
-        {% if category.is_active %}
-            Hide
+                        {% for category in categories %}
+
+                            <tr>
+
+                                <td class="sno-badge">
+                                    {{ forloop.counter }}
+                                </td>
+
+
+                                <td class="name-cell">
+                                    <span class="category-name {% if not category.is_active %}inactive{% endif %}">
+                                        {{ category.name }}
+                                    </span>
+                                </td>
+
+
+                                <td>
+                                    {{ category.description|default:"—" }}
+                                </td>
+
+
+                                <td>
+                                    <button 
+                                        type="button" 
+                                        class="subcategory-count-badge"
+                                        onclick="openSubcategoryModal('{{ category.id }}', '{{ category.name|escapejs }}')"
+                                        title="View Sub-categories"
+                                    >
+                                        📁 {{ category.subcategories.count }}
+                                    </button>
+
+                                    <!-- Hidden JSON data store for subcategories with next parameter -->
+                                    <script id="subcats-data-{{ category.id }}" type="application/json">
+                                        [
+                                            {% for sub in category.subcategories.all %}
+                                                {
+                                                    "id": "{{ sub.id }}",
+                                                    "name": "{{ sub.name|escapejs }}",
+                                                    "is_active": {{ sub.is_active|yesno:"true,false" }},
+                                                    "edit_url": "{% url 'products:subcategory_edit' sub.id %}?next=category_list",
+                                                    "toggle_url": "{% url 'products:subcategory_toggle_status' sub.id %}"
+                                                }{% if not forloop.last %},{% endif %}
+                                            {% endfor %}
+                                        ]
+                                    </script>
+                                </td>
+
+
+                                <td>
+                                    {{ category.display_order }}
+                                </td>
+
+
+                                <td>
+
+                                    {% if category.is_active %}
+
+                                        <span class="status-badge active">
+                                            <span class="status-dot"></span>
+                                            Active
+                                        </span>
+
+                                    {% else %}
+
+                                        <span class="status-badge hidden">
+                                            <span class="status-dot"></span>
+                                            Hidden
+                                        </span>
+
+                                    {% endif %}
+
+                                </td>
+
+
+                                <td>
+
+                                    <div class="action-cell">
+
+                                        <!-- Edit Button -->
+                                        <a
+                                            href="{% url 'products:category_edit' category.id %}"
+                                            class="btn btn-secondary btn-sm"
+                                        >
+                                            Edit
+                                        </a>
+
+                                        <!-- Interactive Toggle Switch -->
+                                        <form
+                                            method="POST"
+                                            action="{% url 'products:category_toggle_status' category.id %}"
+                                            style="display: inline-flex; align-items: center;"
+                                        >
+                                            {% csrf_token %}
+
+                                            <label class="switch" title="{% if category.is_active %}Hide{% else %}Show{% endif %}">
+                                                <input
+                                                    type="checkbox"
+                                                    {% if category.is_active %}checked{% endif %}
+                                                    onchange="this.form.submit();"
+                                                >
+                                                <span class="slider"></span>
+                                            </label>
+
+                                        </form>
+
+                                        <!-- Delete Button -->
+                                        <a
+                                            href="{% url 'products:category_delete' category.id %}"
+                                            class="btn btn-danger-sm btn-sm"
+                                        >
+                                            Delete
+                                        </a>
+
+                                    </div>
+
+                                </td>
+
+                            </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
         {% else %}
-            Show
+
+            <div class="empty-state">
+                <h3>No categories created yet</h3>
+                <p>Click "+ Create Category" above to add your first category.</p>
+            </div>
+
         {% endif %}
-    </button>
-</form>
 
 
-                            |
+    </main>
 
 
-                            <a
-                                href="{% url 'products:category_delete' category.id %}"
-                            >
-                                Delete
-                            </a>
+    <!-- =========================================================
+         SUB-CATEGORY POPUP MODAL
+    ========================================================= -->
 
+    <div id="subcategory-modal" class="modal-overlay">
+        <div class="modal-card">
+            <div class="modal-header">
+                <div class="modal-title-area">
+                    <h3 id="modal-category-title">Category Sub-categories</h3>
+                    <p>Manage secondary items belonging to this category.</p>
+                </div>
+                <button type="button" class="modal-close-btn" onclick="closeSubcategoryModal()">&times;</button>
+            </div>
+
+            <div class="modal-body">
+                <table class="modal-subcat-table">
+                    <thead>
+                        <tr>
+                            <th>Sub-Category Name</th>
+                            <th>Status</th>
+                            <th style="text-align: right;">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="modal-subcat-list">
+                        <!-- Populated dynamically via JS -->
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="modal-footer">
+                <a id="modal-create-subcat-btn" href="#" class="btn btn-primary btn-sm">
+                    + Add Sub-Category
+                </a>
+                <button type="button" class="btn btn-secondary btn-sm" onclick="closeSubcategoryModal()">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- =========================================================
+         AUDIT LOG, TYPEWRITER & AJAX MODAL JS ENGINE
+    ========================================================= -->
+
+    <script>
+        const csrfToken = '{{ csrf_token }}';
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const auditBtn = document.getElementById("audit-log-toggle");
+            const auditDropdown = document.getElementById("audit-dropdown");
+            const auditList = document.getElementById("audit-list");
+            const auditBadge = document.getElementById("audit-badge");
+            const ticker = document.getElementById("typewriter-ticker");
+            const djangoMsgEl = document.getElementById("latest-django-msg");
+
+            const navEntries = performance.getEntriesByType("navigation");
+            const isReload = navEntries.length > 0 && navEntries[0].type === "reload";
+
+            let logs = [];
+
+            if (isReload && !djangoMsgEl) {
+                sessionStorage.removeItem("auditLogs");
+            } else {
+                logs = JSON.parse(sessionStorage.getItem("auditLogs") || "[]");
+            }
+
+            if (djangoMsgEl) {
+                const newMsg = djangoMsgEl.getAttribute("data-message");
+                if (newMsg) {
+                    logs.unshift(newMsg);
+                    sessionStorage.setItem("auditLogs", JSON.stringify(logs));
+                    runTypewriter(newMsg);
+                }
+            }
+
+            updateAuditUI();
+
+            auditBtn.addEventListener("click", function (e) {
+                e.stopPropagation();
+                auditDropdown.classList.toggle("active");
+            });
+
+            document.addEventListener("click", function () {
+                auditDropdown.classList.remove("active");
+            });
+
+            auditDropdown.addEventListener("click", function (e) {
+                e.stopPropagation();
+            });
+
+            function updateAuditUI() {
+                if (logs.length > 0) {
+                    auditBadge.textContent = logs.length;
+                    auditBadge.style.display = "flex";
+
+                    auditList.innerHTML = logs.map(msg => `
+                        <li class="audit-item">
+                            <span class="audit-bullet-icon"></span>
+                            <span>${msg}</span>
+                        </li>
+                    `).join("");
+                } else {
+                    auditBadge.style.display = "none";
+                    auditList.innerHTML = `<li class="empty-audit">No actions taken in this session.</li>`;
+                }
+            }
+
+            function runTypewriter(text) {
+                ticker.textContent = "";
+                ticker.style.display = "inline-block";
+                ticker.classList.add("typing");
+
+                let index = 0;
+                function typeChar() {
+                    if (index < text.length) {
+                        ticker.textContent += text.charAt(index);
+                        index++;
+                        setTimeout(typeChar, 35);
+                    } else {
+                        setTimeout(() => {
+                            ticker.classList.remove("typing");
+                        }, 2500);
+                    }
+                }
+
+                typeChar();
+            }
+
+            window.recordAuditLog = function(msg) {
+                logs.unshift(msg);
+                sessionStorage.setItem("auditLogs", JSON.stringify(logs));
+                updateAuditUI();
+                runTypewriter(msg);
+            };
+        });
+
+        // Modal Functionality with In-Place AJAX Toggle Execution and Context Query Params
+        function openSubcategoryModal(categoryId, categoryName) {
+            document.getElementById("modal-category-title").textContent = `${categoryName} — Sub-Categories`;
+            
+            // Pass both category and next parameter to create URL
+            const createBtn = document.getElementById("modal-create-subcat-btn");
+            createBtn.href = `{% url 'products:subcategory_create' %}?category=${categoryId}&next=category_list`;
+
+            const dataEl = document.getElementById(`subcats-data-${categoryId}`);
+            const subcats = JSON.parse(dataEl.textContent || "[]");
+            const tbody = document.getElementById("modal-subcat-list");
+
+            if (subcats.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="3" style="text-align: center; color: #94a3b8; padding: 20px 0;">
+                            No sub-categories created for this category yet.
                         </td>
-
                     </tr>
+                `;
+            } else {
+                tbody.innerHTML = subcats.map(sub => `
+                    <tr id="modal-subrow-${sub.id}">
+                        <td>
+                            <strong id="modal-subname-${sub.id}" style="color: ${sub.is_active ? '#2563eb' : '#94a3b8'}; font-weight: 800; font-size: 14px;">
+                                ${sub.name}
+                            </strong>
+                        </td>
+                        <td>
+                            <span id="modal-subbadge-${sub.id}" class="status-badge ${sub.is_active ? 'active' : 'hidden'}" style="min-width: 68px; padding: 2px 8px;">
+                                <span class="status-dot"></span>
+                                <span class="status-text">${sub.is_active ? 'Active' : 'Hidden'}</span>
+                            </span>
+                        </td>
+                        <td style="text-align: right;">
+                            <div style="display: inline-flex; align-items: center; gap: 8px;">
+                                <a href="${sub.edit_url}" class="btn btn-secondary btn-sm" style="padding: 3px 8px; font-size: 11.5px;">
+                                    Edit
+                                </a>
+                                <label class="switch" style="width: 36px; height: 18px;">
+                                    <input 
+                                        type="checkbox" 
+                                        ${sub.is_active ? 'checked' : ''} 
+                                        onchange="ajaxToggleSubcategory('${sub.id}', '${sub.name.replace(/'/g, "\\'")}', '${sub.toggle_url}', this)"
+                                    >
+                                    <span class="slider" style="border-radius: 18px;"></span>
+                                </label>
+                            </div>
+                        </td>
+                    </tr>
+                `).join("");
+            }
 
-                {% endfor %}
+            document.getElementById("subcategory-modal").classList.add("active");
+        }
 
-            </tbody>
+        function closeSubcategoryModal() {
+            document.getElementById("subcategory-modal").classList.remove("active");
+        }
 
-        </table>
+        // Asynchronous In-Place Sub-Category Toggle
+        function ajaxToggleSubcategory(subId, subName, toggleUrl, checkbox) {
+            const isChecked = checkbox.checked;
 
-    {% else %}
+            fetch(toggleUrl, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': csrfToken,
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: new URLSearchParams({
+                    'csrfmiddlewaretoken': csrfToken
+                })
+            })
+            .then(response => {
+                const nameEl = document.getElementById(`modal-subname-${subId}`);
+                const badgeEl = document.getElementById(`modal-subbadge-${subId}`);
+                const statusTextEl = badgeEl.querySelector('.status-text');
 
-        <p>
-            No categories have been created yet.
-        </p>
-
-    {% endif %}
-
+                if (isChecked) {
+                    nameEl.style.color = '#2563eb';
+                    badgeEl.className = 'status-badge active';
+                    statusTextEl.textContent = 'Active';
+                    window.recordAuditLog(`Sub-category '${subName}' has been activated.`);
+                } else {
+                    nameEl.style.color = '#94a3b8';
+                    badgeEl.className = 'status-badge hidden';
+                    statusTextEl.textContent = 'Hidden';
+                    window.recordAuditLog(`Sub-category '${subName}' has been hidden.`);
+                }
+            })
+            .catch(error => {
+                console.error('Toggle error:', error);
+                checkbox.checked = !isChecked;
+            });
+        }
+    </script>
 
 </body>
 

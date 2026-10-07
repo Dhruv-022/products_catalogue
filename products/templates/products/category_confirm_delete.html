@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -10,58 +11,352 @@
         content="width=device-width, initial-scale=1.0"
     >
 
-    <title>
-        Delete {{ category.name }} | Al Baraq
-    </title>
+    <title>Delete {{ category.name }} | Al Baraq</title>
+
+    <style>
+
+        /* =========================================================
+           GLOBAL RESET & LIGHT THEME BACKGROUND
+        ========================================================= */
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            min-height: 100vh;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: #f8fafc;
+            background-image: 
+                radial-gradient(circle at 15% 15%, rgba(220, 38, 38, 0.03) 0%, transparent 40%),
+                radial-gradient(circle at 85% 85%, rgba(239, 68, 68, 0.05) 0%, transparent 40%);
+            color: #0f172a;
+            padding-bottom: 40px;
+        }
+
+
+        /* =========================================================
+           NAVBAR STYLING
+        ========================================================= */
+
+        .navbar {
+            height: 66px;
+            background: #ffffff;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 32px;
+            box-shadow: 0 2px 12px rgba(15, 23, 42, 0.03);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            color: #0f172a;
+        }
+
+        .navbar-logo-container {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            overflow: hidden;
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 6px rgba(37, 99, 235, 0.1);
+        }
+
+        .navbar-logo-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .brand-text {
+            font-size: 19px;
+            font-weight: 850;
+            letter-spacing: -0.5px;
+        }
+
+        .brand-text .highlight {
+            color: #2563eb;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: #2563eb;
+            font-size: 14px;
+            font-weight: 750;
+            text-decoration: none;
+            padding: 8px 14px;
+            border-radius: 9px;
+            background: rgba(37, 99, 235, 0.06);
+            border: 1px solid rgba(37, 99, 235, 0.18);
+            transition: all 0.25s ease;
+        }
+
+        .back-link:hover {
+            background: #2563eb;
+            color: #ffffff;
+            transform: translateX(-2px);
+        }
+
+
+        /* =========================================================
+           CONTAINER & CONFIRMATION CARD
+        ========================================================= */
+
+        .container {
+            max-width: 560px;
+            margin: 60px auto 0 auto;
+            padding: 0 24px;
+        }
+
+        .confirm-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 32px;
+            box-shadow: 0 8px 24px rgba(15, 23, 42, 0.04);
+            text-align: center;
+        }
+
+        .danger-icon-wrapper {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: rgba(220, 38, 38, 0.08);
+            border: 1px solid rgba(220, 38, 38, 0.2);
+            color: #dc2626;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin: 0 auto 20px auto;
+        }
+
+        .confirm-card h1 {
+            font-size: 24px;
+            font-weight: 850;
+            color: #0f172a;
+            letter-spacing: -0.5px;
+            margin-bottom: 10px;
+        }
+
+        .confirm-text {
+            font-size: 15px;
+            color: #475569;
+            line-height: 1.5;
+            margin-bottom: 20px;
+        }
+
+        .confirm-text strong {
+            color: #0f172a;
+        }
+
+
+        /* =========================================================
+           WARNING BANNER
+        ========================================================= */
+
+        .warning-banner {
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            border-radius: 10px;
+            padding: 14px 16px;
+            margin-bottom: 28px;
+            text-align: left;
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+        }
+
+        .warning-banner-icon {
+            font-size: 18px;
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+
+        .warning-banner p {
+            font-size: 13.5px;
+            color: #991b1b;
+            line-height: 1.5;
+        }
+
+        .warning-banner strong {
+            font-weight: 800;
+        }
+
+
+        /* =========================================================
+           FORM & ACTIONS
+        ========================================================= */
+
+        .form-actions {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 10px 22px;
+            border-radius: 9px;
+            font-size: 14px;
+            font-weight: 750;
+            cursor: pointer;
+            text-decoration: none;
+            border: 1px solid transparent;
+            transition: all 0.2s ease;
+            flex: 1;
+        }
+
+        .btn-secondary {
+            background: #ffffff;
+            color: #475569;
+            border-color: #cbd5e1;
+        }
+
+        .btn-secondary:hover {
+            background: #f1f5f9;
+            color: #0f172a;
+        }
+
+        .btn-danger {
+            background: #dc2626;
+            color: #ffffff;
+            box-shadow: 0 2px 8px rgba(220, 38, 38, 0.22);
+        }
+
+        .btn-danger:hover {
+            background: #b91c1c;
+            transform: translateY(-1px);
+        }
+
+
+        /* =========================================================
+           RESPONSIVE MEDIA QUERIES
+        ========================================================= */
+
+        @media (max-width: 640px) {
+
+            .navbar {
+                padding: 0 20px;
+            }
+
+            .container {
+                margin-top: 28px;
+                padding: 0 16px;
+            }
+
+            .confirm-card {
+                padding: 24px 20px;
+            }
+
+            .form-actions {
+                flex-direction: column-reverse;
+            }
+
+            .btn {
+                width: 100%;
+            }
+
+        }
+
+    </style>
 
 </head>
 
 
 <body>
 
-    <h1>
-        Delete Category
-    </h1>
+    <!-- =========================================================
+         NAVBAR
+    ========================================================= -->
 
+    <nav class="navbar">
 
-    <p>
+        <div class="navbar-brand">
+            <div class="navbar-logo-container">
+                <img 
+                    src="/media/logo/logo.png" 
+                    alt="Al Baraq Logo" 
+                    class="navbar-logo-img"
+                >
+            </div>
+            <span class="brand-text">Al Baraq <span class="highlight">Dashboard</span></span>
+        </div>
 
-        Are you sure you want to permanently delete:
-
-        <strong>
-            {{ category.name }}
-        </strong>
-
-        ?
-
-    </p>
-
-
-    <p>
-
-        <strong>
-            Warning:
-        </strong>
-
-        Deleting this category will also delete all
-        sub-categories belonging to it.
-
-    </p>
-
-
-    <form method="POST">
-
-        {% csrf_token %}
-
-        <button type="submit">
-            Confirm Delete
-        </button>
-
-        <a href="{% url 'products:category_list' %}">
-            Cancel
+        <a href="{% url 'products:category_list' %}" class="back-link">
+            ← Back to Categories
         </a>
 
-    </form>
+    </nav>
+
+
+    <!-- =========================================================
+         MAIN CONTAINER
+    ========================================================= -->
+
+    <main class="container">
+
+        <div class="confirm-card">
+
+            <div class="danger-icon-wrapper">
+                ⚠️
+            </div>
+
+            <h1>Delete Category</h1>
+
+            <p class="confirm-text">
+                Are you sure you want to permanently delete<br>
+                <strong>"{{ category.name }}"</strong>?
+            </p>
+
+            <div class="warning-banner">
+                <span class="warning-banner-icon">🛑</span>
+                <p>
+                    <strong>Warning:</strong> Deleting this category will also permanently delete all sub-categories belonging to it.
+                </p>
+            </div>
+
+            <form method="POST">
+
+                {% csrf_token %}
+
+                <div class="form-actions">
+
+                    <a href="{% url 'products:category_list' %}" class="btn btn-secondary">
+                        Cancel
+                    </a>
+
+                    <button type="submit" class="btn btn-danger">
+                        Confirm Delete
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </main>
 
 
 </body>

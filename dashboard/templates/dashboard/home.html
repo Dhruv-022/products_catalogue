@@ -1,29 +1,588 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard | Al Baraq</title>
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>System Admin Dashboard | Al Baraq</title>
+
+    <style>
+
+        /* =========================================================
+           GLOBAL RESET & LIGHT THEME BACKGROUND
+        ========================================================= */
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            min-height: 100vh;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: #f8fafc;
+            background-image: 
+                radial-gradient(circle at 15% 15%, rgba(37, 99, 235, 0.05) 0%, transparent 40%),
+                radial-gradient(circle at 85% 85%, rgba(96, 165, 250, 0.07) 0%, transparent 40%);
+            color: #0f172a;
+            padding-bottom: 40px;
+        }
+
+
+        /* =========================================================
+           NAVBAR STYLING
+        ========================================================= */
+
+        .navbar {
+            height: 66px;
+            background: #ffffff;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 32px;
+            box-shadow: 0 2px 12px rgba(15, 23, 42, 0.03);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            color: #0f172a;
+        }
+
+        .navbar-logo-container {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            overflow: hidden;
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 6px rgba(37, 99, 235, 0.1);
+        }
+
+        .navbar-logo-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .brand-text {
+            font-size: 19px;
+            font-weight: 850;
+            letter-spacing: -0.5px;
+        }
+
+        .brand-text .highlight {
+            color: #2563eb;
+        }
+
+        .logout-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: #dc2626;
+            font-size: 14px;
+            font-weight: 750;
+            background: rgba(220, 38, 38, 0.06);
+            border: 1px solid rgba(220, 38, 38, 0.18);
+            border-radius: 9px;
+            cursor: pointer;
+            padding: 8px 16px;
+            transition: all 0.25s ease;
+        }
+
+        .logout-btn:hover {
+            background: #dc2626;
+            color: #ffffff;
+            border-color: #dc2626;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(220, 38, 38, 0.22);
+        }
+
+
+        /* =========================================================
+           MAIN CONTAINER & WELCOME BANNER
+        ========================================================= */
+
+        .container {
+            max-width: 1140px;
+            margin: 0 auto;
+            padding: 28px 24px;
+        }
+
+        .welcome {
+            margin-bottom: 24px;
+        }
+
+        .welcome h1 {
+            font-size: clamp(24px, 3vw, 32px);
+            font-weight: 850;
+            color: #0f172a;
+            letter-spacing: -0.8px;
+            margin-bottom: 4px;
+        }
+
+        .welcome p {
+            color: #64748b;
+            font-size: 15px;
+            margin-bottom: 12px;
+        }
+
+
+        /* =========================================================
+           ORBITING ROLE TAG BADGE (PURPLE FOR ADMIN)
+        ========================================================= */
+
+        .role-badge-wrapper {
+            display: inline-flex;
+            width: fit-content;
+            position: relative;
+            padding: 1.5px;
+            border-radius: 30px;
+            overflow: hidden;
+        }
+
+        .role-badge-wrapper::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(
+                transparent,
+                rgba(124, 58, 237, 0.08),
+                rgba(124, 58, 237, 0.4),
+                rgba(167, 139, 250, 0.45),
+                transparent 35%
+            );
+            animation: rotateLightBorderGlow 4.5s linear infinite;
+            z-index: 0;
+        }
+
+        @keyframes rotateLightBorderGlow {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .role-badge {
+            position: relative;
+            z-index: 1;
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 5px 14px;
+            border-radius: 30px;
+            background: #ffffff;
+            color: #7c3aed;
+            font-size: 12px;
+            font-weight: 800;
+            letter-spacing: 1.1px;
+            text-transform: uppercase;
+            box-shadow: 0 2px 10px rgba(124, 58, 237, 0.08);
+        }
+
+        .role-dot {
+            width: 6.5px;
+            height: 6.5px;
+            border-radius: 50%;
+            background: #7c3aed;
+            box-shadow: 0 0 7px rgba(124, 58, 237, 0.6);
+            flex-shrink: 0;
+            animation: pulseDot 1.8s infinite;
+        }
+
+        @keyframes pulseDot {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.3); opacity: 0.6; }
+        }
+
+
+        /* =========================================================
+           SECTION TITLES & GRID CARDS
+        ========================================================= */
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 800;
+            color: #0f172a;
+            margin-bottom: 12px;
+            letter-spacing: -0.3px;
+        }
+
+        .section-title.sub-section {
+            margin-top: 24px;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 14px;
+            padding: 20px 22px;
+            text-decoration: none;
+            color: inherit;
+            box-shadow: 0 4px 16px rgba(15, 23, 42, 0.03);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition:
+                transform 0.25s ease,
+                border-color 0.25s ease,
+                box-shadow 0.25s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-3px);
+            border-color: #c4b5fd;
+            box-shadow: 0 10px 24px rgba(124, 58, 237, 0.08);
+        }
+
+        .card-header-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            margin-bottom: 6px;
+        }
+
+        .card h3 {
+            font-size: 18px;
+            font-weight: 800;
+            color: #0f172a;
+        }
+
+        .count-badge {
+            font-size: 12px;
+            font-weight: 750;
+            color: #7c3aed;
+            background: #f5f3ff;
+            border: 1px solid #ddd6fe;
+            padding: 3px 10px;
+            border-radius: 20px;
+            white-space: nowrap;
+        }
+
+        .card p {
+            color: #64748b;
+            font-size: 14px;
+            line-height: 1.55;
+            flex-grow: 1;
+        }
+
+        .card-action {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            margin-top: 14px;
+            color: #7c3aed;
+            font-size: 13.5px;
+            font-weight: 750;
+            transition: transform 0.2s ease, color 0.2s ease;
+        }
+
+        .card:hover .card-action {
+            color: #6d28d9;
+            transform: translateX(4px);
+        }
+
+
+        /* =========================================================
+           INFO BOX / ADMINISTRATION BANNER
+        ========================================================= */
+
+        .info-box {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 14px;
+            padding: 20px 22px;
+            box-shadow: 0 4px 16px rgba(15, 23, 42, 0.03);
+            margin-top: 20px;
+        }
+
+        .info-box h3 {
+            margin-bottom: 6px;
+            font-size: 17px;
+            font-weight: 800;
+            color: #0f172a;
+        }
+
+        .info-box p {
+            color: #64748b;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+
+        /* =========================================================
+           RESPONSIVE MEDIA QUERIES
+        ========================================================= */
+
+        @media (max-width: 768px) {
+
+            .navbar {
+                padding: 0 20px;
+            }
+
+            .container {
+                padding: 20px 16px;
+            }
+
+            .cards {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+    </style>
+
 </head>
+
+
 <body>
-    <h1>Al Baraq Dashboard</h1>
 
-    <p>Welcome, {{ request.user.username }}.</p>
-    <p>Role: <strong>{{ request.user.get_role_display }}</strong></p>
-    <p>You are successfully authenticated.</p>
+    <!-- =========================================================
+         NAVBAR
+    ========================================================= -->
 
-    <!-- Expose User Management link only to System Admins -->
-    {% if request.user.is_system_admin %}
-        <hr>
-        <h3>Administration</h3>
-        <p>
-            <a href="{% url 'accounts:user_list' %}">Manage Users (System Admin)</a>
-        </p>
-        <hr>
-    {% endif %}
+    <nav class="navbar">
 
-    <p>
-        <a href="{% url 'dashboard:logout' %}">Logout</a>
-    </p>
+        <div class="navbar-brand">
+            <div class="navbar-logo-container">
+                <img 
+                    src="/media/logo/logo.png" 
+                    alt="Al Baraq Logo" 
+                    class="navbar-logo-img"
+                >
+            </div>
+            <span class="brand-text">Al Baraq <span class="highlight">Admin Portal</span></span>
+        </div>
+
+        <form
+            method="POST"
+            action="{% url 'dashboard:logout' %}"
+            style="display: inline;"
+        >
+
+            {% csrf_token %}
+
+            <button
+                type="submit"
+                class="logout-btn"
+            >
+                Logout
+            </button>
+
+        </form>
+
+    </nav>
+
+
+    <!-- =========================================================
+         MAIN CONTENT CONTAINER
+    ========================================================= -->
+
+    <main class="container">
+
+
+        <!-- Welcome Banner -->
+
+        <section class="welcome">
+
+            <h1>
+                Welcome, Mr. {{ user.first_name|default:user.username }}
+            </h1>
+
+            <p>
+                Welcome to the Al Baraq System Administration Control Center.
+            </p>
+
+            <div class="role-badge-wrapper">
+                <div class="role-badge">
+                    <span class="role-dot"></span>
+                    {{ user.get_role_display }}
+                </div>
+            </div>
+
+        </section>
+
+
+        <!-- System & User Administration Grid -->
+
+        <h2 class="section-title">
+            User & Access Control
+        </h2>
+
+
+        <section class="cards">
+
+
+            <a
+                href="{% url 'accounts:user_list' %}"
+                class="card"
+            >
+
+                <div>
+
+                    <div class="card-header-row">
+                        <h3>
+                            Manage Users
+                        </h3>
+                        <span class="count-badge">{{ users_count }} Accounts</span>
+                    </div>
+
+                    <p>
+                        Full system access control. Create, edit, activate, deactivate,
+                        and manage permissions for Owner and Admin accounts.
+                    </p>
+
+                </div>
+
+                <span class="card-action">
+                    Manage Accounts →
+                </span>
+
+            </a>
+
+
+            <a
+                href="/admin/"
+                class="card"
+                target="_blank"
+            >
+
+                <div>
+
+                    <div class="card-header-row">
+                        <h3>
+                            Django Admin
+                        </h3>
+                        <span class="count-badge">Database Portal</span>
+                    </div>
+
+                    <p>
+                        Direct database models management console for backend system configurations and log inspections.
+                    </p>
+
+                </div>
+
+                <span class="card-action">
+                    Open Django Admin →
+                </span>
+
+            </a>
+
+
+        </section>
+
+
+        <!-- Catalogue Management Overview -->
+
+        <h2 class="section-title sub-section">
+            Catalogue Overview
+        </h2>
+
+
+        <section class="cards">
+
+
+            <a
+                href="{% url 'products:category_list' %}"
+                class="card"
+            >
+
+                <div>
+
+                    <div class="card-header-row">
+                        <h3>
+                            Categories
+                        </h3>
+                        <span class="count-badge">{{ categories_count }} Total</span>
+                    </div>
+
+                    <p>
+                        View and manage top-level catalogue categories and taxonomy structure.
+                    </p>
+
+                </div>
+
+                <span class="card-action">
+                    View Categories →
+                </span>
+
+            </a>
+
+
+            <a
+                href="{% url 'products:subcategory_list' %}"
+                class="card"
+            >
+
+                <div>
+
+                    <div class="card-header-row">
+                        <h3>
+                            Sub-Categories
+                        </h3>
+                        <span class="count-badge">{{ subcategories_count }} Total</span>
+                    </div>
+
+                    <p>
+                        View and manage secondary sub-categories linked to main categories.
+                    </p>
+
+                </div>
+
+                <span class="card-action">
+                    View Sub-Categories →
+                </span>
+
+            </a>
+
+
+        </section>
+
+
+        <!-- Info Box -->
+
+        <section class="info-box">
+
+            <h3>
+                System Administration Note
+            </h3>
+
+            <p>
+                As a <strong>System Admin</strong>, you have high-level administrative permissions over account provisioning, system configuration, and catalogue structure control.
+            </p>
+
+        </section>
+
+
+    </main>
+
+
 </body>
+
 </html>

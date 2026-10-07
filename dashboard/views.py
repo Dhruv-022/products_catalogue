@@ -1,24 +1,33 @@
 from accounts.decorators import owner_or_admin_required, system_admin_required
+from accounts.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
+from products.models import Category, SubCategory
 
 
 @login_required
 def home(request):
     if request.user.get_role_display() == "Owner":
-        return render(
-            request,
-            "dashboard/owner_home.html",
-            {"user": request.user}
-        )
+        context = {
+            "user": request.user,
+            "categories_count": Category.objects.count(),
+            "subcategories_count": SubCategory.objects.count(),
+            "users_count": User.objects.count(),
+        }
+        return render(request, "dashboard/owner_home.html", context)
 
-    return render(
-        request,
-        "dashboard/home.html",
-        {"user": request.user}
-    )
+    # Context for System Admin Dashboard
+    context = {
+        "user": request.user,
+        "users_count": User.objects.count(),
+        "admin_count": User.objects.filter(role=User.Role.SYSTEM_ADMIN).count(),
+        "owner_count": User.objects.filter(role=User.Role.OWNER).count(),
+        "categories_count": Category.objects.count(),
+        "subcategories_count": SubCategory.objects.count(),
+    }
+    return render(request, "dashboard/home.html", context)
 
 def login_view(request):
   if request.user.is_authenticated:

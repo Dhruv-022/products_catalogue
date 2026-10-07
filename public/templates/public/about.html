@@ -1,23 +1,1305 @@
 {% extends "public/base.html" %}
 
+{% load static %}
+
 
 {% block title %}
     About Us | Al Baraq
 {% endblock %}
 
 
+{% block extra_css %}
+
+<style>
+
+/* =========================================================
+   GLOBAL PAGE STYLING & UTILITIES
+========================================================= */
+
+.about-page {
+    background: #f8fafc;
+    color: #111827;
+    min-height: 100vh;
+}
+
+.scroll-reveal {
+    opacity: 0;
+    transform: translateY(22px);
+    transition:
+        opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1),
+        transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.scroll-reveal.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+
+/* =========================================================
+   ABOUT HERO SECTION & DYNAMIC BACKGROUND SLIDESHOW
+========================================================= */
+
+.about-hero {
+    position: relative;
+    min-height: calc(100vh - 88px);
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    background-color: #03122d;
+}
+
+.hero-bg-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    opacity: 0;
+    transition: opacity 1.2s ease-in-out;
+    z-index: 1;
+}
+
+.hero-bg-layer.active {
+    opacity: 1;
+}
+
+/* Dark Gradient Overlay */
+.hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        rgba(3, 18, 45, 0.94) 0%,
+        rgba(5, 28, 62, 0.86) 45%,
+        rgba(9, 42, 82, 0.45) 100%
+    );
+    z-index: 2;
+}
+
+.about-hero-content {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 50px 60px;
+    position: relative;
+    z-index: 3;
+}
+
+
+/* Dynamic Fluid Glass Badge in Hero with Orbiting Glow */
+.hero-label-wrapper {
+    display: inline-flex;
+    width: fit-content;
+    max-width: max-content;
+    position: relative;
+    margin-bottom: 22px;
+    padding: 2px;
+    border-radius: 32px;
+    overflow: hidden;
+}
+
+.hero-label-wrapper::before {
+    content: "";
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: conic-gradient(
+        transparent,
+        rgba(56, 189, 248, 0.1),
+        #38bdf8,
+        #60a5fa,
+        transparent 30%
+    );
+    animation: rotateBorderGlow 4s linear infinite;
+    z-index: 0;
+}
+
+@keyframes rotateBorderGlow {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.about-label {
+    position: relative;
+    z-index: 1;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 20px;
+    border-radius: 30px;
+    background: rgba(3, 18, 45, 0.88);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.about-label-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #38bdf8;
+    box-shadow: 0 0 10px #38bdf8;
+    flex-shrink: 0;
+    animation: pulseDot 1.8s infinite;
+}
+
+@keyframes pulseDot {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.3); opacity: 0.6; }
+}
+
+.about-hero h1 {
+    max-width: 880px;
+    color: #ffffff;
+    font-size: clamp(44px, 5vw, 68px);
+    line-height: 1.02;
+    font-weight: 850;
+    letter-spacing: -2px;
+    margin-bottom: 22px;
+}
+
+.about-hero h1 span {
+    color: #60a5fa;
+}
+
+.about-hero-text {
+    max-width: 760px;
+    color: rgba(255, 255, 255, 0.90);
+    font-size: 17.5px;
+    line-height: 1.65;
+    margin-bottom: 10px;
+}
+
+
+/* =========================================================
+   NEON GLOW SCROLL-DOWN BUTTON
+========================================================= */
+
+.hero-scroll-wrapper {
+    position: absolute;
+    bottom: 22px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+}
+
+.hero-scroll-btn {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: 1.5px solid rgba(56, 189, 248, 0.85);
+    background: transparent;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    color: #38bdf8;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    text-decoration: none;
+    box-shadow:
+        0 0 12px rgba(56, 189, 248, 0.45),
+        0 0 24px rgba(37, 99, 235, 0.3);
+    transition: all 0.3s ease;
+    animation: neonBounceGlow 2.4s infinite ease-in-out;
+}
+
+.hero-scroll-btn svg {
+    filter: drop-shadow(0 0 6px rgba(56, 189, 248, 0.8));
+    transition: transform 0.25s ease;
+}
+
+.hero-scroll-btn:hover {
+    background: rgba(37, 99, 235, 0.25);
+    color: #ffffff;
+    border-color: #60a5fa;
+    box-shadow:
+        0 0 22px rgba(96, 165, 250, 0.85),
+        0 0 45px rgba(37, 99, 235, 0.65);
+    transform: scale(1.08);
+    animation-play-state: paused;
+}
+
+@keyframes neonBounceGlow {
+    0%, 100% {
+        transform: translateY(0);
+        box-shadow:
+            0 0 12px rgba(56, 189, 248, 0.45),
+            0 0 24px rgba(37, 99, 235, 0.3);
+    }
+    50% {
+        transform: translateY(8px);
+        box-shadow:
+            0 0 20px rgba(56, 189, 248, 0.75),
+            0 0 35px rgba(37, 99, 235, 0.5);
+    }
+}
+
+
+/* =========================================================
+   LIGHT-THEME SECTION TAG BADGES (PRECISE ORBIT LOCK)
+========================================================= */
+
+.section-tag-wrapper {
+    display: inline-flex;
+    width: fit-content;
+    max-width: max-content;
+    position: relative;
+    margin-bottom: 15px;
+    padding: 1.5px;
+    border-radius: 30px;
+    overflow: hidden;
+}
+
+.section-tag-wrapper::before {
+    content: "";
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: conic-gradient(
+        transparent,
+        rgba(37, 99, 235, 0.08),
+        rgba(37, 99, 235, 0.4),
+        rgba(96, 165, 250, 0.45),
+        transparent 35%
+    );
+    animation: rotateLightBorderGlow 4.5s linear infinite;
+    z-index: 0;
+}
+
+@keyframes rotateLightBorderGlow {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.section-tag-badge {
+    position: relative;
+    z-index: 1;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 18px;
+    border-radius: 30px;
+    background: #ffffff;
+    color: #2563eb;
+    font-size: 12.5px;
+    font-weight: 750;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    box-shadow: 0 4px 14px rgba(37, 99, 235, 0.08);
+    white-space: nowrap;
+}
+
+.section-tag-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #2563eb;
+    box-shadow: 0 0 8px rgba(37, 99, 235, 0.6);
+    flex-shrink: 0;
+    animation: pulseDot 1.8s infinite;
+}
+
+
+/* =========================================================
+   MAIN CONTENT
+========================================================= */
+
+.about-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 75px 50px 90px;
+}
+
+.section-title {
+    font-size: clamp(32px, 3.8vw, 42px);
+    line-height: 1.15;
+    color: #0f172a;
+    font-weight: 800;
+    margin-bottom: 22px;
+}
+
+.section-text {
+    color: #475569;
+    font-size: 16.5px;
+    line-height: 1.8;
+    margin-bottom: 20px;
+}
+
+
+/* =========================================================
+   COMPANY INTRO
+========================================================= */
+
+.intro-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+    margin-bottom: 90px;
+}
+
+.intro-box {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 20px;
+    padding: 40px;
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.intro-box:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 16px 38px rgba(15, 23, 42, 0.08);
+}
+
+.intro-box h3 {
+    font-size: 24px;
+    color: #0f172a;
+    font-weight: 800;
+    margin-bottom: 20px;
+}
+
+.intro-box p {
+    color: #475569;
+    line-height: 1.8;
+    font-size: 15.5px;
+    margin-bottom: 15px;
+}
+
+
+/* =========================================================
+   STATS GRID
+========================================================= */
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+    margin-top: 32px;
+}
+
+.stat-card {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 14px;
+    padding: 24px 18px;
+    text-align: center;
+    transition: transform 0.25s ease, border-color 0.25s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-3px);
+    border-color: #93c5fd;
+}
+
+.stat-number {
+    font-size: 28px;
+    font-weight: 800;
+    color: #2563eb;
+    margin-bottom: 6px;
+}
+
+.stat-label {
+    color: #64748b;
+    font-size: 13.5px;
+    font-weight: 600;
+}
+
+
+/* =========================================================
+   COMMITMENT SECTION
+========================================================= */
+
+.commitment-section {
+    background: #03122d;
+    border: 1px solid #1e293b;
+    border-radius: 24px;
+    padding: 55px;
+    color: #ffffff;
+    margin-bottom: 90px;
+    box-shadow: 0 15px 35px rgba(3, 18, 45, 0.2);
+}
+
+.commitment-section .section-tag-badge {
+    background: rgba(255, 255, 255, 0.1);
+    color: #60a5fa;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(8px);
+}
+
+.commitment-section .section-tag-dot {
+    background: #60a5fa;
+    box-shadow: 0 0 8px #60a5fa;
+}
+
+.commitment-section .section-title {
+    color: #ffffff;
+}
+
+.commitment-section .section-text {
+    color: #cbd5e1;
+    max-width: 950px;
+}
+
+
+/* =========================================================
+   WHY CHOOSE US
+========================================================= */
+
+.why-section {
+    margin-bottom: 90px;
+}
+
+.why-header {
+    max-width: 750px;
+    margin-bottom: 45px;
+}
+
+.why-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 22px;
+}
+
+.why-card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 18px;
+    padding: 30px;
+    transition:
+        transform 0.3s ease,
+        border-color 0.3s ease,
+        box-shadow 0.3s ease;
+}
+
+.why-card:hover {
+    transform: translateY(-4px);
+    border-color: #93c5fd;
+    box-shadow: 0 14px 35px rgba(37, 99, 235, 0.08);
+}
+
+.why-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: #eff6ff;
+    border: 1px solid #dbeafe;
+    color: #2563eb;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    font-weight: 800;
+    margin-bottom: 20px;
+}
+
+.why-card h3 {
+    font-size: 18px;
+    font-weight: 700;
+    color: #0f172a;
+    margin-bottom: 12px;
+}
+
+.why-card p {
+    color: #64748b;
+    font-size: 14.5px;
+    line-height: 1.65;
+    margin: 0;
+}
+
+
+/* =========================================================
+   BRANDS SECTION
+========================================================= */
+
+.brands-section {
+    background: #ffffff;
+    border-top: 1px solid #e2e8f0;
+    border-bottom: 1px solid #e2e8f0;
+    padding: 75px 0;
+}
+
+.brands-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 50px;
+}
+
+.brands-description {
+    max-width: 800px;
+    color: #64748b;
+    line-height: 1.75;
+    font-size: 16px;
+    margin-bottom: 35px;
+}
+
+.brands-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.brand-item {
+    padding: 11px 20px;
+    background: #f8fafc;
+    border: 1px solid #cbd5e1;
+    border-radius: 10px;
+    color: #334155;
+    font-size: 14.5px;
+    font-weight: 650;
+    transition: all 0.25s ease;
+}
+
+.brand-item:hover {
+    background: #ffffff;
+    border-color: #2563eb;
+    color: #2563eb;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(37, 99, 235, 0.1);
+}
+
+.brands-contact {
+    margin-top: 35px;
+    color: #475569;
+    font-size: 16px;
+}
+
+.brands-contact a {
+    color: #2563eb;
+    text-decoration: none;
+    font-weight: 750;
+    transition: color 0.2s ease;
+}
+
+.brands-contact a:hover {
+    color: #1d4ed8;
+    text-decoration: underline;
+}
+
+
+/* =========================================================
+   RESPONSIVE MEDIA QUERIES
+========================================================= */
+
+@media (max-width: 900px) {
+    .about-hero {
+        min-height: calc(100vh - 75px);
+    }
+    .intro-section {
+        grid-template-columns: 1fr;
+        gap: 35px;
+    }
+    .why-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 700px) {
+    .about-hero {
+        min-height: calc(100vh - 72px);
+    }
+    .about-hero-content {
+        padding: 50px 25px 60px;
+    }
+    .about-hero h1 {
+        font-size: 42px;
+        letter-spacing: -1.5px;
+    }
+    .about-hero-text {
+        font-size: 16px;
+    }
+    .about-container {
+        padding: 60px 25px;
+    }
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+    .commitment-section {
+        padding: 35px 25px;
+        border-radius: 18px;
+    }
+    .why-grid {
+        grid-template-columns: 1fr;
+    }
+    .brands-container {
+        padding: 0 25px;
+    }
+}
+
+</style>
+
+{% endblock %}
+
+
 {% block content %}
 
-<section>
+<div class="about-page">
 
-    <h1>
-        About Us
-    </h1>
 
-    <p>
-        Learn more about Al Baraq and our products.
-    </p>
+    <!-- =====================================================
+         ABOUT HERO SECTION
+    ====================================================== -->
 
-</section>
+    <section class="about-hero">
+
+        <!-- DYNAMIC BACKGROUND SLIDESHOW LAYERS -->
+        <div
+            class="hero-bg-layer active"
+            style="background-image: url('{% static 'public/images/home-hero.jpg' %}');"
+        ></div>
+
+        <div
+            class="hero-bg-layer"
+            style="background-image: url('{% static 'public/images/home-hero1.jpg' %}');"
+        ></div>
+
+        <div
+            class="hero-bg-layer"
+            style="background-image: url('{% static 'public/images/home-hero2.jpg' %}');"
+        ></div>
+
+        <div
+            class="hero-bg-layer"
+            style="background-image: url('{% static 'public/images/home-hero3.jpg' %}');"
+        ></div>
+
+        <!-- OVERLAY SHADE -->
+        <div class="hero-overlay"></div>
+
+
+        <div class="about-hero-content">
+
+            <!-- DYNAMIC FLUID GLASS BADGE WITH ORBITING GLOW LOOP -->
+            <div class="hero-label-wrapper">
+
+                <div class="about-label">
+                    <span class="about-label-dot"></span>
+                    About Al Baraq
+                </div>
+
+            </div>
+
+
+            <h1>
+                Your Reliable
+                <span>Electrical Material</span>
+                Supply Partner.
+            </h1>
+
+
+            <p class="about-hero-text">
+
+                Established in 2012, Al Baraq Elect. Ware Tr.
+                has grown into a reliable electrical materials
+                trading and supply company serving customers
+                throughout the United Arab Emirates.
+
+            </p>
+
+        </div>
+
+
+        <!-- NEON GLOW SCROLL BUTTON -->
+
+        <div class="hero-scroll-wrapper">
+
+            <a
+                href="#introSection"
+                class="hero-scroll-btn"
+                id="scrollDownBtn"
+                aria-label="Scroll down to company details"
+                title="Scroll Down"
+            >
+
+                <svg
+                    width="22"
+                    height="22"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                >
+
+                    <line x1="12" y1="5" x2="12" y2="19"></line>
+
+                    <polyline points="19 12 12 19 5 12"></polyline>
+
+                </svg>
+
+            </a>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         COMPANY INTRODUCTION SECTION
+    ====================================================== -->
+
+    <section class="about-container" id="introSection">
+
+        <div class="intro-section">
+
+
+            <div class="scroll-reveal">
+
+                <!-- Styled Section Tag Badge with Precise Orbit Lock -->
+                <div class="section-tag-wrapper">
+                    <div class="section-tag-badge">
+                        <span class="section-tag-dot"></span>
+                        Who We Are
+                    </div>
+                </div>
+
+                <h2 class="section-title">
+                    About Al Baraq Elect. Ware Tr.
+                </h2>
+
+                <p class="section-text">
+
+                    From our beginning, our focus has been simple:
+                    to provide quality electrical materials from
+                    trusted brands, offer competitive solutions,
+                    and build lasting relationships with our
+                    customers and suppliers.
+
+                </p>
+
+
+                <p class="section-text">
+
+                    Today, we serve a broad range of customers
+                    across the electrical, construction, MEP,
+                    industrial, and oil &amp; gas sectors.
+
+                </p>
+
+            </div>
+
+
+            <div class="intro-box scroll-reveal">
+
+                <h3>
+                    Serving Customers Across the UAE
+                </h3>
+
+                <p>
+
+                    Our customers include electrical traders,
+                    MEP companies, electrical and mechanical
+                    contractors, construction companies,
+                    industrial organizations, oil &amp; gas companies,
+                    project contractors, and commercial customers.
+
+                </p>
+
+                <p>
+
+                    We focus on maintaining strong relationships
+                    with manufacturers, distributors, contractors,
+                    and customers to ensure efficient sourcing,
+                    competitive solutions, and timely delivery.
+
+                </p>
+
+
+                <div class="stats-grid">
+
+                    <div class="stat-card">
+
+                        <div class="stat-number">
+                            2012
+                        </div>
+
+                        <div class="stat-label">
+                            Established
+                        </div>
+
+                    </div>
+
+
+                    <div class="stat-card">
+
+                        <div class="stat-number">
+                            7
+                        </div>
+
+                        <div class="stat-label">
+                            Emirates Served
+                        </div>
+
+                    </div>
+
+
+                    <div class="stat-card">
+
+                        <div class="stat-number">
+                            Multi-Brand
+                        </div>
+
+                        <div class="stat-label">
+                            Electrical Supply
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             COMMITMENT SECTION
+        ================================================== -->
+
+        <section class="commitment-section scroll-reveal">
+
+            <!-- Styled Section Tag Badge with Precise Orbit Lock -->
+            <div class="section-tag-wrapper">
+                <div class="section-tag-badge">
+                    <span class="section-tag-dot"></span>
+                    Our Commitment
+                </div>
+            </div>
+
+
+            <h2 class="section-title">
+                Quality. Reliability. Customer Satisfaction.
+            </h2>
+
+
+            <p class="section-text">
+
+                We are committed to providing quality,
+                reliability, competitive pricing, product
+                availability, and professional customer service.
+
+                Our experienced team works closely with customers
+                to understand their requirements and provide
+                suitable products and solutions for their
+                individual needs.
+
+            </p>
+
+
+            <p class="section-text">
+
+                With a strong foundation built since 2012,
+                Al Baraq Elect. Ware Tr. continues to grow as
+                a dependable electrical materials supplier in
+                the UAE, driven by quality products, trusted
+                brands, customer satisfaction, and long-term
+                partnerships.
+
+            </p>
+
+        </section>
+
+
+        <!-- =================================================
+             WHY CHOOSE US SECTION
+        ================================================== -->
+
+        <section class="why-section">
+
+            <div class="why-header scroll-reveal">
+
+                <!-- Styled Section Tag Badge with Precise Orbit Lock -->
+                <div class="section-tag-wrapper">
+                    <div class="section-tag-badge">
+                        <span class="section-tag-dot"></span>
+                        Why Choose Us?
+                    </div>
+                </div>
+
+                <h2 class="section-title">
+                    A dependable partner for electrical material sourcing.
+                </h2>
+
+            </div>
+
+
+            <div class="why-grid scroll-reveal">
+
+
+                <div class="why-card">
+
+                    <div class="why-icon">
+                        01
+                    </div>
+
+                    <h3>
+                        Established Experience
+                    </h3>
+
+                    <p>
+                        Serving the UAE electrical materials
+                        market since 2012, with extensive
+                        industry knowledge and customer
+                        relationships.
+                    </p>
+
+                </div>
+
+
+                <div class="why-card">
+
+                    <div class="why-icon">
+                        02
+                    </div>
+
+                    <h3>
+                        Trusted Brands
+                    </h3>
+
+                    <p>
+                        Access to a broad portfolio of reputed
+                        international and regional electrical
+                        brands across multiple product categories.
+                    </p>
+
+                </div>
+
+
+                <div class="why-card">
+
+                    <div class="why-icon">
+                        03
+                    </div>
+
+                    <h3>
+                        Comprehensive Product Range
+                    </h3>
+
+                    <p>
+                        From switchgear and cables to conduits,
+                        wiring accessories, cable management,
+                        glands, lugs, earthing, and ventilation.
+                    </p>
+
+                </div>
+
+
+                <div class="why-card">
+
+                    <div class="why-icon">
+                        04
+                    </div>
+
+                    <h3>
+                        UAE-Wide Supply
+                    </h3>
+
+                    <p>
+                        Our supply network enables us to serve
+                        customers across all seven Emirates of
+                        the UAE.
+                    </p>
+
+                </div>
+
+
+                <div class="why-card">
+
+                    <div class="why-icon">
+                        05
+                    </div>
+
+                    <h3>
+                        Competitive Solutions
+                    </h3>
+
+                    <p>
+                        We work with established suppliers to
+                        provide competitive pricing and practical
+                        sourcing solutions.
+                    </p>
+
+                </div>
+
+
+                <div class="why-card">
+
+                    <div class="why-icon">
+                        06
+                    </div>
+
+                    <h3>
+                        Customer-Focused Service
+                    </h3>
+
+                    <p>
+                        We believe in building long-term
+                        relationships through reliable
+                        communication, responsive service,
+                        and consistent support.
+                    </p>
+
+                </div>
+
+
+                <div class="why-card">
+
+                    <div class="why-icon">
+                        07
+                    </div>
+
+                    <h3>
+                        Diverse Customer Base
+                    </h3>
+
+                    <p>
+                        We support electrical traders, MEP
+                        companies, contractors, construction
+                        companies, oil &amp; gas companies,
+                        industrial organizations, and
+                        commercial customers.
+                    </p>
+
+                </div>
+
+
+                <div class="why-card">
+
+                    <div class="why-icon">
+                        08
+                    </div>
+
+                    <h3>
+                        Reliable Supply Partner
+                    </h3>
+
+                    <p>
+                        Our objective is to make electrical
+                        material sourcing easier through quality
+                        products, dependable availability,
+                        and efficient supply solutions.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </section>
+
+
+    <!-- =====================================================
+         BRANDS SECTION
+    ====================================================== -->
+
+    <section class="brands-section scroll-reveal">
+
+        <div class="brands-container">
+
+            <!-- Styled Section Tag Badge with Precise Orbit Lock -->
+            <div class="section-tag-wrapper">
+                <div class="section-tag-badge">
+                    <span class="section-tag-dot"></span>
+                    Our Brands
+                </div>
+            </div>
+
+
+            <h2 class="section-title">
+                Trusted Brands We Supply
+            </h2>
+
+
+            <p class="brands-description">
+
+                We supply electrical materials from a wide
+                selection of reputed international and regional
+                brands, helping our customers access reliable
+                products for commercial, residential, industrial,
+                MEP, construction, and oil &amp; gas applications.
+
+            </p>
+
+
+            <div class="brands-list">
+
+                <span class="brand-item">MK</span>
+                <span class="brand-item">Schneider Electric</span>
+                <span class="brand-item">ABB</span>
+                <span class="brand-item">Hager</span>
+                <span class="brand-item">Legrand</span>
+                <span class="brand-item">Alfanar</span>
+                <span class="brand-item">DUCAB</span>
+                <span class="brand-item">NCI</span>
+                <span class="brand-item">Oman Cables</span>
+                <span class="brand-item">RR Kabel</span>
+                <span class="brand-item">Vortice</span>
+                <span class="brand-item">GEWISS</span>
+                <span class="brand-item">RR</span>
+                <span class="brand-item">CELLPACK</span>
+                <span class="brand-item">Barton</span>
+                <span class="brand-item">Kopex</span>
+                <span class="brand-item">KDK</span>
+                <span class="brand-item">Decoduct</span>
+                <span class="brand-item">BICC</span>
+                <span class="brand-item">Furse</span>
+                <span class="brand-item">MESC</span>
+                <span class="brand-item">Caparo</span>
+                <span class="brand-item">CMP</span>
+
+            </div>
+
+
+            <p class="brands-contact">
+
+                Looking for a specific brand or product?
+                <a href="{% url 'public:contact' %}">
+                    Contact our team with your requirement.
+                </a>
+
+            </p>
+
+        </div>
+
+    </section>
+
+
+</div>
+
+
+<!-- =========================================================
+     JAVASCRIPT CONTROLS
+========================================================= -->
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    /* ---------------------------------------------------------
+       1. DYNAMIC HERO BACKGROUND SLIDESHOW
+    --------------------------------------------------------- */
+
+    const bgLayers = document.querySelectorAll(".hero-bg-layer");
+
+    if (bgLayers.length > 1) {
+
+        let currentBgIndex = 0;
+
+        function cycleBackground() {
+
+            bgLayers[currentBgIndex].classList.remove("active");
+
+            currentBgIndex = (currentBgIndex + 1) % bgLayers.length;
+
+            bgLayers[currentBgIndex].classList.add("active");
+
+        }
+
+        setInterval(cycleBackground, 5500);
+
+    }
+
+
+    /* ---------------------------------------------------------
+       2. SMOOTH SCROLL FOR ARROW BUTTON
+    --------------------------------------------------------- */
+
+    const scrollBtn = document.getElementById("scrollDownBtn");
+
+    if (scrollBtn) {
+
+        scrollBtn.addEventListener("click", function (e) {
+
+            e.preventDefault();
+
+            const targetSection = document.getElementById("introSection");
+
+            if (targetSection) {
+
+                targetSection.scrollIntoView({
+
+                    behavior: "smooth",
+
+                    block: "start"
+
+                });
+
+            }
+
+        });
+
+    }
+
+
+    /* ---------------------------------------------------------
+       3. SCROLL REVEAL OBSERVER
+    --------------------------------------------------------- */
+
+    const revealElements = document.querySelectorAll(".scroll-reveal");
+
+    if ("IntersectionObserver" in window) {
+
+        const revealObserver = new IntersectionObserver(
+            function (entries, observer) {
+
+                entries.forEach(function (entry) {
+
+                    if (entry.isIntersecting) {
+
+                        entry.target.classList.add("is-visible");
+
+                        observer.unobserve(entry.target);
+
+                    }
+
+                });
+
+            },
+            {
+                threshold: 0.12
+            }
+        );
+
+        revealElements.forEach(function (el) {
+
+            revealObserver.observe(el);
+
+        });
+
+    } else {
+
+        revealElements.forEach(function (el) {
+
+            el.classList.add("is-visible");
+
+        });
+
+    }
+
+});
+
+</script>
 
 {% endblock %}

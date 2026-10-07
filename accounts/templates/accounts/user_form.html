@@ -1,24 +1,348 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>{{ title }}</title>
-    <style>
-        body { font-family: sans-serif; margin: 30px; }
-        form { max-width: 450px; display: flex; flex-direction: column; gap: 12px; }
-        label { font-weight: bold; margin-bottom: 2px; }
-        input, select { padding: 8px; width: 100%; box-sizing: border-box; }
-        .errorlist { color: red; margin: 0; padding-left: 20px; }
-    </style>
-</head>
-<body>
-    <h2>{{ title }}</h2>
-    <p><a href="{% url 'accounts:user_list' %}">← Back to Users</a></p>
 
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" style="padding: 10px; cursor: pointer;">Save User</button>
-    </form>
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>{{ title }} | Al Baraq</title>
+
+    <style>
+
+        /* =========================================================
+           GLOBAL RESET & LIGHT THEME BACKGROUND
+        ========================================================= */
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family:
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                Roboto,
+                sans-serif;
+
+            background: #f8fafc;
+
+            background-image: 
+                radial-gradient(circle at 15% 15%, rgba(37, 99, 235, 0.05) 0%, transparent 40%),
+                radial-gradient(circle at 85% 85%, rgba(96, 165, 250, 0.07) 0%, transparent 40%);
+
+            color: #0f172a;
+
+            margin: 0;
+
+            padding: 40px 20px;
+
+            min-height: 100vh;
+        }
+
+
+        /* =========================================================
+           CONTAINER & CARD
+        ========================================================= */
+
+        .container {
+            max-width: 650px;
+
+            margin: 0 auto;
+        }
+
+
+        .back {
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 6px;
+
+            margin-bottom: 20px;
+
+            color: #64748b;
+
+            text-decoration: none;
+
+            font-size: 14px;
+
+            font-weight: 600;
+
+            transition: color 0.2s ease;
+        }
+
+
+        .back:hover {
+            color: #2563eb;
+        }
+
+
+        .card {
+            background: #ffffff;
+
+            border: 1px solid #e2e8f0;
+
+            border-radius: 12px;
+
+            padding: 32px;
+
+            box-shadow: 0 4px 16px rgba(15, 23, 42, 0.03);
+        }
+
+
+        h1 {
+            margin-top: 0;
+
+            margin-bottom: 25px;
+
+            font-size: 24px;
+
+            font-weight: 850;
+
+            letter-spacing: -0.5px;
+
+            color: #0f172a;
+        }
+
+
+        /* =========================================================
+           FORM CONTROLS & INPUT STYLING
+        ========================================================= */
+
+        form p {
+            margin-bottom: 18px;
+        }
+
+
+        label {
+            display: block;
+
+            margin-bottom: 6px;
+
+            font-size: 14px;
+
+            font-weight: 700;
+
+            color: #334155;
+        }
+
+
+        input,
+        textarea,
+        select {
+
+            width: 100%;
+
+            padding: 10px 12px;
+
+            box-sizing: border-box;
+
+            border: 1px solid #cbd5e1;
+
+            border-radius: 8px;
+
+            font-size: 14px;
+
+            background: #ffffff;
+
+            color: #0f172a;
+
+            transition: all 0.2s ease;
+        }
+
+
+        textarea {
+            min-height: 100px;
+
+            resize: vertical;
+        }
+
+
+        input:focus,
+        textarea:focus,
+        select:focus {
+
+            outline: none;
+
+            border-color: #2563eb;
+
+            box-shadow:
+                0 0 0 3px
+                rgba(37, 99, 235, 0.12);
+        }
+
+
+        .errorlist {
+
+            color: #dc2626;
+
+            margin: 6px 0 0 0;
+
+            padding-left: 18px;
+
+            font-size: 13px;
+
+            font-weight: 600;
+        }
+
+
+        .helptext {
+
+            display: block;
+
+            margin-top: 5px;
+
+            color: #64748b;
+
+            font-size: 12.5px;
+        }
+
+
+        /* =========================================================
+           ACTION BUTTONS
+        ========================================================= */
+
+        .actions {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+            margin-top: 28px;
+
+            padding-top: 20px;
+
+            border-top: 1px solid #e2e8f0;
+        }
+
+
+        button,
+        .cancel {
+
+            padding: 10px 18px;
+
+            border-radius: 8px;
+
+            font-size: 14px;
+
+            font-weight: 750;
+
+            cursor: pointer;
+
+            text-decoration: none;
+
+            transition: all 0.2s ease;
+        }
+
+
+        button {
+
+            border: none;
+
+            background: #2563eb;
+
+            color: #ffffff;
+
+            box-shadow: 0 2px 8px rgba(37, 99, 235, 0.2);
+        }
+
+
+        button:hover {
+
+            background: #1d4ed8;
+
+            transform: translateY(-1px);
+        }
+
+
+        .cancel {
+
+            border: 1px solid #cbd5e1;
+
+            background: #ffffff;
+
+            color: #475569;
+        }
+
+
+        .cancel:hover {
+
+            background: #f1f5f9;
+
+            color: #0f172a;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<div class="container">
+
+    <!-- Top Navigation Link -->
+
+    <a
+        href="{% url 'accounts:user_list' %}"
+        class="back"
+    >
+        ← Back to Users
+    </a>
+
+
+    <!-- Form Card -->
+
+    <div class="card">
+
+        <h1>
+            {{ title }}
+        </h1>
+
+
+        <form
+            method="post"
+            enctype="multipart/form-data"
+        >
+
+            {% csrf_token %}
+
+            {{ form.as_p }}
+
+
+            <div class="actions">
+
+                <button type="submit">
+                    Save User
+                </button>
+
+
+                <a
+                    href="{% url 'accounts:user_list' %}"
+                    class="cancel"
+                >
+                    Cancel
+                </a>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
 </body>
+
 </html>

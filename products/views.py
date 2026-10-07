@@ -1,6 +1,6 @@
 from django.contrib import messages
 from django.shortcuts import get_object_or_404, redirect, render
-
+from django.http import JsonResponse
 from accounts.decorators import owner_or_admin_required
 from django.core.exceptions import PermissionDenied
 from .forms import CategoryForm, SubCategoryForm
@@ -19,14 +19,18 @@ def category_list(request):
         "name",
     )
 
+    has_active = categories.filter(is_active=True).exists()
+    has_hidden = categories.filter(is_active=False).exists()
+
     return render(
         request,
         "products/category_list.html",
         {
             "categories": categories,
+            "has_active_categories": has_active,
+            "has_hidden_categories": has_hidden,
         },
     )
-
 
 @owner_or_admin_required
 def category_create(request):
@@ -114,7 +118,6 @@ def category_edit(request, category_id):
 @owner_or_admin_required
 def category_toggle_status(request, category_id):
 
-    # Status changes should only happen through POST.
     if request.method != "POST":
         return redirect(
             "products:category_list"
@@ -139,6 +142,34 @@ def category_toggle_status(request, category_id):
         request,
         f"Category '{category.name}' has been {status}.",
     )
+
+    return redirect(
+        "products:category_list"
+    )
+
+
+@owner_or_admin_required
+def category_toggle_all_status(request):
+
+    if request.method != "POST":
+        return redirect(
+            "products:category_list"
+        )
+
+    action = request.POST.get("action")
+
+    if action == "hide_all":
+        count = Category.objects.filter(is_active=True).update(is_active=False)
+        messages.info(
+            request,
+            f"All categories ({count}) have been hidden.",
+        )
+    elif action == "show_all":
+        count = Category.objects.filter(is_active=False).update(is_active=True)
+        messages.info(
+            request,
+            f"All categories ({count}) have been activated.",
+        )
 
     return redirect(
         "products:category_list"
@@ -205,6 +236,8 @@ def subcategory_list(request):
 @owner_or_admin_required
 def subcategory_create(request):
 
+    next_page = request.POST.get("next") or request.GET.get("next", "")
+
     if request.method == "POST":
 
         form = SubCategoryForm(
@@ -221,13 +254,19 @@ def subcategory_create(request):
                 f"Sub-category '{subcategory.name}' created successfully.",
             )
 
-            return redirect(
-                "products:subcategory_list"
-            )
+            if next_page == "category_list":
+                return redirect("products:category_list")
+
+            return redirect("products:subcategory_list")
 
     else:
 
-        form = SubCategoryForm()
+        category_id = request.GET.get("category")
+        initial = {}
+        if category_id:
+            initial["category"] = category_id
+
+        form = SubCategoryForm(initial=initial)
 
     return render(
         request,
@@ -235,6 +274,7 @@ def subcategory_create(request):
         {
             "form": form,
             "title": "Create Sub-Category",
+            "next": next_page,
         },
     )
 
@@ -246,6 +286,8 @@ def subcategory_edit(request, subcategory_id):
         SubCategory,
         id=subcategory_id,
     )
+
+    next_page = request.POST.get("next") or request.GET.get("next", "")
 
     if request.method == "POST":
 
@@ -264,9 +306,10 @@ def subcategory_edit(request, subcategory_id):
                 f"Sub-category '{subcategory.name}' updated successfully.",
             )
 
-            return redirect(
-                "products:subcategory_list"
-            )
+            if next_page == "category_list":
+                return redirect("products:category_list")
+
+            return redirect("products:subcategory_list")
 
     else:
 
@@ -281,6 +324,7 @@ def subcategory_edit(request, subcategory_id):
             "form": form,
             "title": f"Edit Sub-Category: {subcategory.name}",
             "subcategory": subcategory,
+            "next": next_page,
         },
     )
 
@@ -289,9 +333,7 @@ def subcategory_edit(request, subcategory_id):
 def subcategory_toggle_status(request, subcategory_id):
 
     if request.method != "POST":
-        raise PermissionDenied(
-            "Invalid request method."
-        )
+        raise PermissionDenied("Invalid request method.")
 
     subcategory = get_object_or_404(
         SubCategory,
@@ -301,20 +343,23 @@ def subcategory_toggle_status(request, subcategory_id):
     subcategory.is_active = not subcategory.is_active
     subcategory.save()
 
-    status = (
-        "activated"
-        if subcategory.is_active
-        else "hidden"
-    )
+    status = "activated" if subcategory.is_active else "hidden"
+
+    # Support AJAX calls directly from Category modal pop-up
+    if request.headers.get("x-requested-with") == "XMLHttpRequest":
+        return JsonResponse({
+            "status": "success",
+            "is_active": subcategory.is_active,
+            "message": f"Sub-category '{subcategory.name}' has been {status}."
+        })
 
     messages.info(
         request,
         f"Sub-category '{subcategory.name}' has been {status}.",
     )
 
-    return redirect(
-        "products:subcategory_list"
-    )
+    return redirect("products:subcategory_list")
+
 
 @owner_or_admin_required
 def subcategory_delete(request, subcategory_id):

@@ -37,6 +37,12 @@ urlpatterns = [
     ),
 
     path(
+        "categories/toggle-all-status/",
+        views.category_toggle_all_status,
+        name="category_toggle_all_status",
+    ),
+
+    path(
         "categories/<int:category_id>/delete/",
         views.category_delete,
         name="category_delete",

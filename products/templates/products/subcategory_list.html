@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -14,313 +15,584 @@
 
     <style>
 
+        /* =========================================================
+           GLOBAL RESET & LIGHT THEME BACKGROUND
+        ========================================================= */
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
         body {
-            font-family:
-                -apple-system,
-                BlinkMacSystemFont,
-                "Segoe UI",
-                Roboto,
-                sans-serif;
-
-            background: #f8fafc;
-
+            min-height: 100vh;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: #f8fafc;
+            background-image: 
+                radial-gradient(circle at 15% 15%, rgba(37, 99, 235, 0.05) 0%, transparent 40%),
+                radial-gradient(circle at 85% 85%, rgba(96, 165, 250, 0.07) 0%, transparent 40%);
             color: #0f172a;
-
-            margin: 0;
-
-            padding: 40px;
+            padding-bottom: 40px;
         }
 
 
-        .container {
-            max-width: 1100px;
+        /* =========================================================
+           NAVBAR STYLING WITH AUDIT TICKER & DROPDOWN
+        ========================================================= */
 
-            margin: 0 auto;
-        }
-
-
-        .header {
-
+        .navbar {
+            height: 66px;
+            background: #ffffff;
+            border-bottom: 1px solid #e2e8f0;
             display: flex;
-
-            justify-content: space-between;
-
             align-items: center;
-
-            margin-bottom: 25px;
+            justify-content: space-between;
+            padding: 0 32px;
+            box-shadow: 0 2px 12px rgba(15, 23, 42, 0.03);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            gap: 20px;
         }
 
-
-        .header h1 {
-
-            margin: 0;
-
-            font-size: 24px;
-        }
-
-
-        .header p {
-
-            color: #64748b;
-
-            margin-top: 6px;
-
-            font-size: 14px;
-        }
-
-
-        .btn {
-
-            display: inline-block;
-
-            padding: 9px 15px;
-
-            border-radius: 6px;
-
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
             text-decoration: none;
-
-            font-size: 14px;
-
-            font-weight: 600;
+            color: #0f172a;
+            flex-shrink: 0;
         }
 
-
-        .btn-primary {
-
-            background: #2563eb;
-
-            color: white;
-        }
-
-
-        .btn-primary:hover {
-
-            background: #1d4ed8;
-        }
-
-
-        .btn-secondary {
-
-            background: white;
-
-            color: #334155;
-
-            border: 1px solid #cbd5e1;
-
-            margin-right: 8px;
-        }
-
-
-        .card {
-
-            background: white;
-
-            border: 1px solid #e2e8f0;
-
-            border-radius: 8px;
-
+        .navbar-logo-container {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
             overflow: hidden;
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 6px rgba(37, 99, 235, 0.1);
         }
 
-
-        table {
-
+        .navbar-logo-img {
             width: 100%;
-
-            border-collapse: collapse;
-
-            font-size: 14px;
+            height: 100%;
+            object-fit: cover;
         }
 
-
-        th {
-
-            background: #f1f5f9;
-
-            color: #64748b;
-
-            text-align: left;
-
-            padding: 13px 16px;
-
-            font-size: 12px;
-
-            text-transform: uppercase;
-
-            letter-spacing: 0.05em;
-
-            border-bottom: 1px solid #e2e8f0;
+        .brand-text {
+            font-size: 19px;
+            font-weight: 850;
+            letter-spacing: -0.5px;
         }
 
-
-        td {
-
-            padding: 15px 16px;
-
-            border-bottom: 1px solid #e2e8f0;
-
-            vertical-align: middle;
-        }
-
-
-        tr:last-child td {
-
-            border-bottom: none;
-        }
-
-
-        tr:hover {
-
-            background: #f8fafc;
-        }
-
-
-        .category {
-
-            font-weight: 600;
-
-            color: #334155;
-        }
-
-
-        .subcategory {
-
-            font-weight: 600;
-
+        .brand-text .highlight {
             color: #2563eb;
         }
 
+        /* Inline Typewriter Audit Ticker */
 
-        .description {
-
-            color: #64748b;
-
-            max-width: 280px;
-        }
-
-
-        .badge {
-
-            display: inline-block;
-
-            padding: 4px 9px;
-
-            border-radius: 9999px;
-
-            font-size: 12px;
-
-            font-weight: 600;
-        }
-
-
-        .badge-active {
-
-            background: #dcfce7;
-
-            color: #15803d;
-        }
-
-
-        .badge-hidden {
-
-            background: #fee2e2;
-
-            color: #b91c1c;
-        }
-
-
-        .actions {
-
+        .navbar-ticker-area {
+            flex-grow: 1;
             display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            padding: 0 16px;
+        }
 
-            gap: 10px;
+        .typewriter-text {
+            font-size: 13.5px;
+            font-weight: 600;
+            color: #2563eb;
+            background: rgba(37, 99, 235, 0.06);
+            border: 1px solid rgba(37, 99, 235, 0.15);
+            padding: 6px 16px;
+            border-radius: 20px;
+            white-space: nowrap;
+            overflow: hidden;
+            border-right: 2px solid #2563eb;
+            display: none;
+        }
 
+        @keyframes blinkCursor {
+            0%, 100% { border-color: #2563eb; }
+            50% { border-color: transparent; }
+        }
+
+        .typewriter-text.typing {
+            animation: blinkCursor 0.75s step-end infinite;
+        }
+
+        .navbar-right-controls {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-shrink: 0;
+            position: relative;
+        }
+
+        /* Notification Bell Button Matching Theme */
+
+        .audit-log-btn {
+            position: relative;
+            background: rgba(37, 99, 235, 0.06);
+            border: 1px solid rgba(37, 99, 235, 0.18);
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: #2563eb;
+            transition: all 0.25s ease;
+        }
+
+        .audit-log-btn:hover {
+            background: #2563eb;
+            color: #ffffff;
+            border-color: #2563eb;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+        }
+
+        .audit-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: #dc2626;
+            color: #ffffff;
+            font-size: 10.5px;
+            font-weight: 800;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid #ffffff;
+        }
+
+        /* Audit Log Dropdown Menu */
+
+        .audit-dropdown {
+            position: absolute;
+            top: 48px;
+            right: 0;
+            width: 330px;
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 14px;
+            box-shadow: 0 10px 25px rgba(15, 23, 42, 0.1);
+            padding: 16px;
+            display: none;
+            z-index: 200;
+        }
+
+        .audit-dropdown.active {
+            display: block;
+        }
+
+        .audit-dropdown-header {
+            font-size: 13px;
+            font-weight: 800;
+            color: #0f172a;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #f1f5f9;
+            display: flex;
+            justify-content: space-between;
             align-items: center;
         }
 
+        .audit-list {
+            list-style: none;
+            max-height: 220px;
+            overflow-y: auto;
+        }
 
-        .action {
-
-            color: #64748b;
-
-            text-decoration: none;
-
+        .audit-item {
             font-size: 13px;
+            color: #334155;
+            padding: 8px 0;
+            border-bottom: 1px solid #f8fafc;
+            line-height: 1.4;
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+        }
 
-            font-weight: 500;
+        .audit-item:last-child {
+            border-bottom: none;
+        }
+
+        .audit-bullet-icon {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #2563eb;
+            margin-top: 5px;
+            flex-shrink: 0;
+            box-shadow: 0 0 6px rgba(37, 99, 235, 0.4);
+        }
+
+        .empty-audit {
+            font-size: 12.5px;
+            color: #94a3b8;
+            text-align: center;
+            padding: 12px 0;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: #2563eb;
+            font-size: 14px;
+            font-weight: 750;
+            text-decoration: none;
+            padding: 8px 14px;
+            border-radius: 9px;
+            background: rgba(37, 99, 235, 0.06);
+            border: 1px solid rgba(37, 99, 235, 0.18);
+            transition: all 0.25s ease;
+        }
+
+        .back-link:hover {
+            background: #2563eb;
+            color: #ffffff;
+            transform: translateX(-2px);
         }
 
 
-        .action:hover {
+        /* =========================================================
+           CONTAINER & HEADER
+        ========================================================= */
 
+        .container {
+            max-width: 1140px;
+            margin: 0 auto;
+            padding: 28px 24px;
+        }
+
+        .page-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .page-title h1 {
+            font-size: clamp(22px, 3vw, 28px);
+            font-weight: 850;
+            letter-spacing: -0.6px;
             color: #0f172a;
         }
 
-
-        .action-danger {
-
-            color: #dc2626;
-        }
-
-
-        .messages {
-
-            margin-bottom: 20px;
-        }
-
-
-        .message {
-
-            padding: 11px 15px;
-
-            border-radius: 6px;
-
-            margin-bottom: 8px;
-
-            background: #eff6ff;
-
-            color: #1e40af;
-
+        .page-title p {
+            color: #64748b;
             font-size: 14px;
+            margin-top: 2px;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
 
-        .empty {
+        /* =========================================================
+           BUTTON STYLES
+        ========================================================= */
 
-            text-align: center;
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 9px 16px;
+            border-radius: 9px;
+            font-size: 13.5px;
+            font-weight: 750;
+            cursor: pointer;
+            text-decoration: none;
+            border: 1px solid transparent;
+            transition: all 0.2s ease;
+        }
 
-            padding: 45px;
+        .btn-primary {
+            background: #2563eb;
+            color: #ffffff;
+            box-shadow: 0 2px 8px rgba(37, 99, 235, 0.2);
+        }
 
+        .btn-primary:hover {
+            background: #1d4ed8;
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background: #ffffff;
+            color: #475569;
+            border-color: #cbd5e1;
+        }
+
+        .btn-secondary:hover {
+            background: #f1f5f9;
+            color: #0f172a;
+        }
+
+        .btn-sm {
+            padding: 5px 10px;
+            font-size: 12.5px;
+            border-radius: 6px;
+        }
+
+        .btn-danger-sm {
+            background: rgba(220, 38, 38, 0.06);
+            color: #dc2626;
+            border-color: rgba(220, 38, 38, 0.2);
+        }
+
+        .btn-danger-sm:hover {
+            background: #dc2626;
+            color: #ffffff;
+        }
+
+
+        /* =========================================================
+           TOGGLE SWITCH STYLING
+        ========================================================= */
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 42px;
+            height: 22px;
+            margin: 0;
+            flex-shrink: 0;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #cbd5e1;
+            transition: .3s ease;
+            border-radius: 22px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .3s ease;
+            border-radius: 50%;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+        }
+
+        input:checked + .slider {
+            background-color: #2563eb;
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(20px);
+        }
+
+
+        /* =========================================================
+           DATA TABLE STYLING
+        ========================================================= */
+
+        .table-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 14px;
+            box-shadow: 0 4px 16px rgba(15, 23, 42, 0.03);
+            overflow: hidden;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            table-layout: fixed;
+        }
+
+        .data-table th:nth-child(1) { width: 50px; }   /* S.No. */
+        .data-table th:nth-child(2) { width: 160px; }  /* Category */
+        .data-table th:nth-child(3) { width: 190px; }  /* Sub-Category */
+        .data-table th:nth-child(4) { width: auto; }   /* Description */
+        .data-table th:nth-child(5) { width: 60px; }   /* Order */
+        .data-table th:nth-child(6) { width: 115px; }  /* Status */
+        .data-table th:nth-child(7) { width: 210px; }  /* Actions */
+
+        .data-table th {
+            background: #f8fafc;
+            color: #475569;
+            font-size: 12px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            padding: 14px 18px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .data-table td {
+            padding: 14px 18px;
+            font-size: 14px;
+            color: #0f172a;
+            border-bottom: 1px solid #f1f5f9;
+            vertical-align: middle;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .data-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .data-table tr:hover td {
+            background: #f8fafc;
+        }
+
+        .sno-badge {
+            font-weight: 700;
             color: #64748b;
         }
 
+        .parent-category-badge {
+            display: inline-block;
+            font-size: 12.5px;
+            font-weight: 700;
+            color: #334155;
+            background: #f1f5f9;
+            border: 1px solid #e2e8f0;
+            padding: 2px 8px;
+            border-radius: 6px;
+        }
 
-        @media (max-width: 800px) {
+        .subcategory-name {
+            font-size: 14.5px;
+            font-weight: 850;
+            color: #2563eb;
+            transition: color 0.2s ease;
+        }
 
-            body {
-                padding: 20px;
+        .subcategory-name.inactive {
+            color: #94a3b8;
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 750;
+            min-width: 82px;
+            text-align: center;
+        }
+
+        .status-badge.active {
+            background: #dcfce7;
+            color: #15803d;
+        }
+
+        .status-badge.hidden {
+            background: #f1f5f9;
+            color: #64748b;
+        }
+
+        .status-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .status-badge.active .status-dot {
+            background: #16a34a;
+        }
+
+        .status-badge.hidden .status-dot {
+            background: #94a3b8;
+        }
+
+        .action-cell {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding-right: 12px;
+        }
+
+
+        /* =========================================================
+           EMPTY STATE STYLING
+        ========================================================= */
+
+        .empty-state {
+            text-align: center;
+            padding: 48px 24px;
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 14px;
+            color: #64748b;
+        }
+
+        .empty-state h3 {
+            font-size: 18px;
+            color: #0f172a;
+            margin-bottom: 6px;
+        }
+
+        .empty-state p {
+            margin-bottom: 18px;
+        }
+
+
+        /* =========================================================
+           RESPONSIVE MEDIA QUERIES
+        ========================================================= */
+
+        @media (max-width: 768px) {
+
+            .navbar {
+                padding: 0 20px;
             }
 
-
-            .header {
-
-                align-items: flex-start;
-
-                gap: 15px;
-
-                flex-direction: column;
+            .container {
+                padding: 20px 16px;
             }
 
-
-            .card {
-
+            .table-card {
                 overflow-x: auto;
             }
 
-
-            table {
-
-                min-width: 800px;
+            .navbar-ticker-area {
+                display: none;
             }
 
         }
@@ -332,276 +604,343 @@
 
 <body>
 
-
-<div class="container">
-
-
-    <!-- Messages -->
-
+    <!-- Django Message Source Container for JS -->
     {% if messages %}
-
-        <div class="messages">
-
-            {% for message in messages %}
-
-                <div class="message">
-
-                    {{ message }}
-
-                </div>
-
-            {% endfor %}
-
-        </div>
-
+        {% for message in messages %}
+            <div id="latest-django-msg" data-message="{{ message }}" style="display: none;"></div>
+        {% endfor %}
     {% endif %}
 
+    <!-- =========================================================
+         NAVBAR
+    ========================================================= -->
 
+    <nav class="navbar">
 
-    <!-- Header -->
+        <div class="navbar-brand">
+            <div class="navbar-logo-container">
+                <img 
+                    src="/media/logo/logo.png" 
+                    alt="Al Baraq Logo" 
+                    class="navbar-logo-img"
+                >
+            </div>
+            <span class="brand-text">Al Baraq <span class="highlight">Dashboard</span></span>
+        </div>
 
-    <div class="header">
+        <!-- Dynamic Inline Typewriter Ticker in Header Space -->
+        <div class="navbar-ticker-area">
+            <div id="typewriter-ticker" class="typewriter-text"></div>
+        </div>
 
-        <div>
+        <div class="navbar-right-controls">
 
-            <a
-                href="{% url 'dashboard:home' %}"
-                style="
-                    color: #64748b;
-                    text-decoration: none;
-                    font-size: 14px;
-                "
-            >
-                ← Dashboard
+            <!-- Permanent Theme-Matched Notification Bell Button & Badge -->
+            <button id="audit-log-toggle" class="audit-log-btn" title="Notification Log">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                    <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                </svg>
+                <span id="audit-badge" class="audit-badge">0</span>
+            </button>
+
+            <!-- Dropdown Menu for Action History -->
+            <div id="audit-dropdown" class="audit-dropdown">
+                <div class="audit-dropdown-header">
+                    <span>Recent Actions Log</span>
+                </div>
+                <ul id="audit-list" class="audit-list">
+                    <li class="empty-audit">No actions taken in this session.</li>
+                </ul>
+            </div>
+
+            <a href="{% url 'dashboard:home' %}" class="back-link">
+                ← Back to Dashboard
             </a>
-
-            <h1>
-                Sub-Category Management
-            </h1>
-
-            <p>
-                Manage the sub-categories belonging to
-                your catalogue categories.
-            </p>
 
         </div>
 
+    </nav>
 
-        <a
-            href="{% url 'products:subcategory_create' %}"
-            class="btn btn-primary"
-        >
-            + Create Sub-Category
-        </a>
 
-    </div>
+    <!-- =========================================================
+         MAIN CONTAINER
+    ========================================================= -->
 
+    <main class="container">
 
 
-    <!-- Sub-category table -->
+        <!-- Page Header & Action Controls -->
 
-    <div class="card">
+        <div class="page-header">
 
-        {% if subcategories %}
+            <div class="page-title">
+                <h1>Sub-Category Management</h1>
+                <p>Manage secondary sub-categories belonging to catalogue categories.</p>
+            </div>
 
-            <table>
+            <div class="header-actions">
 
-                <thead>
+                <!-- Create Sub-Category Button -->
 
-                    <tr>
-
-                        <th>
-                            ID
-                        </th>
-
-                        <th>
-                            Category
-                        </th>
-
-                        <th>
-                            Sub-Category
-                        </th>
-
-                        <th>
-                            Description
-                        </th>
-
-                        <th>
-                            Order
-                        </th>
-
-                        <th>
-                            Status
-                        </th>
-
-                        <th>
-                            Actions
-                        </th>
-
-                    </tr>
-
-                </thead>
-
-
-                <tbody>
-
-                    {% for subcategory in subcategories %}
-
-                        <tr>
-
-                            <td>
-                                #{{ subcategory.id }}
-                            </td>
-
-
-                            <td>
-
-                                <span class="category">
-                                    {{ subcategory.category.name }}
-                                </span>
-
-                            </td>
-
-
-                            <td>
-
-                                <span class="subcategory">
-                                    {{ subcategory.name }}
-                                </span>
-
-                            </td>
-
-
-                            <td>
-
-                                <span class="description">
-
-                                    {% if subcategory.description %}
-
-                                        {{ subcategory.description }}
-
-                                    {% else %}
-
-                                        —
-
-                                    {% endif %}
-
-                                </span>
-
-                            </td>
-
-
-                            <td>
-                                {{ subcategory.display_order }}
-                            </td>
-
-
-                            <td>
-
-                                {% if subcategory.is_active %}
-
-                                    <span class="badge badge-active">
-                                        Active
-                                    </span>
-
-                                {% else %}
-
-                                    <span class="badge badge-hidden">
-                                        Hidden
-                                    </span>
-
-                                {% endif %}
-
-                            </td>
-
-
-                            <td>
-
-                                <div class="actions">
-
-                                    <a
-                                        href="{% url 'products:subcategory_edit' subcategory.id %}"
-                                        class="action"
-                                    >
-                                        Edit
-                                    </a>
-
-
-                                    <form
-    method="post"
-    action="{% url 'products:subcategory_toggle_status' subcategory.id %}"
-    style="display: inline;"
->
-    {% csrf_token %}
-
-    <button
-        type="submit"
-        class="action"
-        style="
-            background: none;
-            border: none;
-            padding: 0;
-            cursor: pointer;
-            font: inherit;
-        "
-    >
-        {% if subcategory.is_active %}
-            Hide
-        {% else %}
-            Show
-        {% endif %}
-    </button>
-</form>
-
-
-                                    <a
-                                        href="{% url 'products:subcategory_delete' subcategory.id %}"
-                                        class="action action-danger"
-                                    >
-                                        Delete
-                                    </a>
-
-                                </div>
-
-                            </td>
-
-                        </tr>
-
-                    {% endfor %}
-
-                </tbody>
-
-            </table>
-
-        {% else %}
-
-            <div class="empty">
-
-                <h3>
-                    No Sub-Categories Yet
-                </h3>
-
-                <p>
-                    Create your first sub-category to
-                    organize your catalogue.
-                </p>
-
-                <a
-                    href="{% url 'products:subcategory_create' %}"
-                    class="btn btn-primary"
-                >
+                <a href="{% url 'products:subcategory_create' %}" class="btn btn-primary">
                     + Create Sub-Category
                 </a>
 
             </div>
 
+        </div>
+
+
+        <!-- Sub-Category Data Table -->
+
+        {% if subcategories %}
+
+            <div class="table-card">
+
+                <table class="data-table">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>S.No.</th>
+
+                            <th>Category</th>
+
+                            <th>Sub-Category</th>
+
+                            <th>Description</th>
+
+                            <th>Order</th>
+
+                            <th>Status</th>
+
+                            <th>Actions</th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                        {% for subcategory in subcategories %}
+
+                            <tr>
+
+                                <td class="sno-badge">
+                                    {{ forloop.counter }}
+                                </td>
+
+
+                                <td>
+                                    <span class="parent-category-badge">
+                                        {{ subcategory.category.name }}
+                                    </span>
+                                </td>
+
+
+                                <td>
+                                    <span class="subcategory-name {% if not subcategory.is_active %}inactive{% endif %}">
+                                        {{ subcategory.name }}
+                                    </span>
+                                </td>
+
+
+                                <td>
+                                    {{ subcategory.description|default:"—" }}
+                                </td>
+
+
+                                <td>
+                                    {{ subcategory.display_order }}
+                                </td>
+
+
+                                <td>
+
+                                    {% if subcategory.is_active %}
+
+                                        <span class="status-badge active">
+                                            <span class="status-dot"></span>
+                                            Active
+                                        </span>
+
+                                    {% else %}
+
+                                        <span class="status-badge hidden">
+                                            <span class="status-dot"></span>
+                                            Hidden
+                                        </span>
+
+                                    {% endif %}
+
+                                </td>
+
+
+                                <td>
+
+                                    <div class="action-cell">
+
+                                        <!-- Edit Button -->
+                                        <a
+                                            href="{% url 'products:subcategory_edit' subcategory.id %}"
+                                            class="btn btn-secondary btn-sm"
+                                        >
+                                            Edit
+                                        </a>
+
+                                        <!-- Interactive Toggle Switch -->
+                                        <form
+                                            method="POST"
+                                            action="{% url 'products:subcategory_toggle_status' subcategory.id %}"
+                                            style="display: inline-flex; align-items: center;"
+                                        >
+                                            {% csrf_token %}
+
+                                            <label class="switch" title="{% if subcategory.is_active %}Hide{% else %}Show{% endif %}">
+                                                <input
+                                                    type="checkbox"
+                                                    {% if subcategory.is_active %}checked{% endif %}
+                                                    onchange="this.form.submit();"
+                                                >
+                                                <span class="slider"></span>
+                                            </label>
+
+                                        </form>
+
+                                        <!-- Delete Button -->
+                                        <a
+                                            href="{% url 'products:subcategory_delete' subcategory.id %}"
+                                            class="btn btn-danger-sm btn-sm"
+                                        >
+                                            Delete
+                                        </a>
+
+                                    </div>
+
+                                </td>
+
+                            </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        {% else %}
+
+            <div class="empty-state">
+                <h3>No Sub-Categories created yet</h3>
+                <p>Create your first sub-category to organize your catalogue structure.</p>
+                <a href="{% url 'products:subcategory_create' %}" class="btn btn-primary">
+                    + Create Sub-Category
+                </a>
+            </div>
+
         {% endif %}
 
-    </div>
+
+    </main>
 
 
-</div>
+    <!-- =========================================================
+         AUDIT LOG & TYPEWRITER JS ENGINE
+    ========================================================= -->
 
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const auditBtn = document.getElementById("audit-log-toggle");
+            const auditDropdown = document.getElementById("audit-dropdown");
+            const auditList = document.getElementById("audit-list");
+            const auditBadge = document.getElementById("audit-badge");
+            const ticker = document.getElementById("typewriter-ticker");
+            const djangoMsgEl = document.getElementById("latest-django-msg");
+
+            // Navigation timing check to detect manual user reloads/fresh opens vs form submits
+            const navEntries = performance.getEntriesByType("navigation");
+            const isReload = navEntries.length > 0 && navEntries[0].type === "reload";
+
+            let logs = [];
+
+            // If it's a fresh reload/tab open without an action, clear session logs
+            if (isReload && !djangoMsgEl) {
+                sessionStorage.removeItem("auditLogs");
+            } else {
+                logs = JSON.parse(sessionStorage.getItem("auditLogs") || "[]");
+            }
+
+            // Check if Django passed a new status message from a form submit
+            if (djangoMsgEl) {
+                const newMsg = djangoMsgEl.getAttribute("data-message");
+                if (newMsg) {
+                    logs.unshift(newMsg); // Add new action to top of log
+                    sessionStorage.setItem("auditLogs", JSON.stringify(logs));
+                    runTypewriter(newMsg);
+                }
+            }
+
+            updateAuditUI();
+
+            // Toggle Audit Dropdown
+            auditBtn.addEventListener("click", function (e) {
+                e.stopPropagation();
+                auditDropdown.classList.toggle("active");
+            });
+
+            document.addEventListener("click", function () {
+                auditDropdown.classList.remove("active");
+            });
+
+            auditDropdown.addEventListener("click", function (e) {
+                e.stopPropagation();
+            });
+
+            // Update Badge and Dropdown List with Professional Bullet Indicators
+            function updateAuditUI() {
+                if (logs.length > 0) {
+                    auditBadge.textContent = logs.length;
+                    auditBadge.style.display = "flex";
+
+                    auditList.innerHTML = logs.map(msg => `
+                        <li class="audit-item">
+                            <span class="audit-bullet-icon"></span>
+                            <span>${msg}</span>
+                        </li>
+                    `).join("");
+                } else {
+                    auditBadge.style.display = "none";
+                    auditList.innerHTML = `<li class="empty-audit">No actions taken in this session.</li>`;
+                }
+            }
+
+            // Smooth Typewriter Effect for Latest Action in Navbar Space
+            function runTypewriter(text) {
+                ticker.textContent = "";
+                ticker.style.display = "inline-block";
+                ticker.classList.add("typing");
+
+                let index = 0;
+                function typeChar() {
+                    if (index < text.length) {
+                        ticker.textContent += text.charAt(index);
+                        index++;
+                        setTimeout(typeChar, 35); // Typing speed
+                    } else {
+                        setTimeout(() => {
+                            ticker.classList.remove("typing");
+                        }, 2500);
+                    }
+                }
+
+                typeChar();
+            }
+        });
+    </script>
 
 </body>
 

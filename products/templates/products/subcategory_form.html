@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -49,6 +50,10 @@
             text-decoration: none;
 
             font-size: 14px;
+
+            font-weight: 600;
+
+            transition: color 0.2s ease;
         }
 
 
@@ -233,12 +238,22 @@
 
 <div class="container">
 
-    <a
-        href="{% url 'products:subcategory_list' %}"
-        class="back"
-    >
-        ← Back to Sub-Categories
-    </a>
+    <!-- Dynamic Back Link based on origin context -->
+    {% if next == 'category_list' %}
+        <a
+            href="{% url 'products:category_list' %}"
+            class="back"
+        >
+            ← Back to Categories
+        </a>
+    {% else %}
+        <a
+            href="{% url 'products:subcategory_list' %}"
+            class="back"
+        >
+            ← Back to Sub-Categories
+        </a>
+    {% endif %}
 
 
     <div class="card">
@@ -255,6 +270,9 @@
 
             {% csrf_token %}
 
+            <!-- Pass origin context to POST view -->
+            <input type="hidden" name="next" value="{{ next|default:'' }}">
+
             {{ form.as_p }}
 
 
@@ -265,12 +283,22 @@
                 </button>
 
 
-                <a
-                    href="{% url 'products:subcategory_list' %}"
-                    class="cancel"
-                >
-                    Cancel
-                </a>
+                <!-- Dynamic Cancel Link -->
+                {% if next == 'category_list' %}
+                    <a
+                        href="{% url 'products:category_list' %}"
+                        class="cancel"
+                    >
+                        Cancel
+                    </a>
+                {% else %}
+                    <a
+                        href="{% url 'products:subcategory_list' %}"
+                        class="cancel"
+                    >
+                        Cancel
+                    </a>
+                {% endif %}
 
             </div>
 

@@ -1,400 +1,1215 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "public/base.html" %}
+
+{% load static %}
+
+
+{% block title %}
+    Products | Al Baraq
+{% endblock %}
+
+
+{% block extra_css %}
+
+<style>
+
+/* =========================================================
+   GLOBAL UTILITIES & ENTRANCE ANIMATION
+========================================================= */
+
+.products-page {
+    background: #f8fafc;
+    color: #0f172a;
+    min-height: 100vh;
+}
+
+.scroll-reveal {
+    opacity: 0;
+    transform: translateY(22px);
+    transition:
+        opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1),
+        transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.scroll-reveal.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+
+/* =========================================================
+   PRODUCTS HERO SECTION
+========================================================= */
+
+.products-hero {
+    position: relative;
+    min-height: calc(100vh - 88px);
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    background-color: #03122d;
+}
+
+/* Dynamic Background Slideshow Layers */
+.products-hero-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    opacity: 0;
+    transition: opacity 1.2s ease-in-out;
+    z-index: 1;
+}
+
+.products-hero-bg.active {
+    opacity: 1;
+}
+
+/* Dark Gradient Overlay */
+.products-hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        rgba(3, 18, 45, 0.94) 0%,
+        rgba(5, 28, 62, 0.85) 45%,
+        rgba(20, 90, 150, 0.55) 100%
+    );
+    z-index: 2;
+}
+
+.products-hero::before {
+    content: "";
+    position: absolute;
+    width: 450px;
+    height: 450px;
+    border-radius: 50%;
+    background: rgba(56, 189, 248, 0.12);
+    top: -180px;
+    right: -80px;
+    filter: blur(50px);
+    pointer-events: none;
+    z-index: 3;
+}
+
+.products-hero::after {
+    content: "";
+    position: absolute;
+    width: 280px;
+    height: 280px;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    bottom: -140px;
+    right: 18%;
+    pointer-events: none;
+    z-index: 3;
+}
+
+.products-hero-content {
+    position: relative;
+    z-index: 4;
+    width: 100%;
+    max-width: 1350px;
+    margin: 0 auto;
+    padding: 20px 7% 70px;
+    color: white;
+}
+
+
+/* =========================================================
+   DYNAMIC FLUID GLASS BADGE WITH CONTINUOUS CORNER ORBIT GLOW
+========================================================= */
+
+.products-badge-wrapper {
+    display: inline-flex;
+    position: relative;
+    margin-bottom: 20px;
+    padding: 2px;
+    border-radius: 32px;
+    overflow: hidden;
+}
+
+.products-badge-wrapper::before {
+    content: "";
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: conic-gradient(
+        transparent,
+        rgba(56, 189, 248, 0.1),
+        #38bdf8,
+        #60a5fa,
+        transparent 30%
+    );
+    animation: rotateBorderGlow 4s linear infinite;
+    z-index: 0;
+}
+
+@keyframes rotateBorderGlow {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.products-badge {
+    position: relative;
+    z-index: 1;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    width: auto;
+    max-width: 100%;
+    padding: 9px 20px;
+    border-radius: 30px;
+    background: rgba(3, 18, 45, 0.88);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.products-badge-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #38bdf8;
+    box-shadow: 0 0 10px #38bdf8;
+    flex-shrink: 0;
+    animation: pulseDot 1.8s infinite;
+}
+
+@keyframes pulseDot {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.3); opacity: 0.6; }
+}
+
+.products-badge-text {
+    color: #ffffff;
+    display: inline-block;
+    transition: opacity 0.35s ease, transform 0.35s ease;
+    opacity: 1;
+    transform: translateY(0);
+    white-space: nowrap;
+}
+
+.products-badge-text.hide {
+    opacity: 0;
+    transform: translateY(-6px);
+}
+
+.products-hero h1 {
+    margin: 0 0 16px 0;
+    color: white;
+    font-size: clamp(42px, 5.2vw, 72px);
+    line-height: 1.02;
+    font-weight: 800;
+    letter-spacing: -2px;
+}
+
+.products-hero h1 span {
+    color: #60a5fa;
+}
+
+.products-hero-description {
+    max-width: 720px;
+    margin: 0;
+    color: rgba(255, 255, 255, 0.88);
+    font-size: 17.5px;
+    line-height: 1.65;
+}
+
+
+/* =========================================================
+   COMPACT CATEGORY DROPDOWN SELECTOR IN HERO
+========================================================= */
+
+.hero-dropdown-box {
+    margin-top: 26px;
+    display: inline-block;
+    position: relative;
+    max-width: 100%;
+}
+
+.hero-dropdown-select {
+    width: auto;
+    padding: 13px 44px 13px 20px;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.28);
+    background: rgba(3, 18, 45, 0.75);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    color: #ffffff;
+    font-size: 14.5px;
+    font-weight: 600;
+    outline: none;
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    transition: all 0.25s ease;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+}
+
+.hero-dropdown-select option {
+    background: #0b192e;
+    color: #ffffff;
+    padding: 12px;
+}
+
+.hero-dropdown-select:focus,
+.hero-dropdown-select:hover {
+    border-color: #60a5fa;
+    background: rgba(5, 28, 62, 0.9);
+    box-shadow: 0 0 20px rgba(96, 165, 250, 0.35);
+}
+
+.hero-dropdown-icon {
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #60a5fa;
+    pointer-events: none;
+}
+
+
+/* =========================================================
+   HERO HIGHLIGHT PILLS
+========================================================= */
+
+.products-highlights {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 24px;
+}
+
+.products-highlight {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 16px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: 600;
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+}
+
+
+/* =========================================================
+   TRANSPARENT NEON GLOW SCROLL-DOWN BUTTON
+========================================================= */
+
+.products-scroll-wrapper {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+}
+
+.products-scroll-btn {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: 1.5px solid rgba(56, 189, 248, 0.85);
+    background: transparent;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    color: #38bdf8;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    text-decoration: none;
+    box-shadow:
+        0 0 12px rgba(56, 189, 248, 0.45),
+        0 0 24px rgba(37, 99, 235, 0.3);
+    transition: all 0.3s ease;
+    animation: neonBounceGlow 2.4s infinite ease-in-out;
+}
+
+.products-scroll-btn svg {
+    filter: drop-shadow(0 0 6px rgba(56, 189, 248, 0.8));
+    transition: transform 0.25s ease;
+}
+
+.products-scroll-btn:hover {
+    background: rgba(37, 99, 235, 0.25);
+    color: #ffffff;
+    border-color: #60a5fa;
+    box-shadow:
+        0 0 22px rgba(96, 165, 250, 0.85),
+        0 0 45px rgba(37, 99, 235, 0.65);
+    transform: scale(1.08);
+    animation-play-state: paused;
+}
+
+@keyframes neonBounceGlow {
+    0%, 100% {
+        transform: translateY(0);
+        box-shadow:
+            0 0 12px rgba(56, 189, 248, 0.45),
+            0 0 24px rgba(37, 99, 235, 0.3);
+    }
+    50% {
+        transform: translateY(8px);
+        box-shadow:
+            0 0 20px rgba(56, 189, 248, 0.75),
+            0 0 35px rgba(37, 99, 235, 0.5);
+    }
+}
+
+
+/* =========================================================
+   CATEGORIES SECTION
+========================================================= */
+
+.products-section {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 80px 7% 95px;
+}
+
+.products-section-heading {
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+/* Styled Section Tag Badge with Subtle Rotating Light Glow */
+.section-tag-wrapper {
+    display: inline-flex;
+    position: relative;
+    margin-bottom: 14px;
+    padding: 1.5px;
+    border-radius: 30px;
+    overflow: hidden;
+}
+
+.section-tag-wrapper::before {
+    content: "";
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: conic-gradient(
+        transparent,
+        rgba(37, 99, 235, 0.08),
+        rgba(37, 99, 235, 0.45),
+        rgba(96, 165, 250, 0.5),
+        transparent 35%
+    );
+    animation: rotateLightBorderGlow 4.5s linear infinite;
+    z-index: 0;
+}
+
+@keyframes rotateLightBorderGlow {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.section-tag-badge {
+    position: relative;
+    z-index: 1;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 18px;
+    border-radius: 30px;
+    background: #ffffff;
+    color: #2563eb;
+    font-size: 12.5px;
+    font-weight: 750;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    box-shadow: 0 4px 14px rgba(37, 99, 235, 0.08);
+}
+
+.section-tag-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #2563eb;
+    box-shadow: 0 0 8px rgba(37, 99, 235, 0.6);
+    flex-shrink: 0;
+    animation: pulseDot 1.8s infinite;
+}
+
+.products-section-heading h2 {
+    margin: 0;
+    color: #0f172a;
+    font-size: 36px;
+    font-weight: 800;
+}
+
+.products-section-heading h2 span {
+    color: #2563eb;
+}
+
+.products-section-heading p {
+    max-width: 650px;
+    margin: 12px auto 0;
+    color: #64748b;
+    font-size: 16px;
+    line-height: 1.65;
+}
+
+
+/* =========================================================
+   CATEGORY GRID
+========================================================= */
+
+.category-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 30px;
+}
+
+
+/* =========================================================
+   CATEGORY CARD
+========================================================= */
+
+.category-card {
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow:
+        0 10px 30px rgba(15, 23, 42, 0.05);
+    display: flex;
+    flex-direction: column;
+    transition:
+        border-color 0.3s ease,
+        box-shadow 0.3s ease;
+}
+
+.category-card:hover {
+    border-color: #93c5fd;
+    box-shadow:
+        0 18px 40px rgba(37, 99, 235, 0.09);
+}
+
+
+/* =========================================================
+   CATEGORY IMAGE WRAPPER
+========================================================= */
+
+.category-image {
+    position: relative;
+    width: 100%;
+    height: 230px;
+    background: #eef2f7;
+    overflow: hidden;
+}
+
+.category-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition:
+        transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.category-card:hover .category-image img {
+    transform: scale(1.06);
+}
+
+.category-image-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    color: #94a3b8;
+    font-size: 14px;
+    font-weight: 600;
+    background: #f1f5f9;
+}
+
+.category-number-badge {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    padding: 5px 12px;
+    border-radius: 20px;
+    background: rgba(15, 23, 42, 0.65);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    z-index: 2;
+}
+
+
+/* =========================================================
+   CATEGORY CONTENT
+========================================================= */
+
+.category-content {
+    padding: 28px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.category-content h3 {
+    margin: 0;
+    color: #0f172a;
+    font-size: 24px;
+    line-height: 1.25;
+    font-weight: 800;
+    transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+
+.category-card:hover .category-content h3 {
+    color: #2563eb;
+    text-shadow: 0 0 12px rgba(37, 99, 235, 0.25);
+}
+
+.category-content p {
+    margin: 12px 0 24px 0;
+    color: #64748b;
+    font-size: 15px;
+    line-height: 1.6;
+    flex: 1;
+}
+
+.view-products-btn {
+    align-self: center;
+    margin: 0 auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 11px 26px;
+    border: 1px solid #2563eb;
+    border-radius: 8px;
+    background: #2563eb;
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition:
+        transform 0.25s ease,
+        background 0.25s ease,
+        box-shadow 0.25s ease;
+    box-shadow: 0 4px 14px rgba(37, 99, 235, 0.2);
+}
+
+.view-products-btn:hover {
+    background: #1d4ed8;
+    border-color: #1d4ed8;
+    transform: scale(1.04);
+    box-shadow: 0 6px 18px rgba(37, 99, 235, 0.35);
+}
+
+
+/* =========================================================
+   MODAL PORTAL & OVERLAY
+========================================================= */
+
+.product-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(3, 18, 45, 0.82);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    z-index: 99999;
+}
+
+.product-modal-overlay.active {
+    display: flex !important;
+}
+
+/* Perfectly Proportioned Container (No Stretch) */
+.product-modal {
+    width: 100%;
+    max-width: 860px;
+    max-height: 85vh;
+    margin: auto;
+    overflow-y: auto;
+    background: #ffffff;
+    border-radius: 20px;
+    box-shadow:
+        0 30px 80px rgba(0, 0, 0, 0.45);
+    position: relative;
+    animation: modalAppear 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes modalAppear {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+
+/* =========================================================
+   MODAL HEADER & DYNAMIC OVERVIEW BADGE
+========================================================= */
+
+.product-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 24px 30px;
+    border-bottom: 1px solid #e2e8f0;
+    background: #f8fafc;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.modal-header-text {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    text-align: left;
+}
+
+/* Dynamic Overview Badge in Modal Header */
+.modal-tag-wrapper {
+    display: inline-flex;
+    position: relative;
+    padding: 1.5px;
+    border-radius: 24px;
+    overflow: hidden;
+}
+
+.modal-tag-wrapper::before {
+    content: "";
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: conic-gradient(
+        transparent,
+        rgba(37, 99, 235, 0.1),
+        rgba(37, 99, 235, 0.5),
+        rgba(96, 165, 250, 0.6),
+        transparent 35%
+    );
+    animation: rotateLightBorderGlow 4s linear infinite;
+    z-index: 0;
+}
+
+.modal-tag-badge {
+    position: relative;
+    z-index: 1;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 5px 14px;
+    border-radius: 24px;
+    background: #ffffff;
+    color: #2563eb;
+    font-size: 11.5px;
+    font-weight: 750;
+    letter-spacing: 1.3px;
+    text-transform: uppercase;
+    box-shadow: 0 2px 10px rgba(37, 99, 235, 0.08);
+}
+
+.product-modal-header h3 {
+    margin: 0;
+    color: #0f172a;
+    font-size: 24px;
+    font-weight: 800;
+}
+
+.modal-close {
+    width: 38px;
+    height: 38px;
+    border: 1px solid #e2e8f0;
+    border-radius: 50%;
+    background: #ffffff;
+    color: #475569;
+    font-size: 22px;
+    line-height: 1;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.modal-close:hover {
+    background: #ef4444;
+    color: #ffffff;
+    border-color: #ef4444;
+    transform: rotate(90deg);
+}
+
+
+/* =========================================================
+   SUBCATEGORY GRID & SHADOWED CARDS
+========================================================= */
+
+.subcategory-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 20px;
+    padding: 26px 30px 30px;
+    text-align: left;
+}
+
+.subcategory-card {
+    border: 1px solid #e2e8f0;
+    border-radius: 14px;
+    overflow: hidden;
+    background: #ffffff;
+    box-shadow: 0 4px 16px rgba(15, 23, 42, 0.06);
+    display: flex;
+    flex-direction: column;
+    transition:
+        transform 0.25s ease,
+        border-color 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+.subcategory-card:hover {
+    transform: translateY(-3px);
+    border-color: #93c5fd;
+    box-shadow: 0 10px 24px rgba(37, 99, 235, 0.12);
+}
+
+.subcategory-image {
+    width: 100%;
+    height: 150px;
+    background: #f1f5f9;
+    overflow: hidden;
+}
+
+.subcategory-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.4s ease;
+}
+
+.subcategory-card:hover .subcategory-image img {
+    transform: scale(1.05);
+}
+
+.subcategory-image-placeholder {
+    width: 100%;
+    height: 150px;
+    background: #f1f5f9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #94a3b8;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.subcategory-content {
+    padding: 16px;
+    flex: 1;
+}
+
+.subcategory-content h4 {
+    margin: 0;
+    color: #0f172a;
+    font-size: 16.5px;
+    font-weight: 750;
+}
+
+.subcategory-content p {
+    margin: 6px 0 0 0;
+    color: #64748b;
+    font-size: 13.5px;
+    line-height: 1.5;
+}
+
+
+/* =========================================================
+   EMPTY STATE
+========================================================= */
+
+.empty-products {
+    text-align: center;
+    padding: 70px 20px;
+    color: #64748b;
+}
+
+.empty-products h3 {
+    margin: 0 0 8px 0;
+    color: #0f172a;
+    font-size: 22px;
+    font-weight: 750;
+}
+
+.empty-products p {
+    margin: 0;
+    font-size: 15px;
+}
+
+
+/* =========================================================
+   RESPONSIVE BREAKPOINTS
+========================================================= */
+
+@media (max-width: 1100px) {
+    .category-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .subcategory-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 750px) {
+    .products-hero {
+        min-height: calc(100vh - 72px);
+    }
+    .products-hero-content {
+        padding: 40px 25px 60px;
+    }
+    .products-badge {
+        font-size: 11px;
+        letter-spacing: 1px;
+        padding: 8px 14px;
+    }
+    .products-hero h1 {
+        font-size: 40px;
+        letter-spacing: -1px;
+    }
+    .products-hero-description {
+        font-size: 15.5px;
+    }
+    .hero-dropdown-box {
+        margin-top: 20px;
+    }
+    .products-highlights {
+        gap: 8px;
+    }
+    .products-highlight {
+        font-size: 12px;
+        padding: 8px 13px;
+    }
+    .products-section {
+        padding: 55px 25px 75px;
+    }
+    .products-section-heading h2 {
+        font-size: 30px;
+    }
+    .category-grid {
+        grid-template-columns: 1fr;
+        gap: 22px;
+    }
+    .category-image {
+        height: 210px;
+    }
+    .subcategory-grid {
+        grid-template-columns: 1fr;
+        padding: 20px;
+    }
+    .product-modal-header {
+        padding: 18px 22px;
+    }
+    .product-modal-overlay {
+        padding: 15px;
+    }
+}
+
+</style>
+
+{% endblock %}
+
+
+
+{% block content %}
+
+<div class="products-page">
+
+
+    <!-- =====================================================
+         PRODUCTS HERO SECTION
+    ====================================================== -->
+
+    <section class="products-hero">
+
+        <!-- DYNAMIC BACKGROUND SLIDESHOW LAYERS -->
+        <div
+            class="products-hero-bg active"
+            style="background-image: url('{% static 'public/images/products-hero.jpg' %}');"
+        ></div>
+
+        <div
+            class="products-hero-bg"
+            style="background-image: url('{% static 'public/images/products-hero1.jpg' %}');"
+        ></div>
+
+        <div
+            class="products-hero-bg"
+            style="background-image: url('{% static 'public/images/products-hero2.jpg' %}');"
+        ></div>
+
+        <div
+            class="products-hero-bg"
+            style="background-image: url('{% static 'public/images/products-hero3.jpg' %}');"
+        ></div>
+
+        <!-- DARK OVERLAY -->
+        <div class="products-hero-overlay"></div>
+
+
+        <div class="products-hero-content">
+
+            <!-- DYNAMIC FLUID BADGE WITH ORBITING CORNER GLOW LOOP -->
+            <div class="products-badge-wrapper">
+
+                <div class="products-badge">
+
+                    <span class="products-badge-dot"></span>
+
+                    <span class="products-badge-text" id="productsDynamicBadge">
+                        {% if categories %}
+                            {{ categories.0.name }}
+                        {% else %}
+                            Electrical Materials &amp; Solutions
+                        {% endif %}
+                    </span>
+
+                </div>
+
+            </div>
 
-<head>
-
-    <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
-
-    <title>Products | Al Baraq</title>
-
-    <style>
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        body {
-
-            font-family:
-                Arial,
-                Helvetica,
-                sans-serif;
-
-            background: #f5f7fa;
-
-            color: #111827;
-
-        }
-
-        .navbar {
-
-            height: 70px;
-
-            background: white;
-
-            border-bottom: 1px solid #e5e7eb;
-
-            display: flex;
-
-            align-items: center;
-
-            justify-content: space-between;
-
-            padding: 0 60px;
-
-        }
-
-        .brand {
-
-            font-size: 22px;
-
-            font-weight: 700;
-
-        }
-
-        .nav-links {
-
-            display: flex;
-
-            gap: 35px;
-
-        }
-
-        .nav-links a {
-
-            text-decoration: none;
-
-            color: #374151;
-
-            font-size: 15px;
-
-        }
-
-        .nav-links a:hover {
-
-            color: #2563eb;
-
-        }
-
-        .container {
-
-            max-width: 1200px;
-
-            margin: 0 auto;
-
-            padding: 50px 30px;
-
-        }
-
-        .page-header {
-
-            margin-bottom: 35px;
-
-        }
-
-        .page-header h1 {
-
-            font-size: 34px;
-
-            margin-bottom: 10px;
-
-        }
-
-        .page-header p {
-
-            color: #6b7280;
-
-            font-size: 16px;
-
-        }
-
-        .categories {
-
-            display: grid;
-
-            grid-template-columns:
-                repeat(3, minmax(0, 1fr));
-
-            gap: 22px;
-
-        }
-
-        .category-card {
-
-            background: white;
-
-            border: 1px solid #e5e7eb;
-
-            border-radius: 12px;
-
-            padding: 25px;
-
-            cursor: pointer;
-
-            transition:
-                transform 0.15s ease,
-                box-shadow 0.15s ease;
-
-        }
-
-        .category-card:hover {
-
-            transform: translateY(-3px);
-
-            box-shadow:
-                0 8px 25px
-                rgba(0, 0, 0, 0.08);
-
-        }
-
-        .category-card h3 {
-
-            font-size: 19px;
-
-            margin-bottom: 8px;
-
-        }
-
-        .category-card p {
-
-            color: #6b7280;
-
-            font-size: 14px;
-
-            line-height: 1.5;
-
-        }
-
-        .category-action {
-
-            display: inline-block;
-
-            margin-top: 18px;
-
-            color: #2563eb;
-
-            font-size: 14px;
-
-            font-weight: 600;
-
-        }
-
-        /* Modal */
-
-        .modal {
-
-            display: none;
-
-            position: fixed;
-
-            inset: 0;
-
-            background:
-                rgba(0, 0, 0, 0.45);
-
-            align-items: center;
-
-            justify-content: center;
-
-            padding: 20px;
-
-            z-index: 1000;
-
-        }
-
-        .modal.active {
-
-            display: flex;
-
-        }
-
-        .modal-content {
-
-            width: 100%;
-
-            max-width: 550px;
-
-            background: white;
-
-            border-radius: 14px;
-
-            padding: 30px;
-
-            box-shadow:
-                0 20px 50px
-                rgba(0, 0, 0, 0.2);
-
-        }
-
-        .modal-header {
-
-            display: flex;
-
-            align-items: center;
-
-            justify-content: space-between;
-
-            margin-bottom: 25px;
-
-        }
-
-        .modal-header h2 {
-
-            font-size: 24px;
-
-        }
-
-        .close-btn {
-
-            border: none;
-
-            background: none;
-
-            font-size: 28px;
-
-            cursor: pointer;
-
-            color: #6b7280;
-
-        }
-
-        .subcategories {
-
-            display: grid;
-
-            gap: 10px;
-
-        }
-
-        .subcategory {
-
-            padding: 14px 16px;
-
-            background: #f8fafc;
-
-            border: 1px solid #e5e7eb;
-
-            border-radius: 8px;
-
-            font-size: 15px;
-
-        }
-
-        .no-subcategories {
-
-            color: #6b7280;
-
-            font-size: 14px;
-
-        }
-
-        @media (max-width: 800px) {
-
-            .categories {
-
-                grid-template-columns: 1fr 1fr;
-
-            }
-
-            .navbar {
-
-                padding: 0 25px;
-
-            }
-
-        }
-
-        @media (max-width: 550px) {
-
-            .categories {
-
-                grid-template-columns: 1fr;
-
-            }
-
-            .nav-links {
-
-                gap: 15px;
-
-            }
-
-        }
-
-    </style>
-
-</head>
-
-
-<body>
-
-
-    <!-- Navbar -->
-
-    <nav class="navbar">
-
-        <div class="brand">
-            Al Baraq
-        </div>
-
-        <div class="nav-links">
-
-            <a href="{% url 'public:home' %}">
-                Home
-            </a>
-
-            <a href="{% url 'public:about' %}">
-                About Us
-            </a>
-
-            <a href="{% url 'public:products' %}">
-                Products
-            </a>
-
-            <a href="{% url 'public:contact' %}">
-                Contact Us
-            </a>
-
-        </div>
-
-    </nav>
-
-
-    <!-- Main Content -->
-
-    <main class="container">
-
-        <section class="page-header">
 
             <h1>
-                Products
+                Our
+                <span>Products.</span>
             </h1>
 
-            <p>
-                Explore our product catalogue by category.
+
+            <p class="products-hero-description">
+
+                Explore our range of quality electrical materials
+                and solutions from trusted brands, serving
+                commercial, residential, industrial, MEP,
+                construction, and oil &amp; gas requirements.
+
             </p>
 
-        </section>
+
+            <!-- COMPACT CATEGORY DROPDOWN SELECTOR -->
+            <div class="hero-dropdown-box">
+
+                <select
+                    id="categorySelectDropdown"
+                    class="hero-dropdown-select"
+                    onchange="handleCategoryDropdownSelect(this.value)"
+                >
+                    <option value="ALL">Available Categories / Quick View</option>
+
+                    {% if categories %}
+                        {% for category in categories %}
+                            <option value="{{ category.id }}">{{ category.name }}</option>
+                        {% endfor %}
+                    {% endif %}
+                </select>
+
+                <svg
+                    class="hero-dropdown-icon"
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                >
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                </svg>
+
+            </div>
 
 
-        <section class="categories">
+            <!-- HIGHLIGHT METRICS & BADGES -->
+            <div class="products-highlights">
+
+                <div class="products-highlight">
+                    ✓ {% if categories %}{{ categories|length }}{% else %}50+{% endif %} Available Categories
+                </div>
+
+                <div class="products-highlight">
+                    ✓ Trusted European &amp; Regional Brands
+                </div>
+
+                <div class="products-highlight">
+                    ✓ Fast Supply Across All 7 Emirates
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- TRANSPARENT NEON SCROLL-DOWN BUTTON -->
+        <div class="products-scroll-wrapper">
+
+            <a
+                href="#categoriesSection"
+                class="products-scroll-btn"
+                id="productsScrollBtn"
+                aria-label="Scroll down to categories section"
+                title="Scroll Down"
+            >
+
+                <svg
+                    width="22"
+                    height="22"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                >
+
+                    <line x1="12" y1="5" x2="12" y2="19"></line>
+
+                    <polyline points="19 12 12 19 5 12"></polyline>
+
+                </svg>
+
+            </a>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         PRODUCT CATEGORIES SECTION
+    ====================================================== -->
+
+    <section class="products-section scroll-reveal" id="categoriesSection">
+
+
+        <div class="products-section-heading">
+
+            <div class="section-tag-wrapper">
+                <div class="section-tag-badge">
+                    <span class="section-tag-dot"></span>
+                    Product Catalog
+                </div>
+            </div>
+
+            <h2>
+                Explore Our
+                <span>Categories</span>
+            </h2>
+
+            <p>
+                Find the electrical materials you need from
+                our range of product categories.
+            </p>
+
+        </div>
+
+
+
+        {% if categories %}
+
+        <div class="category-grid" id="categoryGrid">
+
 
             {% for category in categories %}
 
-                <div
-                    class="category-card"
-                    onclick="openCategory('{{ category.id }}')"
-                >
+            <article class="category-card" data-category-id="{{ category.id }}">
+
+
+                <!-- CATEGORY IMAGE -->
+
+                <div class="category-image">
+
+                    <span class="category-number-badge">
+
+                        {% if forloop.counter < 10 %}
+                            0{{ forloop.counter }}
+                        {% else %}
+                            {{ forloop.counter }}
+                        {% endif %}
+
+                    </span>
+
+                    {% if category.image %}
+
+                        <img
+                            src="{{ category.image.url }}"
+                            alt="{{ category.name }}"
+                            loading="lazy"
+                        >
+
+                    {% else %}
+
+                        <div class="category-image-placeholder">
+
+                            <span>No Image Available</span>
+
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+
+
+                <!-- CATEGORY INFORMATION -->
+
+                <div class="category-content">
+
 
                     <h3>
                         {{ category.name }}
                     </h3>
+
 
                     {% if category.description %}
 
@@ -402,51 +1217,95 @@
                             {{ category.description }}
                         </p>
 
+                    {% else %}
+
+                        <p>
+                            Explore products and subcategories available in this line.
+                        </p>
+
                     {% endif %}
 
-                    <span class="category-action">
-                        View Sub-Categories →
-                    </span>
+
+                    <button
+                        type="button"
+                        class="view-products-btn"
+                        onclick="openCategoryModal('category-{{ category.id }}')"
+                    >
+                        View Products
+                    </button>
 
                 </div>
 
-            {% empty %}
 
-                <p>
-                    No products categories are currently available.
-                </p>
+            </article>
 
             {% endfor %}
 
-        </section>
 
-    </main>
+        </div>
 
 
-    <!-- Category Modal -->
+        {% else %}
 
-    {% for category in categories %}
+        <div class="empty-products">
+
+            <h3>
+                No Categories Available
+            </h3>
+
+            <p>
+                Product categories will be displayed here once added to the catalog.
+            </p>
+
+        </div>
+
+        {% endif %}
+
+
+    </section>
+
+
+    <!-- =====================================================
+         DEDICATED MODAL PORTAL CONTAINER
+    ====================================================== -->
+
+    {% if categories %}
+
+    <div class="modal-portal-container">
+
+        {% for category in categories %}
 
         <div
-            class="modal"
-            id="modal-{{ category.id }}"
-            onclick="closeOutside(event, '{{ category.id }}')"
+            id="category-{{ category.id }}"
+            class="product-modal-overlay"
+            onclick="closeCategoryOnOverlay(event, 'category-{{ category.id }}')"
         >
 
-            <div
-                class="modal-content"
-                onclick="event.stopPropagation()"
-            >
+            <div class="product-modal">
 
-                <div class="modal-header">
+                <div class="product-modal-header">
 
-                    <h2>
-                        {{ category.name }}
-                    </h2>
+                    <div class="modal-header-text">
+
+                        <div class="modal-tag-wrapper">
+                            <div class="modal-tag-badge">
+                                <span class="section-tag-dot"></span>
+                                Category Overview
+                            </div>
+                        </div>
+
+                        <h3>
+                            {{ category.name }}
+                        </h3>
+
+                    </div>
+
 
                     <button
-                        class="close-btn"
-                        onclick="closeCategory('{{ category.id }}')"
+                        type="button"
+                        class="modal-close"
+                        onclick="closeCategoryModal('category-{{ category.id }}')"
+                        aria-label="Close modal"
                     >
                         &times;
                     </button>
@@ -454,91 +1313,348 @@
                 </div>
 
 
-                <div class="subcategories">
+                {% with subcategories=category.subcategories.all %}
 
-                    {% for subcategory in category.subcategories.all %}
+                    {% if subcategories %}
 
-                        <div class="subcategory">
+                    <div class="subcategory-grid">
 
-                            {{ subcategory.name }}
+                        {% for subcategory in subcategories %}
+
+                        <div class="subcategory-card">
+
+                            {% if subcategory.image %}
+
+                            <div class="subcategory-image">
+
+                                <img
+                                    src="{{ subcategory.image.url }}"
+                                    alt="{{ subcategory.name }}"
+                                    loading="lazy"
+                                >
+
+                            </div>
+
+                            {% else %}
+
+                            <div class="subcategory-image-placeholder">
+
+                                <span>No Preview Image</span>
+
+                            </div>
+
+                            {% endif %}
+
+
+                            <div class="subcategory-content">
+
+                                <h4>
+                                    {{ subcategory.name }}
+                                </h4>
+
+
+                                {% if subcategory.description %}
+
+                                <p>
+                                    {{ subcategory.description }}
+                                </p>
+
+                                {% endif %}
+
+                            </div>
 
                         </div>
 
-                    {% empty %}
+                        {% endfor %}
 
-                        <p class="no-subcategories">
-                            No sub-categories are currently available
-                            for this category.
+                    </div>
+
+                    {% else %}
+
+                    <div class="empty-products">
+
+                        <h3>Products Coming Soon</h3>
+
+                        <p>
+                            Subcategories under this category will be available shortly.
                         </p>
 
-                    {% endfor %}
+                    </div>
 
-                </div>
+                    {% endif %}
+
+                {% endwith %}
 
             </div>
 
         </div>
 
-    {% endfor %}
+        {% endfor %}
+
+    </div>
+
+    {% endif %}
 
 
-    <script>
+</div>
 
-        function openCategory(categoryId) {
+{% endblock %}
 
-            document
-                .getElementById("modal-" + categoryId)
-                .classList
-                .add("active");
+
+
+{% block extra_js %}
+
+<script>
+
+/* =========================================================
+   1. DYNAMIC BADGE TEXT POPULATED FROM BACKEND CATEGORIES
+========================================================= */
+
+document.addEventListener("DOMContentLoaded", function() {
+
+    const dynamicBadgeText = document.getElementById("productsDynamicBadge");
+
+    if (dynamicBadgeText) {
+
+        const badgeMessages = [
+            {% if categories %}
+                {% for category in categories %}
+                    "{{ category.name|escapejs }}"{% if not forloop.last %},{% endif %}
+                {% endfor %}
+            {% else %}
+                "Electrical Materials & Solutions"
+            {% endif %}
+        ];
+
+        let currentBadgeIndex = 0;
+
+        function changeBadgeText() {
+
+            if (badgeMessages.length <= 1) {
+                return;
+            }
+
+            dynamicBadgeText.classList.add("hide");
+
+            setTimeout(function() {
+
+                currentBadgeIndex = (currentBadgeIndex + 1) % badgeMessages.length;
+
+                dynamicBadgeText.textContent = badgeMessages[currentBadgeIndex];
+
+                dynamicBadgeText.classList.remove("hide");
+
+            }, 350);
 
         }
 
+        setInterval(changeBadgeText, 3600);
 
-        function closeCategory(categoryId) {
+    }
 
-            document
-                .getElementById("modal-" + categoryId)
-                .classList
-                .remove("active");
+
+    /* ---------------------------------------------------------
+       2. DYNAMIC BACKGROUND SLIDESHOW
+    --------------------------------------------------------- */
+
+    const bgLayers = document.querySelectorAll(".products-hero-bg");
+
+    if (bgLayers.length > 1) {
+
+        let currentBgIndex = 0;
+
+        function cycleBackground() {
+
+            bgLayers[currentBgIndex].classList.remove("active");
+
+            currentBgIndex = (currentBgIndex + 1) % bgLayers.length;
+
+            bgLayers[currentBgIndex].classList.add("active");
 
         }
 
+        setInterval(cycleBackground, 5500);
 
-        function closeOutside(event, categoryId) {
+    }
 
-            if (event.target === event.currentTarget) {
 
-                closeCategory(categoryId);
+    /* ---------------------------------------------------------
+       3. SMOOTH SCROLL FOR ARROW BUTTON
+    --------------------------------------------------------- */
+
+    const scrollBtn = document.getElementById("productsScrollBtn");
+
+    if (scrollBtn) {
+
+        scrollBtn.addEventListener("click", function(e) {
+
+            e.preventDefault();
+
+            const targetSection = document.getElementById("categoriesSection");
+
+            if (targetSection) {
+
+                targetSection.scrollIntoView({
+
+                    behavior: "smooth",
+
+                    block: "start"
+
+                });
 
             }
 
-        }
+        });
+
+    }
 
 
-        document.addEventListener(
-            "keydown",
-            function(event) {
+    /* ---------------------------------------------------------
+       4. SCROLL REVEAL OBSERVER
+    --------------------------------------------------------- */
 
-                if (event.key === "Escape") {
+    const revealElements = document.querySelectorAll(".scroll-reveal");
 
-                    document
-                        .querySelectorAll(".modal.active")
-                        .forEach(
-                            function(modal) {
+    if ("IntersectionObserver" in window) {
 
-                                modal.classList.remove("active");
+        const revealObserver = new IntersectionObserver(
+            function (entries, observer) {
 
-                            }
-                        );
+                entries.forEach(function (entry) {
 
-                }
+                    if (entry.isIntersecting) {
 
+                        entry.target.classList.add("is-visible");
+
+                        observer.unobserve(entry.target);
+
+                    }
+
+                });
+
+            },
+            {
+                threshold: 0.12
             }
         );
 
-    </script>
+        revealElements.forEach(function (el) {
+
+            revealObserver.observe(el);
+
+        });
+
+    } else {
+
+        revealElements.forEach(function (el) {
+
+            el.classList.add("is-visible");
+
+        });
+
+    }
+
+});
 
 
-</body>
+/* =========================================================
+   5. DROPDOWN SELECTION HANDLER
+========================================================= */
 
-</html>
+function handleCategoryDropdownSelect(categoryId) {
+
+    if (!categoryId || categoryId === "ALL") {
+
+        const cards = document.querySelectorAll("#categoryGrid .category-card");
+
+        cards.forEach(card => card.style.display = "");
+
+        return;
+
+    }
+
+    const targetSection = document.getElementById("categoriesSection");
+
+    if (targetSection) {
+
+        targetSection.scrollIntoView({ behavior: "smooth", block: "start" });
+
+    }
+
+    setTimeout(function() {
+
+        openCategoryModal('category-' + categoryId);
+
+    }, 450);
+
+}
+
+
+/* =========================================================
+   6. MODAL TRIGGER FUNCTIONS
+========================================================= */
+
+function openCategoryModal(modalId) {
+
+    const modal = document.getElementById(modalId);
+
+    if (!modal) {
+        return;
+    }
+
+    modal.classList.add("active");
+
+    document.body.style.overflow = "hidden";
+
+}
+
+
+function closeCategoryModal(modalId) {
+
+    const modal = document.getElementById(modalId);
+
+    if (!modal) {
+        return;
+    }
+
+    modal.classList.remove("active");
+
+    document.body.style.overflow = "";
+
+}
+
+
+function closeCategoryOnOverlay(event, modalId) {
+
+    if (event.target === event.currentTarget) {
+
+        closeCategoryModal(modalId);
+
+    }
+
+}
+
+
+/* Escape Key Modal Dismissal */
+
+document.addEventListener("keydown", function(event) {
+
+    if (event.key !== "Escape") {
+        return;
+    }
+
+    const activeModal = document.querySelector(".product-modal-overlay.active");
+
+    if (activeModal) {
+
+        activeModal.classList.remove("active");
+
+        document.body.style.overflow = "";
+
+    }
+
+});
+
+</script>
+
+{% endblock %}

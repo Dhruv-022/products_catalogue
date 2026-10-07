@@ -1,3 +1,5 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -16,152 +18,743 @@
         {% endblock %}
     </title>
 
-    <style>
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
+   <style>
+
+    /* =========================
+       RESET
+    ========================= */
+
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+
+
+    /* =========================
+       BODY
+    ========================= */
+
+    body {
+
+        font-family:
+            Arial,
+            Helvetica,
+            sans-serif;
+
+        background: #f5f7fa;
+
+        color: #111827;
+
+        line-height: 1.6;
+    }
+
+
+    /* =========================
+       NAVBAR
+       GLASSMORPHIC HEADER
+    ========================= */
+
+    .navbar {
+
+        height: 88px;
+
+        /*
+            Semi-transparent white with
+            a very subtle blue tint.
+        */
+        background:
+            linear-gradient(
+                135deg,
+                rgba(255, 255, 255, 0.88),
+                rgba(239, 246, 255, 0.72)
+            );
+
+        /*
+            Frosted-glass effect
+        */
+        backdrop-filter:
+            blur(18px)
+            saturate(145%);
+
+        -webkit-backdrop-filter:
+            blur(18px)
+            saturate(145%);
+
+        /*
+            Glass edge
+        */
+        border-bottom:
+            1px solid
+            rgba(255, 255, 255, 0.75);
+
+        /*
+            Soft blue-tinted separation
+            from the hero section
+        */
+        box-shadow:
+            0 4px 18px rgba(15, 35, 66, 0.10),
+            0 1px 0 rgba(255, 255, 255, 0.8) inset;
+
+        display: flex;
+
+        align-items: center;
+
+        padding: 0 60px;
+
+        position: sticky;
+
+        top: 0;
+
+        z-index: 1000;
+
+        /*
+            Prevents the glass effect from
+            looking completely flat.
+        */
+        overflow: hidden;
+    }
+
+
+    /*
+        Very subtle moving light across
+        the glass surface.
+    */
+    .navbar::before {
+
+        content: "";
+
+        position: absolute;
+
+        top: -100%;
+
+        left: -35%;
+
+        width: 70%;
+
+        height: 300%;
+
+        background:
+            linear-gradient(
+                115deg,
+                transparent 35%,
+                rgba(255, 255, 255, 0.22) 50%,
+                transparent 65%
+            );
+
+        transform: translateX(-100%);
+
+        animation:
+            navbarGlassShine 9s ease-in-out infinite;
+
+        pointer-events: none;
+
+        z-index: 0;
+    }
+
+
+    @keyframes navbarGlassShine {
+
+        0% {
+            transform: translateX(-100%);
         }
 
-        body {
-
-            font-family:
-                Arial,
-                Helvetica,
-                sans-serif;
-
-            background: #f5f7fa;
-
-            color: #111827;
-
+        55% {
+            transform: translateX(-100%);
         }
 
-        /* =========================
-           NAVBAR
-        ========================= */
+        75% {
+            transform: translateX(170%);
+        }
+
+        100% {
+            transform: translateX(170%);
+        }
+    }
+
+
+    /* =========================
+       BRAND SECTION
+    ========================= */
+
+    .brand {
+
+        display: flex;
+
+        align-items: center;
+
+        gap: 18px;
+
+        height: 100%;
+
+        text-decoration: none;
+
+        flex-shrink: 0;
+
+        position: relative;
+
+        z-index: 2;
+    }
+
+
+    .brand-logo {
+
+        width: 78px;
+
+        height: 78px;
+
+        object-fit: cover;
+
+        display: block;
+
+        border-radius: 50%;
+
+        /*
+            Very subtle glass/logo separation
+        */
+        filter:
+            drop-shadow(
+                0 3px 6px
+                rgba(15, 35, 66, 0.14)
+            );
+    }
+
+
+    /* =========================
+       COMPANY NAME
+    ========================= */
+
+    .brand-name {
+
+        font-size: 23px;
+
+        font-weight: 700;
+
+        color: #111827;
+
+        white-space: nowrap;
+
+        transition:
+            color 0.25s ease;
+    }
+
+
+    .brand-name span {
+
+        color: #2563eb;
+    }
+
+
+    /* =========================
+       NAVIGATION
+    ========================= */
+
+    .nav-links {
+
+        display: flex;
+
+        align-items: center;
+
+        gap: 42px;
+
+        list-style: none;
+
+        margin-left: 85px;
+
+        position: relative;
+
+        z-index: 2;
+    }
+
+
+    .nav-links a {
+
+        position: relative;
+
+        text-decoration: none;
+
+        color: #1e293b;
+
+        font-size: 15px;
+
+        font-weight: 600;
+
+        padding: 8px 0;
+
+        transition:
+            color 0.25s ease;
+    }
+
+
+    /* =========================
+       ACTIVE PAGE COLOR
+
+       Only the text remains blue.
+       No permanent underline.
+    ========================= */
+
+    .nav-links a.active {
+
+        color: #2563eb;
+    }
+
+
+    /* =========================
+       HOVER COLOR
+    ========================= */
+
+    .nav-links a:hover {
+
+        color: #2563eb;
+    }
+
+
+    /* =========================
+       HOVER UNDERLINE
+    ========================= */
+
+    .nav-links a::after {
+
+        content: "";
+
+        position: absolute;
+
+        left: 0;
+
+        bottom: 0;
+
+        width: 100%;
+
+        height: 2px;
+
+        background: #2563eb;
+
+        transform: scaleX(0);
+
+        transform-origin: center;
+
+        transition:
+            transform 0.25s ease;
+    }
+
+
+    /* =========================
+       UNDERLINE ONLY ON HOVER
+    ========================= */
+
+    .nav-links a:hover::after {
+
+        transform: scaleX(1);
+    }
+
+
+    /* =========================
+       MAIN CONTENT
+    ========================= */
+
+    main {
+
+        min-height:
+            calc(100vh - 88px);
+    }
+
+
+    /* =========================
+       FOOTER
+    ========================= */
+
+    .footer {
+
+        background:
+            linear-gradient(
+                135deg,
+                #0f2342,
+                #123f68
+            );
+
+        color: white;
+
+        padding:
+            38px 60px
+            20px;
+
+        font-size: 14px;
+    }
+
+
+    .footer-content {
+
+        max-width: 1360px;
+
+        margin: 0 auto;
+
+        display: grid;
+
+        grid-template-columns:
+            1.1fr
+            1.2fr
+            1fr;
+
+        gap: 70px;
+
+        align-items: start;
+    }
+
+
+    /* =========================
+       FOOTER BRAND
+    ========================= */
+
+    .footer-brand h2 {
+
+        font-size: 25px;
+
+        margin-bottom: 12px;
+
+        color: white;
+    }
+
+
+    .footer-brand h2 span {
+
+        color: #60a5fa;
+    }
+
+
+    .footer-brand p {
+
+        color: #dbeafe;
+
+        font-size: 15px;
+
+        line-height: 1.6;
+
+        max-width: 480px;
+    }
+
+
+    /* =========================
+       FOOTER HEADINGS
+    ========================= */
+
+    .footer-section h3 {
+
+        font-size: 18px;
+
+        margin-bottom: 14px;
+
+        color: white;
+    }
+
+
+    /* =========================
+       LOCATIONS
+    ========================= */
+
+    .footer-location {
+
+        color: #dbeafe;
+
+        font-size: 14px;
+
+        line-height: 1.55;
+
+        margin-bottom: 10px;
+    }
+
+
+    .footer-location strong {
+
+        color: white;
+    }
+
+
+    /* =========================
+       CONTACT DETAILS
+    ========================= */
+
+    .footer-contact {
+
+        color: #dbeafe;
+
+        font-size: 14px;
+
+        line-height: 1.55;
+
+        margin-bottom: 5px;
+    }
+
+
+    .footer-contact strong {
+
+        color: white;
+
+        margin-right: 6px;
+    }
+
+
+    .footer-contact a {
+
+        color: #dbeafe;
+
+        text-decoration: none;
+
+        transition: color 0.2s ease;
+    }
+
+
+    .footer-contact a:hover {
+
+        color: #60a5fa;
+    }
+
+
+    /* =========================
+       SOCIAL ICONS
+    ========================= */
+
+    .social-icons {
+
+        display: flex;
+
+        align-items: center;
+
+        gap: 12px;
+
+        margin-top: 12px;
+    }
+
+
+    .social-icon {
+
+        width: 40px;
+
+        height: 40px;
+
+        border-radius: 50%;
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        background: #2563eb;
+
+        color: white;
+
+        text-decoration: none;
+
+        transition:
+            box-shadow 0.25s ease,
+            background 0.25s ease;
+    }
+
+
+    .social-icon:hover {
+
+        background: #3b82f6;
+
+        box-shadow:
+            0 0 10px rgba(59, 130, 246, 0.65),
+            0 0 22px rgba(59, 130, 246, 0.35);
+    }
+
+
+    .social-icon svg {
+
+        width: 20px;
+
+        height: 20px;
+
+        fill: currentColor;
+    }
+
+
+    /* =========================
+       FOOTER BOTTOM
+    ========================= */
+
+    .footer-bottom {
+
+        max-width: 1360px;
+
+        margin:
+            30px auto
+            0;
+
+        padding-top: 14px;
+
+        border-top:
+            1px solid
+            rgba(255, 255, 255, 0.15);
+
+        text-align: center;
+
+        color: #94a3b8;
+
+        font-size: 13px;
+    }
+
+
+    /* =========================
+       MOBILE
+    ========================= */
+
+    @media (max-width: 900px) {
 
         .navbar {
 
-            height: 70px;
-
-            background: white;
-
-            border-bottom: 1px solid #e5e7eb;
-
-            display: flex;
-
-            align-items: center;
-
-            justify-content: space-between;
-
-            padding: 0 50px;
-
-            position: sticky;
-
-            top: 0;
-
-            z-index: 1000;
-
+            padding: 0 30px;
         }
 
-        .brand {
-
-            font-size: 22px;
-
-            font-weight: 700;
-
-            color: #111827;
-
-            text-decoration: none;
-
-        }
 
         .nav-links {
 
-            display: flex;
+            margin-left: 40px;
 
-            align-items: center;
-
-            gap: 30px;
-
-            list-style: none;
-
+            gap: 25px;
         }
+
+
+        .brand-name {
+
+            font-size: 20px;
+        }
+
+
+        .footer-content {
+
+            grid-template-columns:
+                1fr 1fr;
+
+            gap: 35px;
+        }
+
+    }
+
+
+    /* =========================
+       SMALL SCREENS
+    ========================= */
+
+    @media (max-width: 700px) {
+
+        .navbar {
+
+            height: 72px;
+
+            padding: 0 20px;
+        }
+
+
+        .brand {
+
+            gap: 12px;
+        }
+
+
+        .brand-logo {
+
+            width: 60px;
+
+            height: 60px;
+        }
+
+
+        .brand-name {
+
+            font-size: 17px;
+        }
+
+
+        .nav-links {
+
+            gap: 15px;
+
+            margin-left: auto;
+        }
+
 
         .nav-links a {
 
-            text-decoration: none;
-
-            color: #374151;
-
-            font-size: 14px;
-
-            font-weight: 500;
-
+            font-size: 13px;
         }
 
-        .nav-links a:hover {
-
-            color: #2563eb;
-
-        }
-
-        /* =========================
-           MAIN CONTENT
-        ========================= */
 
         main {
 
-            min-height: calc(100vh - 70px);
-
+            min-height:
+                calc(100vh - 72px);
         }
 
-        /* =========================
-           FOOTER
-        ========================= */
 
         .footer {
 
-            background: #111827;
+            padding:
+                30px 20px
+                18px;
+        }
 
-            color: white;
 
-            padding: 30px 50px;
+        .footer-content {
 
-            text-align: center;
+            grid-template-columns: 1fr;
+
+            gap: 25px;
+        }
+
+    }
+
+
+    /* =========================
+       VERY SMALL SCREENS
+    ========================= */
+
+    @media (max-width: 480px) {
+
+        .navbar {
+
+            padding: 0 15px;
+        }
+
+
+        .brand {
+
+            gap: 8px;
+        }
+
+
+        .brand-logo {
+
+            width: 54px;
+
+            height: 54px;
+        }
+
+
+        .brand-name {
 
             font-size: 14px;
-
         }
 
-        /* =========================
-           MOBILE
-        ========================= */
 
-        @media (max-width: 700px) {
+        .nav-links {
 
-            .navbar {
-
-                padding: 0 20px;
-
-            }
-
-            .nav-links {
-
-                gap: 15px;
-
-            }
-
-            .nav-links a {
-
-                font-size: 13px;
-
-            }
-
+            gap: 10px;
         }
 
-    </style>
+
+        .nav-links a {
+
+            font-size: 12px;
+        }
+
+    }
+
+</style>
+
 
     {% block extra_css %}
     {% endblock %}
@@ -178,52 +771,94 @@
 
     <nav class="navbar">
 
+
+        <!-- LOGO + COMPANY NAME -->
+
         <a
             href="{% url 'public:home' %}"
             class="brand"
         >
-            Al Baraq
+
+            <img
+                src="{% static 'public/images/logo.png' %}"
+                alt="Al Baraq Elect Ware TR"
+                class="brand-logo"
+            >
+
+            <div class="brand-name">
+                Al Baraq <span>Elect Ware Tr.</span>
+            </div>
+
         </a>
 
 
+        <!-- NAVIGATION LINKS -->
+
         <ul class="nav-links">
 
+
             <li>
-                <a href="{% url 'public:home' %}">
+
+                <a
+                    href="{% url 'public:home' %}"
+                    class="{% if request.resolver_match.url_name == 'home' %}active{% endif %}"
+                >
                     Home
                 </a>
+
             </li>
 
+
             <li>
-                <a href="{% url 'public:about' %}">
+
+                <a
+                    href="{% url 'public:about' %}"
+                    class="{% if request.resolver_match.url_name == 'about' %}active{% endif %}"
+                >
                     About Us
                 </a>
+
             </li>
 
+
             <li>
-                <a href="{% url 'public:products' %}">
+
+                <a
+                    href="{% url 'public:products' %}"
+                    class="{% if request.resolver_match.url_name == 'products' %}active{% endif %}"
+                >
                     Products
                 </a>
+
             </li>
+
 
             <li>
-                <a href="{% url 'public:contact' %}">
+
+                <a
+                    href="{% url 'public:contact' %}"
+                    class="{% if request.resolver_match.url_name == 'contact' %}active{% endif %}"
+                >
                     Contact Us
                 </a>
+
             </li>
 
+
         </ul>
+
 
     </nav>
 
 
     <!-- =========================
-         PAGE CONTENT
+         MAIN PAGE CONTENT
     ========================= -->
 
     <main>
 
         {% block content %}
+
         {% endblock %}
 
     </main>
@@ -235,15 +870,172 @@
 
     <footer class="footer">
 
-        <p>
+        <div class="footer-content">
+
+
+            <!-- COMPANY -->
+
+            <div class="footer-brand">
+
+                <h2>
+                    Al Baraq <span>Elect Ware Tr.</span>
+                </h2>
+
+                <p>
+                    Quality electrical products and solutions for retail,
+                    commercial and bulk requirements across the UAE.
+                </p>
+
+            </div>
+
+
+            <!-- LOCATIONS -->
+
+            <div class="footer-section">
+
+                <h3>
+                    Our Locations
+                </h3>
+
+
+                <div class="footer-location">
+
+                    <strong>Showroom:</strong>
+
+                    Shop No. 14 &amp; 15,
+                    Behind Al Ghuawir Post Office,
+                    Rolla, Sharjah, U.A.E.
+
+                </div>
+
+
+                <div class="footer-location">
+
+                    <strong>Warehouse:</strong>
+
+                    Shed No. L11,
+                    Ind. Area 12,
+                    Sharjah, U.A.E.
+
+                </div>
+
+            </div>
+
+
+            <!-- CONTACT -->
+
+            <div class="footer-section">
+
+                <h3>
+                    Contact Us
+                </h3>
+
+
+                <div class="footer-contact">
+
+                    <strong>Email:</strong>
+
+                    <a href="mailto:albaraqelect2012@gmail.com">
+                        albaraqelect2012@gmail.com
+                    </a>
+
+                </div>
+
+
+                <div class="footer-contact">
+
+                    <strong>Phone:</strong>
+
+                    +971 6 5215407
+
+                </div>
+
+
+                <div class="footer-contact">
+
+                    <strong>Warehouse:</strong>
+
+                    +971 6 5100937
+
+                </div>
+
+
+                <!-- SOCIAL ICONS -->
+
+                <div class="social-icons">
+
+
+                    <!-- WHATSAPP -->
+
+                    <a
+                        href="https://wa.me/97165215407"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="social-icon"
+                        aria-label="WhatsApp"
+                    >
+
+                        <svg
+                            viewBox="0 0 24 24"
+                            aria-hidden="true"
+                        >
+                            <path
+                                d="M20.52 3.48A11.86 11.86 0 0 0 12.05 0C5.48 0 .13 5.35.13 11.92c0 2.1.55 4.15 1.6 5.96L0 24l6.26-1.64a11.88 11.88 0 0 0 5.78 1.47h.01c6.57 0 11.92-5.35 11.92-11.92 0-3.18-1.24-6.17-3.45-8.43ZM12.05 21.8a9.86 9.86 0 0 1-5.03-1.38l-.36-.21-3.71.97.99-3.62-.23-.37a9.84 9.84 0 0 1-1.51-5.27c0-5.46 4.45-9.9 9.91-9.9 2.65 0 5.14 1.03 7.01 2.9a9.84 9.84 0 0 1 2.89 7c0 5.47-4.44 9.92-9.91 9.92Zm5.44-7.42c-.3-.15-1.77-.87-2.05-.97-.28-.1-.49-.15-.7.15-.21.31-.8.98-.98 1.18-.18.2-.36.23-.66.08-.3-.15-1.25-.46-2.38-1.47-.88-.78-1.48-1.75-1.65-2.05-.17-.3-.02-.46.13-.61.14-.14.3-.36.45-.54.15-.18.2-.31.3-.51.1-.2.05-.38-.03-.53-.08-.15-.7-1.69-.96-2.32-.25-.61-.51-.53-.7-.54-.18-.01-.38-.01-.59-.01-.2 0-.53.08-.81.38-.28.3-1.07 1.05-1.07 2.56s1.09 2.97 1.24 3.17c.15.2 2.14 3.27 5.18 4.58.72.31 1.28.5 1.72.64.72.23 1.38.2 1.9.12.58-.09 1.77-.72 2.02-1.41.25-.69.25-1.28.18-1.41-.08-.13-.28-.2-.58-.35Z"
+                            />
+                        </svg>
+
+                    </a>
+
+
+                    <!-- INSTAGRAM -->
+
+                    <a
+                        href="https://www.instagram.com/albaraqelectrical?stkn=MXhvaDRzOGd2enM5Nw=="
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="social-icon"
+                        aria-label="Instagram"
+                    >
+
+                        <svg
+                            viewBox="0 0 24 24"
+                            aria-hidden="true"
+                        >
+                            <path
+                                d="M7.5 2h9A5.5 5.5 0 0 1 22 7.5v9a5.5 5.5 0 0 1-5.5 5.5h-9A5.5 5.5 0 0 1 2 16.5v-9A5.5 5.5 0 0 1 7.5 2Zm0 2A3.5 3.5 0 0 0 4 7.5v9A3.5 3.5 0 0 0 7.5 20h9a3.5 3.5 0 0 0 3.5-3.5v-9A3.5 3.5 0 0 0 16.5 4h-9ZM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10Zm0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6Zm5.25-3.25a1.25 1.25 0 1 1 0 2.5 1.25 1.25 0 0 1 0-2.5Z"
+                            />
+                        </svg>
+
+                    </a>
+
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+        <!-- FOOTER BOTTOM -->
+
+        <div class="footer-bottom">
+
             © {% now "Y" %} Al Baraq. All rights reserved.
-        </p>
+
+        </div>
 
     </footer>
 
 
+    <!-- =========================
+         JAVASCRIPT
+    ========================= -->
+
     {% block extra_js %}
+
     {% endblock %}
+
 
 </body>
 
