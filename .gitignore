@@ -18,7 +18,6 @@ db.sqlite3
 
 # Static / media
 staticfiles/
-media/
 
 # IDE
 .vscode/
