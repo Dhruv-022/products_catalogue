@@ -22,8 +22,6 @@ ALLOWED_HOSTS = [
     if host.strip()
 ]
 
-ALLOWED_HOSTS = ['*']
-
 # Application definition
 
 INSTALLED_APPS = [
