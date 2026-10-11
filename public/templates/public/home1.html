@@ -13,35 +13,55 @@
 <style>
 
 /* =========================================================
-   HERO SECTION
+   HERO SECTION & DYNAMIC BACKGROUND SLIDESHOW
 ========================================================= */
 
 .hero {
-
-    min-height: calc(100vh - 88px);
-
+    height: calc(100vh - 88px);
+    min-height: 580px;
     position: relative;
-
     display: flex;
-
     align-items: center;
-
     overflow: hidden;
+    background-color: #03122d;
+    padding-bottom: 60px;
+}
 
-    background-image:
-        linear-gradient(
-            90deg,
-            rgba(3, 18, 45, 0.93) 0%,
-            rgba(5, 28, 62, 0.84) 45%,
-            rgba(5, 28, 62, 0.38) 100%
-        ),
-        url("{% static 'public/images/home-hero.jpg' %}");
-
+.hero-bg-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
     background-size: cover;
-
     background-position: center;
-
     background-repeat: no-repeat;
+    opacity: 0;
+    transform: scale(1.15) rotate(0.5deg);
+    transition: opacity 1.4s cubic-bezier(0.4, 0, 0.2, 1), transform 7s ease-out;
+    z-index: 1;
+    will-change: transform, opacity;
+}
+
+.hero-bg-layer.active {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+}
+
+/* Dark Gradient Overlay */
+.hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        rgba(3, 18, 45, 0.93) 0%,
+        rgba(5, 28, 62, 0.84) 45%,
+        rgba(5, 28, 62, 0.38) 100%
+    );
+    z-index: 2;
 }
 
 
@@ -50,183 +70,178 @@
 ========================================================= */
 
 .hero-content {
-
     width: 100%;
-
     max-width: 1400px;
-
     margin: 0 auto;
-
-    padding:
-        40px
-        7%
-        50px;
-
+    padding: 10px 7% 0;
     color: white;
-
     position: relative;
+    z-index: 3;
+}
+
+@keyframes wordSlideUp {
+    0% {
+        opacity: 0;
+        transform: translateY(110%);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0%);
+    }
+}
+
+@keyframes heroFadeUp {
+    0% {
+        opacity: 0;
+        transform: translateY(24px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.hero-animate-badge {
+    animation: heroFadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both;
+}
+
+.hero-animate-desc {
+    animation: heroFadeUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.5s both;
+}
+
+.hero-animate-btns {
+    animation: heroFadeUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.65s both;
 }
 
 
 /* =========================================================
-   DYNAMIC HERO TEXT
+   DYNAMIC FLUID GLASS BADGE WITH CONTINUOUS ORBITING GLOW
 ========================================================= */
 
-.hero-dynamic-wrapper {
-
-    height: 28px;
-
-    display: flex;
-
-    align-items: center;
-
-    margin-bottom: 10px;
-
+.hero-label-wrapper {
+    display: inline-flex;
+    width: fit-content;
+    max-width: max-content;
+    position: relative;
+    margin-bottom: 16px;
+    padding: 2px;
+    border-radius: 32px;
     overflow: hidden;
 }
 
-
-.hero-dynamic-text {
-
-    display: inline-block;
-
-    color: #60a5fa;
-
-    font-size: 17px;
-
-    font-weight: 700;
-
-    letter-spacing: 0.4px;
-
-    opacity: 1;
-
-    transform: translateY(0);
-
-    transition:
-        opacity 0.45s ease,
-        transform 0.45s ease;
+.hero-label-wrapper::before {
+    content: "";
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: conic-gradient(
+        transparent,
+        rgba(56, 189, 248, 0.1),
+        #38bdf8,
+        #60a5fa,
+        transparent 30%
+    );
+    animation: rotateBorderGlow 4s linear infinite;
+    z-index: 0;
 }
 
-
-.hero-dynamic-text.hide {
-
-    opacity: 0;
-
-    transform: translateY(-12px);
+@keyframes rotateBorderGlow {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }
-
-
-/* =========================================================
-   SMALL HERO LABEL
-========================================================= */
 
 .hero-label {
-
+    position: relative;
+    z-index: 1;
     display: inline-flex;
-
     align-items: center;
-
     gap: 10px;
-
-    padding:
-        9px
-        17px;
-
-    margin-bottom: 18px;
-
-    border:
-        1px solid
-        rgba(255, 255, 255, 0.25);
-
+    width: auto;
+    max-width: 100%;
+    padding: 8px 18px;
     border-radius: 30px;
-
-    background:
-        rgba(255, 255, 255, 0.08);
-
-    backdrop-filter: blur(8px);
-
-    -webkit-backdrop-filter: blur(8px);
-
-    font-size: 13px;
-
+    background: rgba(3, 18, 45, 0.88);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    color: #ffffff;
+    font-size: 12.5px;
     font-weight: 700;
-
     letter-spacing: 1.5px;
-
     text-transform: uppercase;
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
 }
 
-
 .hero-label-dot {
-
     width: 8px;
-
     height: 8px;
-
     border-radius: 50%;
-
-    background: #60a5fa;
-
-    box-shadow:
-        0 0 8px
-        rgba(96, 165, 250, 0.75);
-
+    background: #38bdf8;
+    box-shadow: 0 0 10px #38bdf8;
     flex-shrink: 0;
+    animation: pulseDot 1.8s infinite;
+}
+
+@keyframes pulseDot {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.3); opacity: 0.6; }
+}
+
+.hero-label-text {
+    color: #ffffff;
+    display: inline-block;
+    transition: opacity 0.35s ease, transform 0.35s ease;
+    opacity: 1;
+    transform: translateY(0);
+    white-space: nowrap;
+}
+
+.hero-label-text.hide {
+    opacity: 0;
+    transform: translateY(-6px);
 }
 
 
 /* =========================================================
-   HERO HEADING
+   HERO HEADING WITH OVERFLOW WORD REVEAL
 ========================================================= */
 
 .hero h1 {
-
-    max-width: 900px;
-
-    margin-bottom: 20px;
-
-    font-size:
-        clamp(
-            46px,
-            5.4vw,
-            76px
-        );
-
-    line-height: 1.02;
-
+    max-width: 860px;
+    margin-bottom: 18px;
+    font-size: clamp(38px, 4.2vw, 60px);
+    line-height: 1.1;
     font-weight: 800;
-
-    letter-spacing: -2px;
+    letter-spacing: -1.5px;
 }
 
+.text-word-mask {
+    display: inline-block;
+    overflow: hidden;
+    vertical-align: bottom;
+}
+
+.text-word-mask span {
+    display: inline-block;
+    animation: wordSlideUp 0.85s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.word-delay-1 { animation-delay: 0.2s !important; }
+.word-delay-2 { animation-delay: 0.32s !important; }
+.word-delay-3 { animation-delay: 0.44s !important; }
 
 .hero h1 .highlight {
-
     color: #60a5fa;
 }
 
-
-/* =========================================================
-   HERO DESCRIPTION
-========================================================= */
-
 .hero-description {
-
-    max-width: 760px;
-
-    margin-bottom: 28px;
-
-    font-size: 18px;
-
-    line-height: 1.65;
-
-    color:
-        rgba(
-            255,
-            255,
-            255,
-            0.90
-        );
+    max-width: 720px;
+    margin-bottom: 24px;
+    font-size: clamp(15px, 1.25vw, 17px);
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.90);
 }
 
 
@@ -235,113 +250,99 @@
 ========================================================= */
 
 .hero-buttons {
-
     display: flex;
-
     align-items: center;
-
-    gap: 14px;
-
+    gap: 16px;
     flex-wrap: wrap;
-
-    margin-bottom: 24px;
 }
 
+.tilt-element {
+    will-change: transform;
+    transform-style: preserve-3d;
+}
 
 .hero-button {
-
     display: inline-flex;
-
     align-items: center;
-
     justify-content: center;
-
-    padding:
-        13px
-        24px;
-
+    padding: 13px 26px;
     border-radius: 8px;
-
     text-decoration: none;
-
     font-size: 15px;
-
     font-weight: 700;
-
     transition:
-        transform 0.2s ease,
-        background 0.2s ease,
-        box-shadow 0.2s ease;
+        background 0.25s ease,
+        box-shadow 0.25s ease;
 }
-
-
-/* =========================================================
-   PRIMARY BUTTON
-========================================================= */
 
 .hero-button-primary {
-
     background: #2563eb;
-
     color: white;
-
-    box-shadow:
-        0 10px 25px
-        rgba(37, 99, 235, 0.30);
+    box-shadow: 0 10px 25px rgba(37, 99, 235, 0.30);
 }
-
 
 .hero-button-primary:hover {
-
     background: #1d4ed8;
-
-    transform:
-        translateY(-2px);
-
-    box-shadow:
-        0 14px 30px
-        rgba(37, 99, 235, 0.40);
+    box-shadow: 0 14px 30px rgba(37, 99, 235, 0.40);
 }
 
+.hero-button-secondary-wrapper {
+    display: inline-flex;
+    position: relative;
+    padding: 1.5px;
+    border-radius: 9px;
+    overflow: hidden;
+}
 
-/* =========================================================
-   SECONDARY BUTTON
-========================================================= */
+.hero-button-secondary-wrapper::before {
+    content: "";
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: conic-gradient(
+        transparent,
+        rgba(255, 255, 255, 0.1),
+        rgba(96, 165, 250, 0.6),
+        rgba(56, 189, 248, 0.7),
+        transparent 30%
+    );
+    animation: rotateBorderGlow 4.5s linear infinite;
+    z-index: 0;
+}
 
 .hero-button-secondary {
-
+    position: relative;
+    z-index: 1;
     color: white;
-
-    border:
-        1px solid
-        rgba(255, 255, 255, 0.35);
-
-    background:
-        rgba(255, 255, 255, 0.08);
-
-    backdrop-filter: blur(5px);
-
-    -webkit-backdrop-filter: blur(5px);
+    border: none;
+    background: rgba(3, 18, 45, 0.85);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
 }
 
-
 .hero-button-secondary:hover {
-
-    background:
-        rgba(255, 255, 255, 0.15);
-
-    transform:
-        translateY(-2px);
+    background: rgba(15, 23, 42, 0.95);
 }
 
 
 /* =========================================================
-   NEON GLOW SCROLL-DOWN BUTTON
+   MOBILE HERO STATS CARD
+========================================================= */
+
+.hero-mobile-stats {
+    display: none;
+}
+
+
+/* =========================================================
+   NEON GLOW SCROLL-DOWN BUTTON (DESKTOP ABSOLUTE)
 ========================================================= */
 
 .hero-scroll-wrapper {
     position: absolute;
-    bottom: 25px;
+    bottom: 20px;
     left: 50%;
     transform: translateX(-50%);
     display: flex;
@@ -350,923 +351,874 @@
     z-index: 10;
 }
 
-
 .hero-scroll-btn {
-
-    width: 48px;
-
-    height: 48px;
-
+    width: 46px;
+    height: 46px;
     border-radius: 50%;
-
-    border: 1.5px solid rgba(56, 189, 248, 0.8);
-
-    background: rgba(3, 18, 45, 0.65);
-
-    backdrop-filter: blur(8px);
-
-    -webkit-backdrop-filter: blur(8px);
-
+    border: 1.5px solid rgba(56, 189, 248, 0.85);
+    background: transparent;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     color: #38bdf8;
-
     display: inline-flex;
-
     align-items: center;
-
     justify-content: center;
-
     cursor: pointer;
-
     text-decoration: none;
-
-    /* Neon Glow Shadows */
     box-shadow:
-        0 0 12px rgba(56, 189, 248, 0.4),
-        0 0 24px rgba(37, 99, 235, 0.25),
-        inset 0 0 10px rgba(56, 189, 248, 0.2);
-
-    transition:
-        all 0.3s ease;
-
+        0 0 12px rgba(56, 189, 248, 0.45),
+        0 0 24px rgba(37, 99, 235, 0.3);
+    transition: all 0.3s ease;
     animation: neonBounceGlow 2.4s infinite ease-in-out;
 }
 
-
 .hero-scroll-btn svg {
-
     filter: drop-shadow(0 0 6px rgba(56, 189, 248, 0.8));
-
     transition: transform 0.25s ease;
 }
 
-
 .hero-scroll-btn:hover {
-
     background: rgba(37, 99, 235, 0.25);
-
     color: #ffffff;
-
     border-color: #60a5fa;
-
     box-shadow:
         0 0 22px rgba(96, 165, 250, 0.85),
         0 0 45px rgba(37, 99, 235, 0.65);
-
     transform: scale(1.08);
-
     animation-play-state: paused;
 }
-
 
 @keyframes neonBounceGlow {
     0%, 100% {
         transform: translateY(0);
         box-shadow:
-            0 0 12px rgba(56, 189, 248, 0.4),
-            0 0 24px rgba(37, 99, 235, 0.25),
-            inset 0 0 10px rgba(56, 189, 248, 0.2);
+            0 0 12px rgba(56, 189, 248, 0.45),
+            0 0 24px rgba(37, 99, 235, 0.3);
     }
-
     50% {
-        transform: translateY(8px);
+        transform: translateY(6px);
         box-shadow:
             0 0 20px rgba(56, 189, 248, 0.75),
-            0 0 35px rgba(37, 99, 235, 0.5),
-            inset 0 0 14px rgba(56, 189, 248, 0.4);
+            0 0 35px rgba(37, 99, 235, 0.5);
     }
 }
 
 
 /* =========================================================
-   STATS BAR SECTION (REVEALED ON SCROLL BELOW HERO)
+   STATS BAR SECTION
 ========================================================= */
 
 .stats-bar-section {
-
     background: #0b192e;
-
     padding: 30px 7%;
-
     border-bottom: 1px solid #1e293b;
 }
 
-
 .stats-bar-container {
-
     max-width: 1200px;
-
     margin: 0 auto;
-
     display: flex;
-
     align-items: center;
-
     justify-content: space-between;
-
     flex-wrap: wrap;
-
     gap: 20px;
 }
 
-
 .stats-bar-item {
-
     display: flex;
-
     align-items: baseline;
-
-    gap: 8px;
+    gap: 4px;
 }
 
-
-.stats-bar-number {
-
+.stats-bar-number-wrap {
     font-size: 20px;
-
     font-weight: 800;
-
     color: #60a5fa;
+    display: inline-flex;
+    align-items: center;
 }
-
 
 .stats-bar-label {
-
     font-size: 13.5px;
-
     font-weight: 600;
-
     color: #94a3b8;
-
     letter-spacing: 0.3px;
+    margin-left: 6px;
 }
 
-
 .stats-bar-divider {
-
     width: 4px;
-
     height: 4px;
-
     border-radius: 50%;
-
     background: rgba(255, 255, 255, 0.2);
 }
 
 
 /* =========================================================
-   ENTRANCE ANIMATION UTILITIES
+   ENTRANCE ANIMATION UTILITIES FOR CARDS & SECTIONS
 ========================================================= */
 
 .scroll-reveal {
-
     opacity: 0;
-
-    transform: translateY(22px);
-
+    transform: translateY(35px) scale(0.96);
     transition:
-        opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1),
-        transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+        opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+        transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: opacity, transform;
 }
 
-
 .scroll-reveal.is-visible {
-
     opacity: 1;
+    transform: translateY(0) scale(1);
+}
 
-    transform: translateY(0);
+.scroll-reveal.delay-1 { transition-delay: 0.15s; }
+.scroll-reveal.delay-2 { transition-delay: 0.3s; }
+.scroll-reveal.delay-3 { transition-delay: 0.45s; }
+
+
+/* =========================================================
+   DYNAMIC ELECTRIC BORDER WRAPPER FOR CARDS
+========================================================= */
+
+.electric-card-wrapper {
+    position: relative;
+    padding: 1.5px;
+    border-radius: 18px;
+    overflow: hidden;
+    height: 100%;
+    background: #cbd5e1;
+    transition: background 0.3s ease;
+}
+
+.electric-card-wrapper::before {
+    content: "";
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: conic-gradient(
+        transparent,
+        rgba(56, 189, 248, 0.2),
+        #38bdf8,
+        #60a5fa,
+        rgba(37, 99, 235, 0.8),
+        transparent 40%
+    );
+    animation: rotateElectricBorder 3.5s linear infinite;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    z-index: 0;
+}
+
+.electric-card-wrapper:hover::before {
+    opacity: 1;
+}
+
+@keyframes rotateElectricBorder {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }
 
 
 /* =========================================================
-   COMPANY INTRODUCTION
+   LIGHT-THEME SECTION TAG BADGES
+========================================================= */
+
+.section-tag-wrapper {
+    display: inline-flex;
+    width: fit-content;
+    max-width: max-content;
+    position: relative;
+    margin-bottom: 15px;
+    padding: 1.5px;
+    border-radius: 30px;
+    overflow: hidden;
+}
+
+.section-tag-wrapper::before {
+    content: "";
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: conic-gradient(
+        transparent,
+        rgba(37, 99, 235, 0.08),
+        rgba(37, 99, 235, 0.4),
+        rgba(96, 165, 250, 0.45),
+        transparent 35%
+    );
+    animation: rotateLightBorderGlow 4.5s linear infinite;
+    z-index: 0;
+}
+
+@keyframes rotateLightBorderGlow {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.section-tag-badge {
+    position: relative;
+    z-index: 1;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 18px;
+    border-radius: 30px;
+    background: #ffffff;
+    color: #2563eb;
+    font-size: 12.5px;
+    font-weight: 750;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    box-shadow: 0 4px 14px rgba(37, 99, 235, 0.08);
+    white-space: nowrap;
+}
+
+.section-tag-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #2563eb;
+    box-shadow: 0 0 8px rgba(37, 99, 235, 0.6);
+    flex-shrink: 0;
+    animation: pulseDot 1.8s infinite;
+}
+
+
+/* =========================================================
+   COMPANY INTRODUCTION & INTRO CARD
 ========================================================= */
 
 .intro-section {
-
-    padding:
-        80px
-        7%;
-
-    background:
-        #f8fafc;
+    padding: 85px 7%;
+    background: #f8fafc;
+    position: relative;
 }
-
 
 .intro-container {
-
     max-width: 1200px;
-
     margin: 0 auto;
-
     display: grid;
-
-    grid-template-columns:
-        1fr
-        1fr;
-
-    gap: 70px;
-
-    align-items: center;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: stretch;
 }
 
-
-.intro-label {
-
-    margin-bottom: 15px;
-
-    color: #2563eb;
-
-    font-size: 13px;
-
-    font-weight: 700;
-
-    letter-spacing: 2px;
-
-    text-transform: uppercase;
+.intro-left-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
 }
-
 
 .intro-title {
-
     margin-bottom: 22px;
-
     color: #0f172a;
-
-    font-size: 42px;
-
-    line-height: 1.15;
-
+    font-size: 40px;
+    line-height: 1.18;
     font-weight: 800;
 }
 
-
 .intro-text {
-
     color: #475569;
-
     font-size: 17px;
-
     line-height: 1.8;
 }
 
-
-/* =========================================================
-   INTRO CARD
-========================================================= */
+.intro-card-perspective {
+    perspective: 1000px;
+}
 
 .intro-card {
-
-    padding: 35px;
-
+    position: relative;
+    z-index: 1;
     background: white;
-
-    border:
-        1px solid
-        #e2e8f0;
-
-    border-radius: 16px;
-
-    box-shadow:
-        0 15px 40px
-        rgba(15, 23, 42, 0.06);
-
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-radius: 17px;
+    overflow: hidden;
+    box-shadow: 0 10px 25px rgba(15, 23, 42, 0.06);
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    transition: box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-
-.intro-card:hover {
-
-    transform: translateY(-4px);
-
-    box-shadow: 0 20px 45px rgba(15, 23, 42, 0.1);
+.intro-card-image-wrapper {
+    position: relative;
+    height: 190px;
+    width: 100%;
+    background-image:
+        linear-gradient(
+            180deg,
+            rgba(15, 23, 42, 0.2) 0%,
+            rgba(15, 23, 42, 0.75) 100%
+        ),
+        url("{% static 'public/images/sub-hero.jpg' %}");
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: flex-end;
+    padding: 24px 30px;
+    transition: transform 0.5s ease;
 }
 
-
-.intro-card h3 {
-
-    margin-bottom: 15px;
-
-    color: #0f172a;
-
-    font-size: 22px;
+.electric-card-wrapper:hover .intro-card-image-wrapper {
+    transform: scale(1.04);
 }
 
+.intro-card-image-title {
+    color: #ffffff;
+    font-size: 24px;
+    font-weight: 800;
+    margin: 0;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+}
 
-.intro-card p {
+.intro-card-body {
+    padding: 30px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
 
+.intro-card-body p {
     color: #64748b;
-
     line-height: 1.8;
+    font-size: 15.5px;
+    margin: 0;
 }
 
 
 /* =========================================================
-   TRUSTED BRANDS SECTION
-   Kept at the bottom of the home page
+   PRODUCTS OVERVIEW SECTION & HYPER CATEGORY CARDS
+========================================================= */
+
+.products-overview-section {
+    padding: 85px 7%;
+    background: #ffffff;
+    border-top: 1px solid #e2e8f0;
+}
+
+.products-overview-container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.products-overview-header {
+    text-align: center;
+    margin-bottom: 45px;
+}
+
+.products-overview-header h2 {
+    color: #0f172a;
+    font-size: 34px;
+    font-weight: 800;
+    margin: 0;
+}
+
+.products-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 22px;
+}
+
+.product-cat-card {
+    position: relative;
+    z-index: 1;
+    background: #f8fafc;
+    border: 1px solid #cbd5e1;
+    border-radius: 17px;
+    padding: 30px 24px;
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    color: inherit;
+    overflow: hidden;
+    height: 100%;
+    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.03);
+    transition:
+        border-color 0.3s ease,
+        box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+        background 0.35s ease;
+}
+
+.electric-card-wrapper:hover .product-cat-card {
+    background: #ffffff;
+    border-color: transparent;
+    box-shadow: 0 20px 40px rgba(37, 99, 235, 0.15);
+}
+
+.product-cat-badge {
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+    background: #eff6ff;
+    border: 1px solid #bfdbfe;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    margin-bottom: 20px;
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.3s ease, border-color 0.3s ease;
+}
+
+.electric-card-wrapper:hover .product-cat-badge {
+    transform: scale(1.18) rotate(-8deg);
+    background: #2563eb;
+    border-color: #2563eb;
+    color: #ffffff;
+    box-shadow: 0 10px 20px rgba(37, 99, 235, 0.3);
+}
+
+.product-cat-card h3 {
+    font-size: 18px;
+    font-weight: 700;
+    color: #0f172a;
+    margin-bottom: 10px;
+    transition: color 0.25s ease, transform 0.3s ease;
+}
+
+.electric-card-wrapper:hover h3 {
+    color: #2563eb;
+    transform: translateX(3px);
+}
+
+.product-cat-card p {
+    font-size: 14px;
+    color: #64748b;
+    line-height: 1.6;
+    margin: 0;
+    flex: 1;
+}
+
+.product-cat-footer {
+    margin-top: 20px;
+    font-size: 13.5px;
+    font-weight: 700;
+    color: #2563eb;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: gap 0.3s ease, color 0.3s ease;
+}
+
+.electric-card-wrapper:hover .product-cat-footer {
+    gap: 12px;
+    color: #1d4ed8;
+}
+
+
+/* =========================================================
+   TRUSTED BRANDS SECTION (DYNAMIC CONTINUOUS GLOW & WAVE MARQUEE)
 ========================================================= */
 
 .brands-section {
-
-    background:
-        #ffffff;
-
-    padding:
-        65px
-        0
-        70px;
-
+    background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+    padding: 75px 0 80px;
     overflow: hidden;
-
-    border-bottom:
-        1px solid
-        #e5e7eb;
+    border-top: 1px solid #f1f5f9;
+    border-bottom: 1px solid #e2e8f0;
 }
-
-
-/* =========================================================
-   BRANDS HEADING
-========================================================= */
 
 .brands-heading {
-
     text-align: center;
-
-    margin-bottom: 35px;
-
-    padding:
-        0
-        20px;
+    margin-bottom: 40px;
+    padding: 0 20px;
 }
-
-
-.brands-heading span {
-
-    display: block;
-
-    margin-bottom: 8px;
-
-    color: #2563eb;
-
-    font-size: 13px;
-
-    font-weight: 700;
-
-    letter-spacing: 2px;
-
-    text-transform: uppercase;
-}
-
 
 .brands-heading h2 {
-
     color: #0f172a;
-
-    font-size: 32px;
-
+    font-size: 34px;
     font-weight: 800;
 }
 
-
 .brands-heading p {
-
     max-width: 750px;
-
-    margin:
-        12px
-        auto
-        0;
-
+    margin: 12px auto 0;
     color: #64748b;
-
     font-size: 16px;
-
     line-height: 1.7;
 }
 
-
-/* =========================================================
-   MARQUEE CONTAINER
-========================================================= */
-
 .brands-marquee {
-
     position: relative;
-
     width: 100%;
-
     overflow: hidden;
-
-    padding:
-        10px
-        0
-        15px;
+    padding: 20px 0 25px;
 }
 
+/* Linear edge fade masks */
+.brands-marquee::before,
+.brands-marquee::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    width: 140px;
+    height: 100%;
+    z-index: 5;
+    pointer-events: none;
+}
 
-/* =========================================================
-   MARQUEE TRACK
-========================================================= */
+.brands-marquee::before {
+    left: 0;
+    background: linear-gradient(90deg, #ffffff 0%, rgba(255, 255, 255, 0) 100%);
+}
+
+.brands-marquee::after {
+    right: 0;
+    background: linear-gradient(-90deg, #f8fafc 0%, rgba(248, 250, 252, 0) 100%);
+}
 
 .brands-track {
-
     display: flex;
-
     align-items: center;
-
     width: max-content;
-
-    animation:
-        brandScroll 38s
-        linear
-        infinite;
-
-    will-change:
-        transform;
+    animation: brandScrollSmooth 32s linear infinite;
+    will-change: transform;
 }
-
 
 .brands-track:hover {
-
-    animation-play-state:
-        paused;
+    animation-play-state: paused;
 }
 
-
-/* =========================================================
-   BRAND BOX
-========================================================= */
-
-.brand-item {
-
+.brand-item-wrapper {
+    position: relative;
+    padding: 1.5px;
+    border-radius: 30px;
+    margin: 0 10px;
+    overflow: hidden;
     display: inline-flex;
+    background: rgba(226, 232, 240, 0.8);
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease;
+}
 
+.brand-item-wrapper::before {
+    content: "";
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: conic-gradient(
+        transparent,
+        rgba(56, 189, 248, 0.15),
+        #38bdf8,
+        #60a5fa,
+        transparent 35%
+    );
+    animation: rotateElectricBorder 4s linear infinite;
+    opacity: 0;
+    transition: opacity 0.35s ease;
+    z-index: 0;
+}
+
+.brand-item-wrapper:hover::before {
+    opacity: 1;
+}
+
+.brand-item-wrapper:hover {
+    transform: translateY(-8px) scale(1.1);
+    box-shadow: 0 16px 32px rgba(37, 99, 235, 0.22);
+}
+
+.brand-pill {
+    position: relative;
+    z-index: 1;
+    display: inline-flex;
     align-items: center;
-
-    justify-content: center;
-
-    min-width: 150px;
-
-    height: 54px;
-
-    margin:
-        0
-        8px;
-
-    padding:
-        0
-        22px;
-
-    border:
-        1px solid
-        #dbe4f0;
-
-    border-radius: 10px;
-
-    background:
-        rgba(255, 255, 255, 0.96);
-
+    gap: 10px;
+    padding: 12px 26px;
+    border-radius: 30px;
+    background: #ffffff;
     color: #334155;
-
-    font-size: 16px;
-
-    font-weight: 650;
-
+    font-size: 15px;
+    font-weight: 700;
     white-space: nowrap;
-
-    box-shadow:
-        0 5px 15px
-        rgba(15, 23, 42, 0.05);
-
-    transition:
-        transform 0.25s ease,
-        border-color 0.25s ease,
-        box-shadow 0.25s ease,
-        color 0.25s ease;
+    transition: color 0.3s ease, background 0.3s ease;
 }
 
-
-.brand-item:hover {
-
-    transform:
-        translateY(-4px);
-
-    border-color:
-        #93c5fd;
-
-    color:
-        #2563eb;
-
-    box-shadow:
-        0 10px 25px
-        rgba(37, 99, 235, 0.12);
+.brand-item-wrapper:hover .brand-pill {
+    color: #2563eb;
+    background: #ffffff;
 }
 
-
-.brand-separator {
-
-    display: none;
+.brand-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #94a3b8;
+    transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
 }
 
+.brand-item-wrapper:hover .brand-dot {
+    background: #38bdf8;
+    box-shadow: 0 0 10px #38bdf8;
+    transform: scale(1.4);
+}
 
-@keyframes brandScroll {
-
-    from {
-
-        transform:
-            translateX(0);
-    }
-
-    to {
-
-        transform:
-            translateX(-50%);
-    }
+@keyframes brandScrollSmooth {
+    0% { transform: translate3d(0, 0, 0); }
+    100% { transform: translate3d(-50%, 0, 0); }
 }
 
 
 /* =========================================================
-   TABLET
+   RESPONSIVE MEDIA QUERIES (DESKTOP / TABLET / MOBILE)
 ========================================================= */
+
+@media (max-width: 1024px) {
+    .products-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
 
 @media (max-width: 900px) {
-
-    .hero {
-
-        min-height:
-            calc(100vh - 75px);
-    }
-
-
     .hero-content {
-
-        padding:
-            40px
-            5%
-            50px;
+        padding: 40px 5% 0;
     }
-
-
     .hero h1 {
-
-        font-size:
-            clamp(
-                42px,
-                7vw,
-                62px
-            );
+        font-size: clamp(36px, 6.5vw, 54px);
     }
-
-
     .hero-description {
-
-        font-size: 17px;
-
+        font-size: 16px;
         max-width: 680px;
     }
-
-
     .intro-container {
-
-        grid-template-columns:
-            1fr;
-
+        grid-template-columns: 1fr;
         gap: 35px;
     }
-
-
-    .intro-section {
-
-        padding:
-            70px
-            5%;
+    .intro-section, .products-overview-section {
+        padding: 70px 5%;
     }
-
-
     .intro-title {
-
         font-size: 36px;
     }
-
-
     .brands-section {
-
-        padding:
-            55px
-            0
-            60px;
+        padding: 55px 0 60px;
     }
-
 }
 
-
-/* =========================================================
-   MOBILE
-========================================================= */
-
-@media (max-width: 700px) {
+/* LOCKED SYMMETRICAL MOBILE LAYOUT (<= 768px ONLY) */
+@media (max-width: 768px) {
 
     .hero {
-
-        min-height:
-            calc(100vh - 72px);
-
-        align-items:
-            flex-start;
+        height: auto !important;
+        min-height: unset !important;
+        max-height: none !important;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 24px 0 20px;
+        box-sizing: border-box;
     }
-
 
     .hero-content {
-
-        padding:
-            45px
-            25px
-            60px;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 0 18px;
+        margin-top: 0;
+        width: 100%;
     }
 
-
-    .hero-dynamic-wrapper {
-
-        height: 25px;
-
-        margin-bottom: 8px;
+    .hero-label-wrapper {
+        margin-bottom: 12px;
     }
-
-
-    .hero-dynamic-text {
-
-        font-size: 14px;
-    }
-
 
     .hero-label {
-
-        font-size: 11px;
-
-        letter-spacing: 1px;
-
-        padding:
-            8px
-            14px;
-
-        margin-bottom: 17px;
+        font-size: 10.5px;
+        letter-spacing: 0.8px;
+        padding: 5px 12px;
     }
-
 
     .hero h1 {
-
-        font-size: 44px;
-
-        line-height: 1.04;
-
-        letter-spacing: -1px;
-
-        margin-bottom: 18px;
+        font-size: 23px;
+        line-height: 1.25;
+        letter-spacing: -0.3px;
+        margin-bottom: 12px;
     }
-
 
     .hero-description {
-
-        font-size: 16px;
-
-        line-height: 1.65;
-
-        margin-bottom: 23px;
+        font-size: 13px;
+        line-height: 1.5;
+        margin-bottom: 16px;
+        opacity: 0.92;
     }
-
 
     .hero-buttons {
-
+        display: flex;
+        flex-direction: column;
         gap: 10px;
-
         margin-bottom: 18px;
+        width: 100%;
     }
-
 
     .hero-button {
-
-        padding:
-            12px
-            20px;
-
-        font-size: 14px;
+        width: 100%;
+        padding: 11px 16px;
+        font-size: 13.5px;
+        border-radius: 8px;
     }
 
-
-    .stats-bar-container {
-
-        justify-content: center;
-
-        gap: 14px;
+    .hero-button-secondary-wrapper {
+        width: 100%;
+        display: flex;
     }
 
-
-    .stats-bar-divider {
-
-        display: none;
+    .hero-button-secondary-wrapper .hero-button-secondary {
+        width: 100%;
     }
 
+    .hero-mobile-stats {
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        padding: 10px 12px;
+        margin-top: 0;
+        margin-bottom: 0;
+        width: 100%;
+        background: rgba(3, 18, 45, 0.82);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        border-radius: 12px;
+    }
+
+    .hero-mobile-stat-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.hero-mobile-stat-value {
+    display: inline-flex;
+    align-items: baseline;
+    justify-content: center;
+    white-space: nowrap;
+    gap: 1px;
+}
+
+    .hero-mobile-stat-num {
+        font-size: 13.5px;
+        font-weight: 850;
+        color: #60a5fa;
+        line-height: 1.1;
+    }
+
+    .hero-mobile-stat-num,
+.hero-mobile-stat-symbol {
+    font-size: 14px;
+    font-weight: 850;
+    color: #60a5fa;
+    line-height: 1.1;
+}
+
+    .hero-mobile-stat-lbl {
+    font-size: 9.5px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.85);
+    margin-top: 3px;
+    white-space: nowrap;
+}
+
+    .stats-bar-section {
+        display: none !important;
+    }
+
+    .hero-scroll-wrapper {
+        position: relative;
+        bottom: auto;
+        left: auto;
+        transform: none;
+        margin-top: 20px;
+        margin-bottom: 0;
+        z-index: 10;
+        flex-shrink: 0;
+    }
 
     .hero-scroll-btn {
-
-    width: 48px;
-
-    height: 48px;
-
-    border-radius: 50%;
-
-    border: 1.5px solid rgba(56, 189, 248, 0.85);
-
-    /* Pure transparent background with glassmorphism blur */
-    background: transparent;
-
-    backdrop-filter: blur(10px);
-
-    -webkit-backdrop-filter: blur(10px);
-
-    color: #38bdf8;
-
-    display: inline-flex;
-
-    align-items: center;
-
-    justify-content: center;
-
-    cursor: pointer;
-
-    text-decoration: none;
-
-    /* Pure Neon Glow Shadows without inner fill */
-    box-shadow:
-        0 0 12px rgba(56, 189, 248, 0.45),
-        0 0 24px rgba(37, 99, 235, 0.3);
-
-    transition:
-        all 0.3s ease;
-
-    animation: neonBounceGlow 2.4s infinite ease-in-out;
-}
-
-
-    .intro-section {
-
-        padding:
-            60px
-            25px;
+        width: 46px;
+        height: 46px;
     }
 
-
-    .intro-title {
-
-        font-size: 32px;
+    .hero-scroll-btn svg {
+        width: 20px;
+        height: 20px;
     }
 
+    .intro-section, .products-overview-section {
+        padding: 45px 18px;
+    }
+
+    .intro-title, .products-overview-header h2 {
+        font-size: 25px;
+    }
 
     .intro-text {
-
-        font-size: 16px;
+        font-size: 14.5px;
     }
 
-
-    .intro-card {
-
-        padding: 28px;
+    .intro-card-image-wrapper {
+        height: 140px;
+        padding: 14px 18px;
     }
 
+    .intro-card-image-title {
+        font-size: 18px;
+    }
+
+    .intro-card-body {
+        padding: 18px;
+    }
 
     .brands-section {
-
-        padding:
-            50px
-            0
-            55px;
+        padding: 40px 0 45px;
     }
-
 
     .brands-heading {
-
-        margin-bottom: 25px;
+        margin-bottom: 20px;
     }
-
 
     .brands-heading h2 {
-
-        font-size: 28px;
+        font-size: 24px;
     }
-
 
     .brands-heading p {
-
-        font-size: 15px;
-
-        padding:
-            0
-            15px;
+        font-size: 13.5px;
+        padding: 0 10px;
     }
 
-
-    .brand-item {
-
-        min-width: 135px;
-
-        height: 50px;
-
-        font-size: 15px;
-
-        padding:
-            0
-            18px;
-    }
-
-}
-
-
-/* =========================================================
-   VERY SMALL SCREENS
-========================================================= */
-
-@media (max-width: 500px) {
-
-    .hero-content {
-
-        padding:
-            35px
-            20px
-            50px;
-    }
-
-
-    .hero-dynamic-text {
-
+    .brand-pill {
+        padding: 9px 18px;
         font-size: 13px;
     }
+}
 
-
-    .hero-label {
-
-        font-size: 10px;
-
-        letter-spacing:
-            0.8px;
+@media (max-width: 480px) {
+    .products-grid {
+        grid-template-columns: 1fr;
     }
 
+    .hero-content {
+        padding: 0 14px;
+    }
 
     .hero h1 {
-
-        font-size: 38px;
-
-        letter-spacing:
-            -0.8px;
+        font-size: 22px;
     }
-
 
     .hero-description {
-
-        font-size: 15px;
-
-        line-height:
-            1.6;
+        font-size: 12.5px;
     }
-
-
-    .hero-buttons {
-
-        flex-direction:
-            column;
-
-        align-items:
-            stretch;
-    }
-
-
-    .hero-button {
-
-        width:
-            100%;
-    }
-
 
     .intro-title {
-
-        font-size: 29px;
+        font-size: 22px;
     }
-
-
-    .brand-item {
-
-        min-width:
-            125px;
-
-        height:
-            48px;
-
-        font-size:
-            14px;
-
-        margin:
-            0
-            6px;
-    }
-
 }
 
 </style>
@@ -1278,57 +1230,72 @@
 
 
 <!-- =========================================================
-     HERO
+     HERO SECTION
 ========================================================= -->
 
 <section class="hero">
 
+    <!-- DYNAMIC BACKGROUND SLIDESHOW LAYERS -->
+    <div
+        class="hero-bg-layer active"
+        style="background-image: url('{% static 'public/images/home-hero.jpg' %}');"
+    ></div>
+
+    <div
+        class="hero-bg-layer"
+        style="background-image: url('{% static 'public/images/home-hero1.jpg' %}');"
+    ></div>
+
+    <div
+        class="hero-bg-layer"
+        style="background-image: url('{% static 'public/images/home-hero2.jpg' %}');"
+    ></div>
+
+    <div
+        class="hero-bg-layer"
+        style="background-image: url('{% static 'public/images/home-hero3.jpg' %}');"
+    ></div>
+
+    <!-- OVERLAY SHADE -->
+    <div class="hero-overlay"></div>
+
+
     <div class="hero-content">
 
+        <!-- DYNAMIC FLUID GLASS BADGE WITH ORBITING GLOW LOOP -->
+        <div class="hero-label-wrapper hero-animate-badge">
 
-        <!-- DYNAMIC TEXT -->
-        <div class="hero-dynamic-wrapper">
+            <div class="hero-label">
 
-            <span
-                class="hero-dynamic-text"
-                id="heroDynamicText"
-            >
-                Quality Electrical Materials
-            </span>
+                <span class="hero-label-dot"></span>
 
-        </div>
+                <span class="hero-label-text" id="heroDynamicLabel">
+                    Electrical Products &amp; Solutions
+                </span>
 
-
-        <!-- HERO LABEL -->
-
-        <div class="hero-label">
-
-            <span class="hero-label-dot"></span>
-
-            Electrical Products &amp; Solutions
+            </div>
 
         </div>
 
 
-        <!-- HERO HEADING -->
+        <!-- HERO HEADING WITH SLIDING OVERFLOW WORD REVEAL -->
 
         <h1>
-
-            Quality Electrical
-
-            <span class="highlight">
-                Materials.
+            <span class="text-word-mask">
+                <span class="word-delay-1">Quality Electrical</span>
             </span>
-
-            Trusted Brands.
-            Reliable Supply.
-
+            <span class="text-word-mask">
+                <span class="highlight word-delay-2">Materials.</span>
+            </span>
+            <span class="text-word-mask">
+                <span class="word-delay-3">Trusted Brands. Reliable Supply.</span>
+            </span>
         </h1>
 
 
         <!-- HERO DESCRIPTION -->
 
-        <p class="hero-description">
+        <p class="hero-description hero-animate-desc">
 
             Al Baraq Elect. Ware Tr. is your trusted electrical
             material supplier in the UAE, providing quality
@@ -1338,63 +1305,99 @@
         </p>
 
 
-        <!-- BUTTONS -->
+        <!-- BUTTONS WITH MOUSE TILT -->
 
-        <div class="hero-buttons">
-
+        <div class="hero-buttons hero-animate-btns">
 
             <a
                 href="{% url 'public:products' %}"
-                class="hero-button hero-button-primary"
+                class="hero-button hero-button-primary tilt-element"
             >
-                Explore Products →
+                Explore Products
             </a>
 
-
-            <a
-                href="{% url 'public:contact' %}"
-                class="hero-button hero-button-secondary"
-            >
-                Contact Us
-            </a>
-
-
-        </div>
-
-
-        <!-- NEON GLOW SCROLL BUTTON DIRECTLY BELOW BUTTONS -->
-
-        <div class="hero-scroll-wrapper">
-
-            <a
-                href="#statsSection"
-                class="hero-scroll-btn"
-                id="scrollDownBtn"
-                aria-label="Scroll down to stats and about section"
-                title="Scroll Down"
-            >
-
-                <svg
-                    width="22"
-                    height="22"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2.5"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
+            <!-- Contact Us Button with Subtle Orbiting Glow -->
+            <div class="hero-button-secondary-wrapper tilt-element">
+                <a
+                    href="{% url 'public:contact' %}"
+                    class="hero-button hero-button-secondary"
                 >
-
-                    <line x1="12" y1="5" x2="12" y2="19"></line>
-
-                    <polyline points="19 12 12 19 5 12"></polyline>
-
-                </svg>
-
-            </a>
+                    Contact Us
+                </a>
+            </div>
 
         </div>
 
+
+        <!-- COMPACT MOBILE HERO STATS STRIP -->
+
+        <div class="hero-mobile-stats">
+
+    <div class="hero-mobile-stat-item">
+        <div class="hero-mobile-stat-value">
+            <span class="hero-mobile-stat-num counter" data-target="12">0</span>
+            <span class="hero-mobile-stat-symbol">+</span>
+        </div>
+        <span class="hero-mobile-stat-lbl">Years UAE</span>
+    </div>
+
+    <div class="hero-mobile-stat-item">
+        <div class="hero-mobile-stat-value">
+            <span class="hero-mobile-stat-num counter" data-target="20">0</span>
+            <span class="hero-mobile-stat-symbol">+</span>
+        </div>
+        <span class="hero-mobile-stat-lbl">Brands</span>
+    </div>
+
+    <div class="hero-mobile-stat-item">
+        <div class="hero-mobile-stat-value">
+            <span class="hero-mobile-stat-num counter" data-target="7">0</span>
+        </div>
+        <span class="hero-mobile-stat-lbl">Emirates</span>
+    </div>
+
+    <div class="hero-mobile-stat-item">
+        <div class="hero-mobile-stat-value">
+            <span class="hero-mobile-stat-num counter" data-target="100">0</span>
+            <span class="hero-mobile-stat-symbol">%</span>
+        </div>
+        <span class="hero-mobile-stat-lbl">Authentic</span>
+    </div>
+
+</div>
+
+    </div>
+
+    <!-- NEON GLOW SCROLL BUTTON -->
+
+    <div class="hero-scroll-wrapper">
+
+        <a
+            href="#statsSection"
+            class="hero-scroll-btn tilt-element"
+            id="scrollDownBtn"
+            aria-label="Scroll down to stats section"
+            title="Scroll Down"
+        >
+
+            <svg
+                width="22"
+                height="22"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+            >
+
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+
+                <polyline points="19 12 12 19 5 12"></polyline>
+
+            </svg>
+
+        </a>
 
     </div>
 
@@ -1402,7 +1405,7 @@
 
 
 <!-- =========================================================
-     STATS BAR SECTION (REVEALED ON SCROLL BELOW HERO)
+     STATS BAR SECTION WITH ANIMATED COUNT-UP NUMBERS
 ========================================================= -->
 
 <section class="stats-bar-section scroll-reveal" id="statsSection">
@@ -1410,28 +1413,36 @@
     <div class="stats-bar-container">
 
         <div class="stats-bar-item">
-            <span class="stats-bar-number">12+</span>
+            <div class="stats-bar-number-wrap">
+                <span class="counter" data-target="12">0</span>+
+            </div>
             <span class="stats-bar-label">Years in UAE</span>
         </div>
 
         <span class="stats-bar-divider"></span>
 
         <div class="stats-bar-item">
-            <span class="stats-bar-number">50+</span>
+            <div class="stats-bar-number-wrap">
+                <span class="counter" data-target="20">0</span>+
+            </div>
             <span class="stats-bar-label">Reputed Brands</span>
         </div>
 
         <span class="stats-bar-divider"></span>
 
         <div class="stats-bar-item">
-            <span class="stats-bar-number">7</span>
+            <div class="stats-bar-number-wrap">
+                <span class="counter" data-target="7">0</span>
+            </div>
             <span class="stats-bar-label">Emirates Delivered</span>
         </div>
 
         <span class="stats-bar-divider"></span>
 
         <div class="stats-bar-item">
-            <span class="stats-bar-number">100%</span>
+            <div class="stats-bar-number-wrap">
+                <span class="counter" data-target="100">0</span>%
+            </div>
             <span class="stats-bar-label">Authentic Materials</span>
         </div>
 
@@ -1444,17 +1455,20 @@
      COMPANY INTRODUCTION
 ========================================================= -->
 
-<section class="intro-section scroll-reveal">
+<section class="intro-section" id="introSection">
 
 
     <div class="intro-container">
 
 
-        <div>
+        <div class="intro-left-content scroll-reveal">
 
-
-            <div class="intro-label">
-                About Al Baraq
+            <!-- Styled Section Tag Badge -->
+            <div class="section-tag-wrapper">
+                <div class="section-tag-badge">
+                    <span class="section-tag-dot"></span>
+                    About Al Baraq
+                </div>
             </div>
 
 
@@ -1479,25 +1493,40 @@
         </div>
 
 
-        <div class="intro-card">
+        <!-- SUB-HERO CARD WITH ELECTRIC BORDER & 3D MOUSE TILT -->
 
+        <div class="intro-card-perspective scroll-reveal delay-1">
 
-            <h3>
-                Serving All Seven Emirates
-            </h3>
+            <div class="electric-card-wrapper tilt-element">
 
+                <div class="intro-card">
 
-            <p>
+                    <div class="intro-card-image-wrapper">
 
-                We provide electrical materials to traders,
-                MEP companies, contractors, oil &amp; gas companies,
-                industrial organizations and commercial customers.
+                        <h3 class="intro-card-image-title">
+                            Serving All Seven Emirates
+                        </h3>
 
-                Our focus is simple — quality products, trusted
-                brands, competitive solutions and reliable supply.
+                    </div>
 
-            </p>
+                    <div class="intro-card-body">
 
+                        <p>
+
+                            We provide electrical materials to traders,
+                            MEP companies, contractors, oil &amp; gas companies,
+                            industrial organizations and commercial customers.
+
+                            Our focus is simple — quality products, trusted
+                            brands, competitive solutions and reliable supply.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
 
         </div>
 
@@ -1508,21 +1537,99 @@
 </section>
 
 
+<!-- =========================================================
+     PRODUCTS & VARIETIES OVERVIEW SECTION
+========================================================= -->
+
+<section class="products-overview-section">
+
+    <div class="products-overview-container">
+
+        <div class="products-overview-header scroll-reveal">
+
+            <div class="section-tag-wrapper">
+                <div class="section-tag-badge">
+                    <span class="section-tag-dot"></span>
+                    Product Catalog
+                </div>
+            </div>
+
+            <h2>Core Supply Varieties</h2>
+
+        </div>
+
+        <div class="products-grid">
+
+            <div class="electric-card-wrapper scroll-reveal delay-1 tilt-element">
+                <a href="{% url 'public:products' %}" class="product-cat-card">
+                    <div class="product-cat-badge">🔌</div>
+                    <h3>Cables &amp; Flexible Wires</h3>
+                    <p>Armored cables, single core building wires, flexible cords, and control cables for commercial &amp; industrial setups.</p>
+
+                    <div class="product-cat-footer">
+                        Explore Varieties &rarr;
+                    </div>
+                </a>
+            </div>
+
+            <div class="electric-card-wrapper scroll-reveal delay-2 tilt-element">
+                <a href="{% url 'public:products' %}" class="product-cat-card">
+                    <div class="product-cat-badge">⚡</div>
+                    <h3>Switchgear &amp; Protection</h3>
+                    <p>MCBs, MCCBs, isolators, RCCBs, distribution boards, and circuit protection systems from leading brands.</p>
+
+                    <div class="product-cat-footer">
+                        Explore Varieties &rarr;
+                    </div>
+                </a>
+            </div>
+
+            <div class="electric-card-wrapper scroll-reveal delay-3 tilt-element">
+                <a href="{% url 'public:products' %}" class="product-cat-card">
+                    <div class="product-cat-badge">🏗</div>
+                    <h3>Conduits &amp; Fittings</h3>
+                    <p>PVC &amp; GI rigid conduits, flexible conduits, adaptable boxes, trunking, and cable management fittings.</p>
+
+                    <div class="product-cat-footer">
+                        Explore Varieties &rarr;
+                    </div>
+                </a>
+            </div>
+
+            <div class="electric-card-wrapper scroll-reveal delay-1 tilt-element">
+                <a href="{% url 'public:products' %}" class="product-cat-card">
+                    <div class="product-cat-badge">💡</div>
+                    <h3>Wiring &amp; Accessories</h3>
+                    <p>Switches, sockets, industrial plugs, LED lighting fixtures, ventilation fans, and copper earthing accessories.</p>
+
+                    <div class="product-cat-footer">
+                        Explore Varieties &rarr;
+                    </div>
+                </a>
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
 
 <!-- =========================================================
      TRUSTED BRANDS
-     This section intentionally comes last before the footer.
 ========================================================= -->
 
-<section class="brands-section scroll-reveal">
+<section class="brands-section">
 
 
-    <div class="brands-heading">
+    <div class="brands-heading scroll-reveal">
 
-
-        <span>
-            Trusted Brands
-        </span>
+        <div class="section-tag-wrapper">
+            <div class="section-tag-badge">
+                <span class="section-tag-dot"></span>
+                Trusted Brands
+            </div>
+        </div>
 
 
         <h2>
@@ -1542,302 +1649,74 @@
 
 
 
-    <div class="brands-marquee">
+    <div class="brands-marquee scroll-reveal delay-1">
 
 
         <div class="brands-track">
 
 
-            <!-- =================================================
-                 FIRST SET
-            ================================================== -->
-
-
-            <div class="brand-item">
-                Omar Cables
-            </div>
-
-
-            <div class="brand-item">
-                RR Kabel
-            </div>
-
-
-            <div class="brand-item">
-                Alfanar
-            </div>
-
-
-            <div class="brand-item">
-                DUCAB
-            </div>
-
-
-            <div class="brand-item">
-                MESC
-            </div>
-
-
-            <div class="brand-item">
-                NCI
-            </div>
-
-
-            <div class="brand-item">
-                Eaton
-            </div>
-
-
-            <div class="brand-item">
-                Legrand
-            </div>
-
-
-            <div class="brand-item">
-                Tenby
-            </div>
-
-
-            <div class="brand-item">
-                Schneider Electric
-            </div>
-
-
-            <div class="brand-item">
-                KDK
-            </div>
-
-
-            <div class="brand-item">
-                Furse
-            </div>
-
-
-            <div class="brand-item">
-                HEX
-            </div>
-
-
-            <div class="brand-item">
-                Templair Fans
-            </div>
-
-
-            <div class="brand-item">
-                ABB
-            </div>
-
-
-            <div class="brand-item">
-                Hager
-            </div>
-
-
-            <div class="brand-item">
-                Caparo
-            </div>
-
-
-            <div class="brand-item">
-                Barton Engineering
-            </div>
-
-
-            <div class="brand-item">
-                Decoduct
-            </div>
-
-
-            <div class="brand-item">
-                MD
-            </div>
-
-
-            <div class="brand-item">
-                Rexton
-            </div>
-
-
-            <div class="brand-item">
-                Tenex
-            </div>
-
-
-            <div class="brand-item">
-                Cellpack
-            </div>
-
-
-            <div class="brand-item">
-                BICC Components
-            </div>
-
-
-            <div class="brand-item">
-                Panasonic
-            </div>
-
-
-            <div class="brand-item">
-                Vortice
-            </div>
-
-
-            <div class="brand-item">
-                3M
-            </div>
-
-
-            <div class="brand-item">
-                WD-40
-            </div>
-
-
-
-            <!-- =================================================
-                 SECOND SET
-                 Exact duplicate for seamless scrolling.
-            ================================================== -->
-
-
-            <div class="brand-item">
-                Omar Cables
-            </div>
-
-
-            <div class="brand-item">
-                RR Kabel
-            </div>
-
-
-            <div class="brand-item">
-                Alfanar
-            </div>
-
-
-            <div class="brand-item">
-                DUCAB
-            </div>
-
-
-            <div class="brand-item">
-                MESC
-            </div>
-
-
-            <div class="brand-item">
-                NCI
-            </div>
-
-
-            <div class="brand-item">
-                Eaton
-            </div>
-
-
-            <div class="brand-item">
-                Legrand
-            </div>
-
-
-            <div class="brand-item">
-                Tenby
-            </div>
-
-
-            <div class="brand-item">
-                Schneider Electric
-            </div>
-
-
-            <div class="brand-item">
-                KDK
-            </div>
-
-
-            <div class="brand-item">
-                Furse
-            </div>
-
-
-            <div class="brand-item">
-                HEX
-            </div>
-
-
-            <div class="brand-item">
-                Templair Fans
-            </div>
-
-
-            <div class="brand-item">
-                ABB
-            </div>
-
-
-            <div class="brand-item">
-                Hager
-            </div>
-
-
-            <div class="brand-item">
-                Caparo
-            </div>
-
-
-            <div class="brand-item">
-                Barton Engineering
-            </div>
-
-
-            <div class="brand-item">
-                Decoduct
-            </div>
-
-
-            <div class="brand-item">
-                MD
-            </div>
-
-
-            <div class="brand-item">
-                Rexton
-            </div>
-
-
-            <div class="brand-item">
-                Tenex
-            </div>
-
-
-            <div class="brand-item">
-                Cellpack
-            </div>
-
-
-            <div class="brand-item">
-                BICC Components
-            </div>
-
-
-            <div class="brand-item">
-                Panasonic
-            </div>
-
-
-            <div class="brand-item">
-                Vortice
-            </div>
-
-
-            <div class="brand-item">
-                3M
-            </div>
-
-
-            <div class="brand-item">
-                WD-40
-            </div>
+            <!-- FIRST SET -->
+
+            <div class="brand-item-wrapper"><div class="brand-pill"><span class="brand-dot"></span>Omar Cables</div></div>
+            <div class="brand-item-wrapper"><div class="brand-pill"><span class="brand-dot"></span>RR Kabel</div></div>
+            <div class="brand-item-wrapper"><div class="brand-pill"><span class="brand-dot"></span>Alfanar</div></div>
+            <div class="brand-item-wrapper"><div class="brand-pill"><span class="brand-dot"></span>DUCAB</div></div>
+            <div class="brand-item-wrapper"><div class="brand-pill"><span class="brand-dot"></span>MESC</div></div>
+            <div class="brand-item-wrapper"><div class="brand-pill"><span class="brand-dot"></span>NCI</div></div>
+            <div class="brand-item-wrapper"><div class="brand-pill"><span class="brand-dot"></span>Eaton</div></div>
+            <div class="brand-item-wrapper"><div class="brand-pill"><span class="brand-dot"></span>Legrand</div></div>
+            <div class="brand-item-wrapper"><div class="brand-pill"><span class="brand-dot"></span>Tenby</div></div>
+            <div class="brand-item-wrapper"><div class="brand-pill"><span class="brand-dot"></span>Schneider Electric</div></div>
+            <div class="brand-item-wrapper"><div class="brand-pill"><span class="brand-dot"></span>KDK</div></div>
+            <div class="brand-item-wrapper"><div class="brand-pill"><span class="brand-dot"></span>Furse</div></div>
+            <div class="brand-item-wrapper"><div class="brand-pill"><span class="brand-dot"></span>HEX</div></div>
+            <div class="brand-item-wrapper"><div class="brand-pill"><span class="brand-dot"></span>Templair Fans</div></div>
+            <div class="brand-item-wrapper"><div class="brand-pill"><span class="brand-dot"></span>ABB</div></div>
+            <div class="brand-item-wrapper"><div class="brand-pill"><span class="brand-dot"></span>Hager</div></div>
+            <div class="brand-item-wrapper"><div class="brand-pill"><span class="brand-dot"></span>Caparo</div></div>
+            <div class="brand-item-wrapper"><div class="brand-pill"><span class="brand-dot"></span>Barton Engineering</div></div>
+            <div class="brand-item-wrapper"><div class="brand-pill"><span class="brand-dot"></span>Decoduct</div></div>
+            <div class="brand-item-wrapper"><div class="brand-pill"><span class="brand-dot"></span>MD</div></div>
+            <div class="brand-item-wrapper"><div class="brand-pill"><span class="brand-dot"></span>Rexton</div></div>
+            <div class="brand-item-wrapper"><div class="brand-pill"><span class="brand-dot"></span>Tenex</div></div>
+            <div class="brand-item-wrapper"><div class="brand-pill"><span class="brand-dot"></span>Cellpack</div></div>
+            <div class="brand-item-wrapper"><div class="brand-pill"><span class="brand-dot"></span>BICC Components</div></div>
+            <div class="brand-item-wrapper"><div class="brand-pill"><span class="brand-dot"></span>Panasonic</div></div>
+            <div class="brand-item-wrapper"><div class="brand-pill"><span class="brand-dot"></span>Vortice</div></div>
+            <div class="brand-item-wrapper"><div class="brand-pill"><span class="brand-dot"></span>3M</div></div>
+            <div class="brand-item-wrapper"><div class="brand-pill"><span class="brand-dot"></span>WD-40</div></div>
+
+
+            <!-- SECOND SET (Exact duplicate for seamless infinite looping) -->
+
+            <div class="brand-item-wrapper"><div class="brand-pill"><span class="brand-dot"></span>Omar Cables</div></div>
+            <div class="brand-item-wrapper"><div class="brand-pill"><span class="brand-dot"></span>RR Kabel</div></div>
+            <div class="brand-item-wrapper"><div class="brand-pill"><span class="brand-dot"></span>Alfanar</div></div>
+            <div class="brand-item-wrapper"><div class="brand-pill"><span class="brand-dot"></span>DUCAB</div></div>
+            <div class="brand-item-wrapper"><div class="brand-pill"><span class="brand-dot"></span>MESC</div></div>
+            <div class="brand-item-wrapper"><div class="brand-pill"><span class="brand-dot"></span>NCI</div></div>
+            <div class="brand-item-wrapper"><div class="brand-pill"><span class="brand-dot"></span>Eaton</div></div>
+            <div class="brand-item-wrapper"><div class="brand-pill"><span class="brand-dot"></span>Legrand</div></div>
+            <div class="brand-item-wrapper"><div class="brand-pill"><span class="brand-dot"></span>Tenby</div></div>
+            <div class="brand-item-wrapper"><div class="brand-pill"><span class="brand-dot"></span>Schneider Electric</div></div>
+            <div class="brand-item-wrapper"><div class="brand-pill"><span class="brand-dot"></span>KDK</div></div>
+            <div class="brand-item-wrapper"><div class="brand-pill"><span class="brand-dot"></span>Furse</div></div>
+            <div class="brand-item-wrapper"><div class="brand-pill"><span class="brand-dot"></span>HEX</div></div>
+            <div class="brand-item-wrapper"><div class="brand-pill"><span class="brand-dot"></span>Templair Fans</div></div>
+            <div class="brand-item-wrapper"><div class="brand-pill"><span class="brand-dot"></span>ABB</div></div>
+            <div class="brand-item-wrapper"><div class="brand-pill"><span class="brand-dot"></span>Hager</div></div>
+            <div class="brand-item-wrapper"><div class="brand-pill"><span class="brand-dot"></span>Caparo</div></div>
+            <div class="brand-item-wrapper"><div class="brand-pill"><span class="brand-dot"></span>Barton Engineering</div></div>
+            <div class="brand-item-wrapper"><div class="brand-pill"><span class="brand-dot"></span>Decoduct</div></div>
+            <div class="brand-item-wrapper"><div class="brand-pill"><span class="brand-dot"></span>MD</div></div>
+            <div class="brand-item-wrapper"><div class="brand-pill"><span class="brand-dot"></span>Rexton</div></div>
+            <div class="brand-item-wrapper"><div class="brand-pill"><span class="brand-dot"></span>Tenex</div></div>
+            <div class="brand-item-wrapper"><div class="brand-pill"><span class="brand-dot"></span>Cellpack</div></div>
+            <div class="brand-item-wrapper"><div class="brand-pill"><span class="brand-dot"></span>BICC Components</div></div>
+            <div class="brand-item-wrapper"><div class="brand-pill"><span class="brand-dot"></span>Panasonic</div></div>
+            <div class="brand-item-wrapper"><div class="brand-pill"><span class="brand-dot"></span>Vortice</div></div>
+            <div class="brand-item-wrapper"><div class="brand-pill"><span class="brand-dot"></span>3M</div></div>
+            <div class="brand-item-wrapper"><div class="brand-pill"><span class="brand-dot"></span>WD-40</div></div>
 
 
         </div>
@@ -1861,146 +1740,202 @@ document.addEventListener(
     function () {
 
         /* ---------------------------------------------------------
-           1. DYNAMIC HERO TEXT ENGINE
+           1. ANIMATED NUMBER COUNTERS (FROM 0 TO TARGET VALUE)
         --------------------------------------------------------- */
 
-        const dynamicText =
-            document.getElementById(
-                "heroDynamicText"
-            );
+        const counterElements = document.querySelectorAll(".counter");
+        let countersAnimated = false;
 
+        function startCounters() {
+            if (countersAnimated) return;
+            countersAnimated = true;
 
-        if (dynamicText) {
+            counterElements.forEach(function (counter) {
+                const target = +counter.getAttribute("data-target");
+                const duration = 1800;
+                const increment = target / (duration / 16);
+                let current = 0;
 
-            const messages = [
+                function updateCount() {
+                    current += increment;
+                    if (current < target) {
+                        counter.textContent = Math.ceil(current);
+                        requestAnimationFrame(updateCount);
+                    } else {
+                        counter.textContent = target;
+                    }
+                }
 
-                "Quality Electrical Materials",
+                updateCount();
+            });
+        }
 
-                "Trusted Electrical Brands",
-
-                "Reliable Supply Across the UAE",
-
-                "Solutions for Every Requirement",
-
-                "Quality You Can Rely On"
-
-            ];
-
-
-            let currentIndex = 0;
-
-
-            function changeHeroText() {
-
-                dynamicText.classList.add("hide");
-
-                setTimeout(
-                    function () {
-
-                        currentIndex =
-                            (
-                                currentIndex + 1
-                            ) % messages.length;
-
-                        dynamicText.textContent =
-                            messages[currentIndex];
-
-                        dynamicText.classList.remove(
-                            "hide"
-                        );
-
-                    },
-                    450
-                );
-
-            }
-
-
-            setInterval(
-                changeHeroText,
-                3500
-            );
-
+        // Trigger mobile hero counter numbers right on page load
+        if (window.innerWidth <= 768) {
+            startCounters();
         }
 
 
         /* ---------------------------------------------------------
-           2. SMOOTH SCROLL FOR ARROW BUTTON
+           2. DYNAMIC MOUSE-TRACKING 3D TILT EFFECT (MOUSE / DESKTOP ONLY)
+        --------------------------------------------------------- */
+
+        const canHover = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+
+        if (canHover) {
+            const tiltElements = document.querySelectorAll(".tilt-element");
+
+            tiltElements.forEach(function (el) {
+                let ticking = false;
+                let mouseX = 0;
+                let mouseY = 0;
+
+                el.addEventListener("mouseenter", function () {
+                    el.style.transition = "transform 0.08s ease-out";
+                });
+
+                el.addEventListener("mousemove", function (e) {
+                    const rect = el.getBoundingClientRect();
+                    mouseX = e.clientX - rect.left;
+                    mouseY = e.clientY - rect.top;
+
+                    if (!ticking) {
+                        window.requestAnimationFrame(function () {
+                            const centerX = rect.width / 2;
+                            const centerY = rect.height / 2;
+
+                            const rotateX = ((mouseY - centerY) / centerY) * -8;
+                            const rotateY = ((mouseX - centerX) / centerX) * 8;
+
+                            el.style.transform = "perspective(1000px) rotateX(" + rotateX + "deg) rotateY(" + rotateY + "deg) scale3d(1.02, 1.02, 1.02)";
+                            ticking = false;
+                        });
+
+                        ticking = true;
+                    }
+                });
+
+                el.addEventListener("mouseleave", function () {
+                    el.style.transition = "transform 0.5s cubic-bezier(0.16, 1, 0.3, 1)";
+                    el.style.transform = "perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)";
+                });
+            });
+        }
+
+
+        /* ---------------------------------------------------------
+           3. DYNAMIC TEXT INSIDE FLUID GLASS LABEL BOX
+        --------------------------------------------------------- */
+
+        const dynamicLabel = document.getElementById("heroDynamicLabel");
+
+        if (dynamicLabel) {
+            const labelMessages = [
+                "Electrical Products & Solutions",
+                "Quality Electrical Materials",
+                "Trusted Electrical Brands",
+                "Reliable Supply Across the UAE",
+                "Solutions for Every Requirement",
+                "Quality You Can Rely On"
+            ];
+
+            let currentLabelIndex = 0;
+
+            function changeHeroLabel() {
+                dynamicLabel.classList.add("hide");
+
+                setTimeout(function () {
+                    currentLabelIndex = (currentLabelIndex + 1) % labelMessages.length;
+                    dynamicLabel.textContent = labelMessages[currentLabelIndex];
+                    dynamicLabel.classList.remove("hide");
+                }, 350);
+            }
+
+            setInterval(changeHeroLabel, 3600);
+        }
+
+
+        /* ---------------------------------------------------------
+           4. DYNAMIC HERO BACKGROUND SLIDESHOW WITH ZOOM/PAN
+        --------------------------------------------------------- */
+
+        const bgLayers = document.querySelectorAll(".hero-bg-layer");
+
+        if (bgLayers.length > 1) {
+            let currentBgIndex = 0;
+
+            function cycleBackground() {
+                bgLayers[currentBgIndex].classList.remove("active");
+                currentBgIndex = (currentBgIndex + 1) % bgLayers.length;
+                bgLayers[currentBgIndex].classList.add("active");
+            }
+
+            setInterval(cycleBackground, 5500);
+        }
+
+
+        /* ---------------------------------------------------------
+           5. SMOOTH SCROLL FOR ARROW BUTTON (FALLBACK FOR MOBILE)
         --------------------------------------------------------- */
 
         const scrollBtn = document.getElementById("scrollDownBtn");
 
         if (scrollBtn) {
-
             scrollBtn.addEventListener("click", function (e) {
-
                 e.preventDefault();
 
-                const targetSection = document.getElementById("statsSection");
+                // On desktop, statsSection is visible. On mobile, statsSection is hidden so fallback to introSection.
+                const statsSection = document.getElementById("statsSection");
+                const introSection = document.getElementById("introSection");
 
-                if (targetSection) {
-
-                    targetSection.scrollIntoView({
-
-                        behavior: "smooth",
-
-                        block: "start"
-
-                    });
-
+                let targetSection = statsSection;
+                if (!statsSection || window.getComputedStyle(statsSection).display === "none") {
+                    targetSection = introSection;
                 }
 
+                if (targetSection) {
+                    targetSection.scrollIntoView({
+                        behavior: "smooth",
+                        block: "start"
+                    });
+                }
             });
-
         }
 
 
         /* ---------------------------------------------------------
-           3. SCROLL REVEAL OBSERVER
+           6. ENTRANCE SCROLL REVEAL OBSERVER & COUNTER TRIGGER
         --------------------------------------------------------- */
 
         const revealElements = document.querySelectorAll(".scroll-reveal");
 
         if ("IntersectionObserver" in window) {
-
             const revealObserver = new IntersectionObserver(
                 function (entries, observer) {
-
                     entries.forEach(function (entry) {
-
                         if (entry.isIntersecting) {
-
                             entry.target.classList.add("is-visible");
 
+                            if (entry.target.id === "statsSection") {
+                                startCounters();
+                            }
+
                             observer.unobserve(entry.target);
-
                         }
-
                     });
-
                 },
-                {
-                    threshold: 0.12
-                }
+                { threshold: 0.12 }
             );
 
-
             revealElements.forEach(function (el) {
-
                 revealObserver.observe(el);
-
             });
-
         } else {
-
-            /* Fallback for older browsers */
-
             revealElements.forEach(function (el) {
-
                 el.classList.add("is-visible");
-
             });
 
+            startCounters();
         }
 
     }

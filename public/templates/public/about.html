@@ -13,27 +13,87 @@
 <style>
 
 /* =========================================================
-   GLOBAL PAGE STYLING & UTILITIES
+   THEME VARIABLES FOR ABOUT PAGE
+========================================================= */
+
+:root, [data-theme="dark"] {
+    --page-bg: #050a14;
+    --hero-bg: #030712;
+    --hero-overlay-grad: linear-gradient(90deg, rgba(3, 7, 18, 0.96) 0%, rgba(15, 23, 42, 0.88) 45%, rgba(15, 23, 42, 0.52) 100%);
+    --card-surface: #0f172a;
+    --card-surface-hover: #111a2e;
+    --card-inner-bg: #080f21;
+    --badge-bg: #090d16;
+    --text-primary: #f8fafc;
+    --text-secondary: #94a3b8;
+    --text-body: #cbd5e1;
+    --text-brand-pill: #e2e8f0;
+    --accent-cyan: #00e5ff;
+    --accent-cyan-shadow: rgba(0, 229, 255, 0.45);
+    --brand-border: #1e293b;
+    --brand-border-wrapper: rgba(30, 41, 59, 0.85);
+    --commitment-bg: #080f21;
+    --commitment-border: #1e293b;
+    --brands-section-bg: #090e1a;
+    --card-product-bg: rgba(9, 14, 26, 0.85);
+    --card-product-overlay: linear-gradient(180deg, rgba(9, 14, 26, 0.20) 0%, rgba(9, 14, 26, 0.65) 45%, rgba(5, 10, 20, 0.94) 100%);
+    --conic-glow: conic-gradient(transparent, rgba(0, 229, 255, 0.35), #00e5ff, #3b82f6, #00d2ff, transparent 45%);
+}
+
+[data-theme="light"] {
+    --page-bg: #f8fafc;
+    --hero-bg: #03122d;
+    --hero-overlay-grad: linear-gradient(90deg, rgba(3, 18, 45, 0.88) 0%, rgba(5, 28, 62, 0.72) 45%, rgba(5, 28, 62, 0.35) 100%);
+    --card-surface: #ffffff;
+    --card-surface-hover: #ffffff;
+    --card-inner-bg: #f8fafc;
+    --badge-bg: #ffffff;
+    --text-primary: #0f172a;
+    --text-secondary: #475569;
+    --text-body: #64748b;
+    --text-brand-pill: #334155;
+    --accent-cyan: #2563eb;
+    --accent-cyan-shadow: rgba(37, 99, 235, 0.25);
+    --brand-border: #e2e8f0;
+    --brand-border-wrapper: #dbe4f0;
+    --commitment-bg: #03122d;
+    --commitment-border: #1e293b;
+    --brands-section-bg: #ffffff;
+    --card-product-bg: #eff6ff;
+    --card-product-overlay: linear-gradient(180deg, rgba(255, 255, 255, 0.15) 0%, rgba(241, 245, 249, 0.75) 50%, rgba(255, 255, 255, 0.96) 100%);
+    --conic-glow: conic-gradient(transparent, rgba(37, 99, 235, 0.25), #2563eb, #3b82f6, #0284c7, transparent 45%);
+}
+
+
+/* =========================================================
+   GLOBAL PAGE STYLING & TEXT REVEAL ANIMATIONS
 ========================================================= */
 
 .about-page {
-    background: #f8fafc;
-    color: #111827;
+    background: var(--page-bg);
+    color: var(--text-primary);
     min-height: 100vh;
+    transition: background 0.35s ease, color 0.35s ease;
 }
 
+/* Scroll reveal animations for text, headings, and cards */
 .scroll-reveal {
     opacity: 0;
-    transform: translateY(22px);
+    transform: translateY(30px) scale(0.97);
     transition:
-        opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1),
-        transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+        opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1),
+        transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: opacity, transform;
 }
 
 .scroll-reveal.is-visible {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateY(0) scale(1);
 }
+
+.scroll-reveal.delay-1 { transition-delay: 0.15s; }
+.scroll-reveal.delay-2 { transition-delay: 0.3s; }
+.scroll-reveal.delay-3 { transition-delay: 0.45s; }
 
 
 /* =========================================================
@@ -42,11 +102,14 @@
 
 .about-hero {
     position: relative;
-    min-height: calc(100vh - 88px);
+    height: calc(100vh - 88px);
+    min-height: 560px;
     display: flex;
     align-items: center;
     overflow: hidden;
-    background-color: #03122d;
+    background-color: var(--hero-bg);
+    padding-bottom: 75px;
+    transition: background-color 0.35s ease;
 }
 
 .hero-bg-layer {
@@ -59,35 +122,35 @@
     background-position: center;
     background-repeat: no-repeat;
     opacity: 0;
-    transition: opacity 1.2s ease-in-out;
+    transform: scale(1.15) rotate(0.5deg);
+    transition: opacity 1.4s cubic-bezier(0.4, 0, 0.2, 1), transform 7s ease-out;
     z-index: 1;
+    will-change: transform, opacity;
 }
 
 .hero-bg-layer.active {
     opacity: 1;
+    transform: scale(1) rotate(0deg);
 }
 
-/* Dark Gradient Overlay */
+/* Gradient Overlay */
 .hero-overlay {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(
-        90deg,
-        rgba(3, 18, 45, 0.94) 0%,
-        rgba(5, 28, 62, 0.86) 45%,
-        rgba(9, 42, 82, 0.45) 100%
-    );
+    background: var(--hero-overlay-grad);
     z-index: 2;
+    transition: background 0.35s ease;
 }
 
 .about-hero-content {
     width: 100%;
-    max-width: 1200px;
+    max-width: 1400px;
     margin: 0 auto;
-    padding: 40px 50px 60px;
+    padding: 0 7%;
+    color: #ffffff;
     position: relative;
     z-index: 3;
 }
@@ -99,10 +162,11 @@
     width: fit-content;
     max-width: max-content;
     position: relative;
-    margin-bottom: 22px;
+    margin-bottom: 12px;
     padding: 2px;
     border-radius: 32px;
     overflow: hidden;
+    box-shadow: 0 0 18px rgba(0, 229, 255, 0.35);
 }
 
 .hero-label-wrapper::before {
@@ -114,12 +178,12 @@
     height: 200%;
     background: conic-gradient(
         transparent,
-        rgba(56, 189, 248, 0.1),
-        #38bdf8,
-        #60a5fa,
-        transparent 30%
+        rgba(0, 229, 255, 0.25),
+        #00e5ff,
+        #3b82f6,
+        transparent 35%
     );
-    animation: rotateBorderGlow 4s linear infinite;
+    animation: rotateBorderGlow 3.5s linear infinite;
     z-index: 0;
 }
 
@@ -134,54 +198,156 @@
     display: inline-flex;
     align-items: center;
     gap: 10px;
-    padding: 8px 20px;
+    padding: 7px 16px;
     border-radius: 30px;
-    background: rgba(3, 18, 45, 0.88);
+    background: rgba(11, 19, 38, 0.92);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     color: #ffffff;
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 700;
     letter-spacing: 1.5px;
     text-transform: uppercase;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
 }
 
 .about-label-dot {
     width: 8px;
     height: 8px;
     border-radius: 50%;
-    background: #38bdf8;
-    box-shadow: 0 0 10px #38bdf8;
+    background: #00e5ff;
+    box-shadow: 0 0 12px #00e5ff, 0 0 20px #00e5ff;
     flex-shrink: 0;
     animation: pulseDot 1.8s infinite;
 }
 
 @keyframes pulseDot {
     0%, 100% { transform: scale(1); opacity: 1; }
-    50% { transform: scale(1.3); opacity: 0.6; }
+    50% { transform: scale(1.4); opacity: 0.7; }
 }
 
 .about-hero h1 {
-    max-width: 880px;
-    color: #ffffff;
-    font-size: clamp(44px, 5vw, 68px);
-    line-height: 1.02;
-    font-weight: 850;
-    letter-spacing: -2px;
-    margin-bottom: 22px;
+    max-width: 860px;
+    color: #f8fafc;
+    font-size: clamp(34px, 3.8vw, 54px);
+    line-height: 1.1;
+    font-weight: 800;
+    letter-spacing: -1.2px;
+    margin-bottom: 14px;
 }
 
 .about-hero h1 span {
-    color: #60a5fa;
+    color: #00e5ff;
+    text-shadow: 0 0 22px rgba(0, 229, 255, 0.45);
 }
 
 .about-hero-text {
-    max-width: 760px;
-    color: rgba(255, 255, 255, 0.90);
-    font-size: 17.5px;
-    line-height: 1.65;
-    margin-bottom: 10px;
+    max-width: 720px;
+    color: #94a3b8;
+    font-size: clamp(14px, 1.15vw, 16px);
+    line-height: 1.55;
+    margin-bottom: 18px;
+}
+
+
+/* =========================================================
+   ANIMATED GLOW HERO QUICK-LINK CARDS
+========================================================= */
+
+.hero-quicklinks-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, max-content));
+    gap: 12px;
+    margin-top: 8px;
+}
+
+.hero-quicklink-wrapper {
+    position: relative;
+    padding: 1.5px;
+    border-radius: 14px;
+    overflow: hidden;
+    display: inline-flex;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+}
+
+/* Orbiting Light Gradient Border */
+.hero-quicklink-wrapper::before {
+    content: "";
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: conic-gradient(
+        transparent,
+        rgba(0, 229, 255, 0.3),
+        #00e5ff,
+        #3b82f6,
+        transparent 40%
+    );
+    animation: rotateCardGlow 4s linear infinite;
+    z-index: 0;
+}
+
+@keyframes rotateCardGlow {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.hero-quicklink-card {
+    position: relative;
+    z-index: 1;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 16px;
+    border-radius: 13px;
+    background: rgba(11, 19, 38, 0.92);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    color: #f8fafc;
+    font-size: 13px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    white-space: nowrap;
+}
+
+.hero-quicklink-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #00e5ff;
+    box-shadow: 0 0 8px #00e5ff, 0 0 14px #00e5ff;
+    transition: transform 0.3s ease, background 0.3s ease;
+    animation: pulseDot 1.8s infinite;
+}
+
+.hero-quicklink-arrow {
+    width: 14px;
+    height: 14px;
+    stroke: #00e5ff;
+    transition: transform 0.3s ease;
+}
+
+.hero-quicklink-wrapper:hover .hero-quicklink-card {
+    background: rgba(0, 229, 255, 0.22);
+    color: #ffffff;
+}
+
+.hero-quicklink-wrapper:hover {
+    box-shadow: 0 0 22px rgba(0, 229, 255, 0.6);
+    transform: translateY(-3px);
+}
+
+.hero-quicklink-wrapper:hover .hero-quicklink-arrow {
+    transform: translateX(4px);
+}
+
+.hero-quicklink-wrapper:hover .hero-quicklink-dot {
+    transform: scale(1.4);
+    background: #ffffff;
+    box-shadow: 0 0 12px #ffffff;
 }
 
 
@@ -191,7 +357,7 @@
 
 .hero-scroll-wrapper {
     position: absolute;
-    bottom: 22px;
+    bottom: 15px;
     left: 50%;
     transform: translateX(-50%);
     display: flex;
@@ -201,39 +367,39 @@
 }
 
 .hero-scroll-btn {
-    width: 48px;
-    height: 48px;
+    width: 42px;
+    height: 42px;
     border-radius: 50%;
-    border: 1.5px solid rgba(56, 189, 248, 0.85);
+    border: 1.5px solid #00e5ff;
     background: transparent;
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
-    color: #38bdf8;
+    color: #00e5ff;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
     text-decoration: none;
     box-shadow:
-        0 0 12px rgba(56, 189, 248, 0.45),
-        0 0 24px rgba(37, 99, 235, 0.3);
+        0 0 15px rgba(0, 229, 255, 0.6),
+        0 0 30px rgba(0, 114, 255, 0.4);
     transition: all 0.3s ease;
     animation: neonBounceGlow 2.4s infinite ease-in-out;
 }
 
 .hero-scroll-btn svg {
-    filter: drop-shadow(0 0 6px rgba(56, 189, 248, 0.8));
+    filter: drop-shadow(0 0 8px #00e5ff);
     transition: transform 0.25s ease;
 }
 
 .hero-scroll-btn:hover {
-    background: rgba(37, 99, 235, 0.25);
+    background: rgba(0, 229, 255, 0.28);
     color: #ffffff;
-    border-color: #60a5fa;
+    border-color: #00e5ff;
     box-shadow:
-        0 0 22px rgba(96, 165, 250, 0.85),
-        0 0 45px rgba(37, 99, 235, 0.65);
-    transform: scale(1.08);
+        0 0 25px rgba(0, 229, 255, 0.95),
+        0 0 50px rgba(0, 114, 255, 0.85);
+    transform: scale(1.1);
     animation-play-state: paused;
 }
 
@@ -241,20 +407,20 @@
     0%, 100% {
         transform: translateY(0);
         box-shadow:
-            0 0 12px rgba(56, 189, 248, 0.45),
-            0 0 24px rgba(37, 99, 235, 0.3);
+            0 0 15px rgba(0, 229, 255, 0.6),
+            0 0 30px rgba(0, 114, 255, 0.4);
     }
     50% {
-        transform: translateY(8px);
+        transform: translateY(5px);
         box-shadow:
-            0 0 20px rgba(56, 189, 248, 0.75),
-            0 0 35px rgba(37, 99, 235, 0.5);
+            0 0 25px rgba(0, 229, 255, 0.85),
+            0 0 40px rgba(0, 114, 255, 0.65);
     }
 }
 
 
 /* =========================================================
-   LIGHT-THEME SECTION TAG BADGES (PRECISE ORBIT LOCK)
+   SECTION TAG BADGES
 ========================================================= */
 
 .section-tag-wrapper {
@@ -266,6 +432,7 @@
     padding: 1.5px;
     border-radius: 30px;
     overflow: hidden;
+    box-shadow: 0 0 10px var(--accent-cyan-shadow);
 }
 
 .section-tag-wrapper::before {
@@ -275,18 +442,12 @@
     left: -50%;
     width: 200%;
     height: 200%;
-    background: conic-gradient(
-        transparent,
-        rgba(37, 99, 235, 0.08),
-        rgba(37, 99, 235, 0.4),
-        rgba(96, 165, 250, 0.45),
-        transparent 35%
-    );
-    animation: rotateLightBorderGlow 4.5s linear infinite;
+    background: var(--conic-glow);
+    animation: rotateDarkBorderGlow 4s linear infinite;
     z-index: 0;
 }
 
-@keyframes rotateLightBorderGlow {
+@keyframes rotateDarkBorderGlow {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
 }
@@ -299,13 +460,13 @@
     gap: 8px;
     padding: 7px 18px;
     border-radius: 30px;
-    background: #ffffff;
-    color: #2563eb;
+    background: var(--badge-bg);
+    color: var(--accent-cyan);
     font-size: 12.5px;
     font-weight: 750;
     letter-spacing: 1.5px;
     text-transform: uppercase;
-    box-shadow: 0 4px 14px rgba(37, 99, 235, 0.08);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
     white-space: nowrap;
 }
 
@@ -313,33 +474,33 @@
     width: 7px;
     height: 7px;
     border-radius: 50%;
-    background: #2563eb;
-    box-shadow: 0 0 8px rgba(37, 99, 235, 0.6);
+    background: var(--accent-cyan);
+    box-shadow: 0 0 10px var(--accent-cyan), 0 0 18px var(--accent-cyan);
     flex-shrink: 0;
     animation: pulseDot 1.8s infinite;
 }
 
 
 /* =========================================================
-   MAIN CONTENT
+   MAIN CONTENT CONTAINER
 ========================================================= */
 
 .about-container {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 75px 50px 90px;
+    padding: 75px 5% 90px;
 }
 
 .section-title {
     font-size: clamp(32px, 3.8vw, 42px);
-    line-height: 1.15;
-    color: #0f172a;
+    line-height: 1.18;
+    color: var(--text-primary);
     font-weight: 800;
     margin-bottom: 22px;
 }
 
 .section-text {
-    color: #475569;
+    color: var(--text-secondary);
     font-size: 16.5px;
     line-height: 1.8;
     margin-bottom: 20px;
@@ -347,7 +508,7 @@
 
 
 /* =========================================================
-   COMPANY INTRO
+   COMPANY INTRO & COMPACT INTRO CARD
 ========================================================= */
 
 .intro-section {
@@ -358,71 +519,124 @@
     margin-bottom: 90px;
 }
 
-.intro-box {
-    background: #ffffff;
-    border: 1px solid #e2e8f0;
+.electric-card-wrapper {
+    position: relative;
+    padding: 1.5px;
     border-radius: 20px;
-    padding: 40px;
-    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.05);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    overflow: hidden;
+    height: 100%;
+    background: var(--brand-border);
+    transition: background 0.3s ease, box-shadow 0.4s ease;
 }
 
-.intro-box:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 16px 38px rgba(15, 23, 42, 0.08);
+.electric-card-wrapper::before {
+    content: "";
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: var(--conic-glow);
+    animation: rotateElectricBorder 3s linear infinite;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    z-index: 0;
+}
+
+.electric-card-wrapper:hover::before {
+    opacity: 1;
+}
+
+.electric-card-wrapper:hover {
+    box-shadow: 0 0 28px var(--accent-cyan-shadow);
+}
+
+@keyframes rotateElectricBorder {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.intro-box {
+    position: relative;
+    z-index: 1;
+    background: var(--card-surface);
+    border-radius: 19px;
+    overflow: hidden;
+    padding: 24px 26px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+    transition: background 0.35s ease;
+}
+
+.intro-card-banner {
+    width: 100%;
+    height: 140px;
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 18px;
+    border: 1px solid var(--brand-border);
+}
+
+.intro-card-banner img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
 }
 
 .intro-box h3 {
-    font-size: 24px;
-    color: #0f172a;
+    font-size: 20px;
+    color: var(--text-primary);
     font-weight: 800;
-    margin-bottom: 20px;
+    margin-bottom: 12px;
 }
 
 .intro-box p {
-    color: #475569;
-    line-height: 1.8;
-    font-size: 15.5px;
-    margin-bottom: 15px;
+    color: var(--text-body);
+    line-height: 1.6;
+    font-size: 14.5px;
+    margin-bottom: 10px;
 }
 
 
 /* =========================================================
-   STATS GRID
+   STATS GRID INSIDE INTRO BOX
 ========================================================= */
 
 .stats-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 18px;
-    margin-top: 32px;
+    gap: 12px;
+    margin-top: 18px;
 }
 
 .stat-card {
-    background: #f8fafc;
-    border: 1px solid #e2e8f0;
-    border-radius: 14px;
-    padding: 24px 18px;
+    background: var(--card-inner-bg);
+    border: 1px solid var(--brand-border);
+    border-radius: 12px;
+    padding: 12px 10px;
     text-align: center;
-    transition: transform 0.25s ease, border-color 0.25s ease;
+    transition: transform 0.25s ease, border-color 0.25s ease, background 0.35s ease;
 }
 
 .stat-card:hover {
-    transform: translateY(-3px);
-    border-color: #93c5fd;
+    transform: translateY(-2px);
+    border-color: var(--accent-cyan);
 }
 
 .stat-number {
-    font-size: 28px;
-    font-weight: 800;
-    color: #2563eb;
-    margin-bottom: 6px;
+    font-size: 19px;
+    font-weight: 850;
+    color: var(--accent-cyan);
+    margin-bottom: 2px;
+    text-shadow: 0 0 10px var(--accent-cyan-shadow);
+    line-height: 1.1;
 }
 
 .stat-label {
-    color: #64748b;
-    font-size: 13.5px;
+    color: var(--text-secondary);
+    font-size: 11.5px;
     font-weight: 600;
+    line-height: 1.25;
 }
 
 
@@ -431,25 +645,15 @@
 ========================================================= */
 
 .commitment-section {
-    background: #03122d;
-    border: 1px solid #1e293b;
+    position: relative;
+    background: var(--commitment-bg);
+    border: 1px solid var(--commitment-border);
     border-radius: 24px;
     padding: 55px;
     color: #ffffff;
     margin-bottom: 90px;
-    box-shadow: 0 15px 35px rgba(3, 18, 45, 0.2);
-}
-
-.commitment-section .section-tag-badge {
-    background: rgba(255, 255, 255, 0.1);
-    color: #60a5fa;
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    backdrop-filter: blur(8px);
-}
-
-.commitment-section .section-tag-dot {
-    background: #60a5fa;
-    box-shadow: 0 0 8px #60a5fa;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
+    transition: background 0.35s ease;
 }
 
 .commitment-section .section-title {
@@ -463,7 +667,7 @@
 
 
 /* =========================================================
-   WHY CHOOSE US
+   WHY CHOOSE US & VIBRANT BACKGROUND IMAGE CARDS
 ========================================================= */
 
 .why-section {
@@ -482,118 +686,309 @@
 }
 
 .why-card {
-    background: #ffffff;
-    border: 1px solid #e2e8f0;
-    border-radius: 18px;
-    padding: 30px;
-    transition:
-        transform 0.3s ease,
-        border-color 0.3s ease,
-        box-shadow 0.3s ease;
-}
-
-.why-card:hover {
-    transform: translateY(-4px);
-    border-color: #93c5fd;
-    box-shadow: 0 14px 35px rgba(37, 99, 235, 0.08);
-}
-
-.why-icon {
-    width: 44px;
-    height: 44px;
-    border-radius: 12px;
-    background: #eff6ff;
-    border: 1px solid #dbeafe;
-    color: #2563eb;
+    position: relative;
+    z-index: 1;
+    background-size: cover;
+    background-position: center;
+    border-radius: 17px;
+    padding: 30px 24px;
+    height: 100%;
+    min-height: 280px;
     display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+/* Light gradient overlay so images stay vibrant while text remains clear */
+.why-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--card-product-overlay);
+    z-index: 1;
+    transition: opacity 0.35s ease;
+}
+
+.electric-card-wrapper:hover .why-card::before {
+    opacity: 0.88;
+}
+
+.why-icon-badge {
+    position: relative;
+    z-index: 2;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
-    font-size: 18px;
+    padding: 6px 14px;
+    border-radius: 12px;
+    background: var(--card-product-bg);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid var(--brand-border);
+    color: var(--accent-cyan);
+    font-size: 14px;
     font-weight: 800;
-    margin-bottom: 20px;
+    margin-bottom: 18px;
+    width: fit-content;
+    box-shadow: 0 0 10px var(--accent-cyan-shadow);
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+}
+
+.electric-card-wrapper:hover .why-icon-badge {
+    transform: scale(1.1) rotate(-4deg);
+    background: linear-gradient(135deg, #00d2ff 0%, #0052d4 100%);
+    border-color: var(--accent-cyan);
+    color: #ffffff;
+    box-shadow: 0 0 18px var(--accent-cyan-shadow);
 }
 
 .why-card h3 {
+    position: relative;
+    z-index: 2;
     font-size: 18px;
-    font-weight: 700;
-    color: #0f172a;
-    margin-bottom: 12px;
+    font-weight: 800;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.7);
+    transition: color 0.25s ease, transform 0.3s ease;
+}
+
+.electric-card-wrapper:hover .why-card h3 {
+    color: var(--accent-cyan);
+    transform: translateX(3px);
 }
 
 .why-card p {
-    color: #64748b;
-    font-size: 14.5px;
-    line-height: 1.65;
+    position: relative;
+    z-index: 2;
+    color: var(--text-body);
+    font-size: 14px;
+    line-height: 1.6;
     margin: 0;
+    flex: 1;
+    text-shadow: 0 1px 8px rgba(0, 0, 0, 0.6);
+}
+
+[data-theme="light"] .why-card h3,
+[data-theme="light"] .why-card p {
+    text-shadow: none;
 }
 
 
 /* =========================================================
-   BRANDS SECTION
+   BRANDS SECTION & SINGLE-LINE CONTINUOUS MARQUEE
 ========================================================= */
 
 .brands-section {
-    background: #ffffff;
-    border-top: 1px solid #e2e8f0;
-    border-bottom: 1px solid #e2e8f0;
+    background: var(--brands-section-bg);
+    border-top: 1px solid var(--brand-border);
+    border-bottom: 1px solid var(--brand-border);
     padding: 75px 0;
+    overflow: hidden;
+    transition: background 0.35s ease;
 }
 
 .brands-container {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 0 50px;
+    padding: 0 5%;
 }
 
 .brands-description {
     max-width: 800px;
-    color: #64748b;
+    color: var(--text-secondary);
     line-height: 1.75;
     font-size: 16px;
     margin-bottom: 35px;
 }
 
-.brands-list {
+/* Marquee Slider Outer Track with Gradient Edges */
+.brands-marquee-wrapper {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    margin-top: 25px;
+    padding: 10px 0;
+}
+
+.brands-marquee-wrapper::before,
+.brands-marquee-wrapper::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    width: 120px;
+    height: 100%;
+    z-index: 5;
+    pointer-events: none;
+}
+
+.brands-marquee-wrapper::before {
+    left: 0;
+    background: linear-gradient(90deg, var(--brands-section-bg) 0%, transparent 100%);
+}
+
+.brands-marquee-wrapper::after {
+    right: 0;
+    background: linear-gradient(270deg, var(--brands-section-bg) 0%, transparent 100%);
+}
+
+.brands-marquee-track {
     display: flex;
-    flex-wrap: wrap;
-    gap: 12px;
+    gap: 16px;
+    width: max-content;
+    animation: marqueeScroll 38s linear infinite;
+    will-change: transform;
 }
 
-.brand-item {
-    padding: 11px 20px;
-    background: #f8fafc;
-    border: 1px solid #cbd5e1;
+.brands-marquee-wrapper:hover .brands-marquee-track {
+    animation-play-state: paused;
+}
+
+@keyframes marqueeScroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+}
+
+.brand-item-wrapper {
+    position: relative;
+    padding: 1.5px;
+    border-radius: 16px;
+    overflow: hidden;
+    display: flex;
+    flex-shrink: 0;
+    background: var(--brand-border-wrapper);
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s ease;
+}
+
+.brand-item-wrapper::before {
+    content: "";
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: var(--conic-glow);
+    animation: rotateElectricBorder 4s linear infinite;
+    opacity: 0;
+    transition: opacity 0.35s ease;
+    z-index: 0;
+}
+
+.brand-item-wrapper:hover::before {
+    opacity: 1;
+}
+
+.brand-item-wrapper:hover {
+    transform: translateY(-4px) scale(1.03);
+    box-shadow: 0 0 22px var(--accent-cyan-shadow);
+}
+
+.brand-card {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 14px;
+    border-radius: 15px;
+    background: var(--card-surface);
+    width: 160px;
+    gap: 8px;
+    transition: background 0.3s ease;
+}
+
+.brand-item-wrapper:hover .brand-card {
+    background: var(--card-surface-hover);
+}
+
+/* Inner box fully covered by logo image */
+.brand-logo-container {
+    width: 100%;
+    height: 48px;
     border-radius: 10px;
-    color: #334155;
-    font-size: 14.5px;
-    font-weight: 650;
-    transition: all 0.25s ease;
+    background: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    overflow: hidden;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    transition: border-color 0.3s ease, transform 0.3s ease;
 }
 
-.brand-item:hover {
-    background: #ffffff;
-    border-color: #2563eb;
-    color: #2563eb;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 18px rgba(37, 99, 235, 0.1);
+.brand-item-wrapper:hover .brand-logo-container {
+    border-color: var(--accent-cyan);
+    transform: scale(1.02);
+}
+
+.brand-logo-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.brand-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--text-brand-pill);
+    font-size: 12px;
+    font-weight: 700;
+    white-space: nowrap;
+    transition: color 0.3s ease;
+}
+
+.brand-item-wrapper:hover .brand-pill {
+    color: var(--accent-cyan);
+}
+
+.brand-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: #64748b;
+    transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.brand-item-wrapper:hover .brand-dot {
+    background: var(--accent-cyan);
+    box-shadow: 0 0 10px var(--accent-cyan);
+    transform: scale(1.3);
 }
 
 .brands-contact {
     margin-top: 35px;
-    color: #475569;
+    color: var(--text-secondary);
     font-size: 16px;
 }
 
 .brands-contact a {
-    color: #2563eb;
+    color: var(--accent-cyan);
     text-decoration: none;
     font-weight: 750;
     transition: color 0.2s ease;
 }
 
 .brands-contact a:hover {
-    color: #1d4ed8;
     text-decoration: underline;
+}
+
+
+/* =========================================================
+   3D TILT ELEMENT REFINEMENT
+========================================================= */
+
+.tilt-element {
+    will-change: transform;
+    transform-style: preserve-3d;
+    transition: transform 0.15s cubic-bezier(0.2, 0, 0.2, 1);
 }
 
 
@@ -601,35 +996,66 @@
    RESPONSIVE MEDIA QUERIES
 ========================================================= */
 
-@media (max-width: 900px) {
-    .about-hero {
-        min-height: calc(100vh - 75px);
-    }
-    .intro-section {
-        grid-template-columns: 1fr;
-        gap: 35px;
+@media (max-width: 1024px) {
+    .hero-quicklinks-grid {
+        grid-template-columns: repeat(2, minmax(0, max-content));
     }
     .why-grid {
         grid-template-columns: repeat(2, 1fr);
     }
 }
 
-@media (max-width: 700px) {
-    .about-hero {
-        min-height: calc(100vh - 72px);
-    }
+@media (max-width: 900px) {
     .about-hero-content {
-        padding: 50px 25px 60px;
+        padding: 20px 5% 0;
     }
     .about-hero h1 {
-        font-size: 42px;
-        letter-spacing: -1.5px;
+        font-size: clamp(32px, 6vw, 48px);
+    }
+    .intro-section {
+        grid-template-columns: 1fr;
+        gap: 35px;
+    }
+}
+
+@media (max-width: 768px) {
+    .about-hero {
+        height: auto !important;
+        min-height: unset !important;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 24px 0 20px;
+    }
+    .about-hero-content {
+        padding: 0 18px;
+        width: 100%;
+    }
+    .about-hero h1 {
+        font-size: 23px;
+        line-height: 1.25;
+        letter-spacing: -0.3px;
+        margin-bottom: 12px;
     }
     .about-hero-text {
-        font-size: 16px;
+        font-size: 13px;
+        line-height: 1.5;
+    }
+    .hero-quicklinks-grid {
+        grid-template-columns: repeat(2, 1fr);
+        width: 100%;
+    }
+    .hero-quicklink-wrapper {
+        width: 100%;
+    }
+    .hero-quicklink-card {
+        width: 100%;
+        justify-content: space-between;
+        padding: 9px 14px;
+        font-size: 12px;
     }
     .about-container {
-        padding: 60px 25px;
+        padding: 45px 18px;
     }
     .stats-grid {
         grid-template-columns: 1fr;
@@ -642,7 +1068,22 @@
         grid-template-columns: 1fr;
     }
     .brands-container {
-        padding: 0 25px;
+        padding: 0 18px;
+    }
+}
+
+@media (max-width: 480px) {
+    .about-hero h1 {
+        font-size: 22px;
+    }
+    .about-hero-text {
+        font-size: 12.5px;
+    }
+    .hero-quicklinks-grid {
+        grid-template-columns: 1fr;
+    }
+    .section-title {
+        font-size: 22px;
     }
 }
 
@@ -660,7 +1101,7 @@
          ABOUT HERO SECTION
     ====================================================== -->
 
-    <section class="about-hero">
+    <section class="about-hero" id="heroSection">
 
         <!-- DYNAMIC BACKGROUND SLIDESHOW LAYERS -->
         <div
@@ -690,7 +1131,7 @@
         <div class="about-hero-content">
 
             <!-- DYNAMIC FLUID GLASS BADGE WITH ORBITING GLOW LOOP -->
-            <div class="hero-label-wrapper">
+            <div class="hero-label-wrapper scroll-reveal">
 
                 <div class="about-label">
                     <span class="about-label-dot"></span>
@@ -700,14 +1141,14 @@
             </div>
 
 
-            <h1>
+            <h1 class="scroll-reveal delay-1">
                 Your Reliable
                 <span>Electrical Material</span>
                 Supply Partner.
             </h1>
 
 
-            <p class="about-hero-text">
+            <p class="about-hero-text scroll-reveal delay-2">
 
                 Established in 2012, Al Baraq Elect. Ware Tr.
                 has grown into a reliable electrical materials
@@ -716,16 +1157,66 @@
 
             </p>
 
+
+            <!-- ANIMATED GLOW HERO QUICK-LINK CARDS -->
+            <div class="hero-quicklinks-grid scroll-reveal delay-3">
+
+                <div class="hero-quicklink-wrapper tilt-element">
+                    <a href="#introSection" class="hero-quicklink-card">
+                        <span class="hero-quicklink-dot"></span>
+                        Who we are ?
+                        <svg class="hero-quicklink-arrow" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                            <polyline points="12 5 19 12 12 19"></polyline>
+                        </svg>
+                    </a>
+                </div>
+
+                <div class="hero-quicklink-wrapper tilt-element">
+                    <a href="#commitmentSection" class="hero-quicklink-card">
+                        <span class="hero-quicklink-dot"></span>
+                        Our Commitment
+                        <svg class="hero-quicklink-arrow" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                            <polyline points="12 5 19 12 12 19"></polyline>
+                        </svg>
+                    </a>
+                </div>
+
+                <div class="hero-quicklink-wrapper tilt-element">
+                    <a href="#whySection" class="hero-quicklink-card">
+                        <span class="hero-quicklink-dot"></span>
+                        Why to choose us ?
+                        <svg class="hero-quicklink-arrow" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                            <polyline points="12 5 19 12 12 19"></polyline>
+                        </svg>
+                    </a>
+                </div>
+
+                <div class="hero-quicklink-wrapper tilt-element">
+                    <a href="#brandsSection" class="hero-quicklink-card">
+                        <span class="hero-quicklink-dot"></span>
+                        Our brands
+                        <svg class="hero-quicklink-arrow" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                            <polyline points="12 5 19 12 12 19"></polyline>
+                        </svg>
+                    </a>
+                </div>
+
+            </div>
+
         </div>
 
 
         <!-- NEON GLOW SCROLL BUTTON -->
 
-        <div class="hero-scroll-wrapper">
+        <div class="hero-scroll-wrapper scroll-reveal delay-3">
 
             <a
                 href="#introSection"
-                class="hero-scroll-btn"
+                class="hero-scroll-btn tilt-element"
                 id="scrollDownBtn"
                 aria-label="Scroll down to company details"
                 title="Scroll Down"
@@ -764,21 +1255,21 @@
         <div class="intro-section">
 
 
-            <div class="scroll-reveal">
+            <div>
 
-                <!-- Styled Section Tag Badge with Precise Orbit Lock -->
-                <div class="section-tag-wrapper">
+                <!-- Styled Section Tag Badge -->
+                <div class="section-tag-wrapper scroll-reveal">
                     <div class="section-tag-badge">
                         <span class="section-tag-dot"></span>
                         Who We Are
                     </div>
                 </div>
 
-                <h2 class="section-title">
+                <h2 class="section-title scroll-reveal delay-1">
                     About Al Baraq Elect. Ware Tr.
                 </h2>
 
-                <p class="section-text">
+                <p class="section-text scroll-reveal delay-2">
 
                     From our beginning, our focus has been simple:
                     to provide quality electrical materials from
@@ -789,7 +1280,7 @@
                 </p>
 
 
-                <p class="section-text">
+                <p class="section-text scroll-reveal delay-3">
 
                     Today, we serve a broad range of customers
                     across the electrical, construction, MEP,
@@ -800,68 +1291,46 @@
             </div>
 
 
-            <div class="intro-box scroll-reveal">
+            <div class="electric-card-wrapper scroll-reveal delay-1 tilt-element">
 
-                <h3>
-                    Serving Customers Across the UAE
-                </h3>
+                <div class="intro-box">
 
-                <p>
-
-                    Our customers include electrical traders,
-                    MEP companies, electrical and mechanical
-                    contractors, construction companies,
-                    industrial organizations, oil &amp; gas companies,
-                    project contractors, and commercial customers.
-
-                </p>
-
-                <p>
-
-                    We focus on maintaining strong relationships
-                    with manufacturers, distributors, contractors,
-                    and customers to ensure efficient sourcing,
-                    competitive solutions, and timely delivery.
-
-                </p>
-
-
-                <div class="stats-grid">
-
-                    <div class="stat-card">
-
-                        <div class="stat-number">
-                            2012
-                        </div>
-
-                        <div class="stat-label">
-                            Established
-                        </div>
-
+                    <!-- Image 1 Banner -->
+                    <div class="intro-card-banner scroll-reveal">
+                        <img src="{% static 'public/images/image1.png' %}" alt="Serving Customers Across UAE">
                     </div>
 
+                    <h3 class="scroll-reveal delay-1">
+                        Serving Customers Across the UAE
+                    </h3>
 
-                    <div class="stat-card">
+                    <p class="scroll-reveal delay-2">
+                        Our customers include electrical traders, MEP companies, contractors,
+                        construction companies, industrial organizations, oil &amp; gas entities,
+                        and commercial customers.
+                    </p>
 
-                        <div class="stat-number">
-                            7
+                    <p class="scroll-reveal delay-3">
+                        We maintain strong relationships across distributors and manufacturers
+                        to ensure efficient sourcing, competitive solutions, and reliable delivery.
+                    </p>
+
+
+                    <div class="stats-grid scroll-reveal delay-3">
+
+                        <div class="stat-card">
+                            <div class="stat-number">2012</div>
+                            <div class="stat-label">Established</div>
                         </div>
 
-                        <div class="stat-label">
-                            Emirates Served
+                        <div class="stat-card">
+                            <div class="stat-number">7</div>
+                            <div class="stat-label">Emirates Served</div>
                         </div>
 
-                    </div>
-
-
-                    <div class="stat-card">
-
-                        <div class="stat-number">
-                            Multi-Brand
-                        </div>
-
-                        <div class="stat-label">
-                            Electrical Supply
+                        <div class="stat-card">
+                            <div class="stat-number">Multi-Brand</div>
+                            <div class="stat-label">Electrical Supply</div>
                         </div>
 
                     </div>
@@ -877,10 +1346,10 @@
              COMMITMENT SECTION
         ================================================== -->
 
-        <section class="commitment-section scroll-reveal">
+        <section class="commitment-section scroll-reveal" id="commitmentSection">
 
-            <!-- Styled Section Tag Badge with Precise Orbit Lock -->
-            <div class="section-tag-wrapper">
+            <!-- Styled Section Tag Badge -->
+            <div class="section-tag-wrapper scroll-reveal">
                 <div class="section-tag-badge">
                     <span class="section-tag-dot"></span>
                     Our Commitment
@@ -888,12 +1357,12 @@
             </div>
 
 
-            <h2 class="section-title">
+            <h2 class="section-title scroll-reveal delay-1">
                 Quality. Reliability. Customer Satisfaction.
             </h2>
 
 
-            <p class="section-text">
+            <p class="section-text scroll-reveal delay-2">
 
                 We are committed to providing quality,
                 reliability, competitive pricing, product
@@ -907,7 +1376,7 @@
             </p>
 
 
-            <p class="section-text">
+            <p class="section-text scroll-reveal delay-3">
 
                 With a strong foundation built since 2012,
                 Al Baraq Elect. Ware Tr. continues to grow as
@@ -922,185 +1391,108 @@
 
 
         <!-- =================================================
-             WHY CHOOSE US SECTION
+             WHY CHOOSE US SECTION (FULL COVER BACKGROUND IMAGES)
         ================================================== -->
 
-        <section class="why-section">
+        <section class="why-section" id="whySection">
 
-            <div class="why-header scroll-reveal">
+            <div class="why-header">
 
-                <!-- Styled Section Tag Badge with Precise Orbit Lock -->
-                <div class="section-tag-wrapper">
+                <!-- Styled Section Tag Badge -->
+                <div class="section-tag-wrapper scroll-reveal">
                     <div class="section-tag-badge">
                         <span class="section-tag-dot"></span>
                         Why Choose Us?
                     </div>
                 </div>
 
-                <h2 class="section-title">
+                <h2 class="section-title scroll-reveal delay-1">
                     A dependable partner for electrical material sourcing.
                 </h2>
 
             </div>
 
 
-            <div class="why-grid scroll-reveal">
+            <div class="why-grid">
 
 
-                <div class="why-card">
-
-                    <div class="why-icon">
-                        01
+                <!-- Card 01: Image 2 -->
+                <div class="electric-card-wrapper scroll-reveal delay-1 tilt-element">
+                    <div class="why-card" style="background-image: url('{% static 'public/why_choose_us/image2.png' %}');">
+                        <div class="why-icon-badge">01</div>
+                        <h3>Established Experience</h3>
+                        <p>Serving the UAE electrical materials market since 2012, with extensive industry knowledge and customer relationships.</p>
                     </div>
-
-                    <h3>
-                        Established Experience
-                    </h3>
-
-                    <p>
-                        Serving the UAE electrical materials
-                        market since 2012, with extensive
-                        industry knowledge and customer
-                        relationships.
-                    </p>
-
                 </div>
 
 
-                <div class="why-card">
-
-                    <div class="why-icon">
-                        02
+                <!-- Card 02: Image 3 -->
+                <div class="electric-card-wrapper scroll-reveal delay-2 tilt-element">
+                    <div class="why-card" style="background-image: url('{% static 'public/why_choose_us/image3.png' %}');">
+                        <div class="why-icon-badge">02</div>
+                        <h3>Trusted Brands</h3>
+                        <p>Access to a broad portfolio of reputed international and regional electrical brands across multiple product categories.</p>
                     </div>
-
-                    <h3>
-                        Trusted Brands
-                    </h3>
-
-                    <p>
-                        Access to a broad portfolio of reputed
-                        international and regional electrical
-                        brands across multiple product categories.
-                    </p>
-
                 </div>
 
 
-                <div class="why-card">
-
-                    <div class="why-icon">
-                        03
+                <!-- Card 03: Image 4 -->
+                <div class="electric-card-wrapper scroll-reveal delay-3 tilt-element">
+                    <div class="why-card" style="background-image: url('{% static 'public/why_choose_us/image4.png' %}');">
+                        <div class="why-icon-badge">03</div>
+                        <h3>Comprehensive Product Range</h3>
+                        <p>From switchgear and cables to conduits, wiring accessories, cable management, glands, lugs, earthing, and ventilation.</p>
                     </div>
-
-                    <h3>
-                        Comprehensive Product Range
-                    </h3>
-
-                    <p>
-                        From switchgear and cables to conduits,
-                        wiring accessories, cable management,
-                        glands, lugs, earthing, and ventilation.
-                    </p>
-
                 </div>
 
 
-                <div class="why-card">
-
-                    <div class="why-icon">
-                        04
+                <!-- Card 04: Image 5 -->
+                <div class="electric-card-wrapper scroll-reveal delay-1 tilt-element">
+                    <div class="why-card" style="background-image: url('{% static 'public/why_choose_us/image5.png' %}');">
+                        <div class="why-icon-badge">04</div>
+                        <h3>UAE-Wide Supply</h3>
+                        <p>Our supply network enables us to serve customers across all seven Emirates of the UAE.</p>
                     </div>
-
-                    <h3>
-                        UAE-Wide Supply
-                    </h3>
-
-                    <p>
-                        Our supply network enables us to serve
-                        customers across all seven Emirates of
-                        the UAE.
-                    </p>
-
                 </div>
 
 
-                <div class="why-card">
-
-                    <div class="why-icon">
-                        05
+                <!-- Card 05: Image 6 -->
+                <div class="electric-card-wrapper scroll-reveal delay-2 tilt-element">
+                    <div class="why-card" style="background-image: url('{% static 'public/why_choose_us/image6.png' %}');">
+                        <div class="why-icon-badge">05</div>
+                        <h3>Competitive Solutions</h3>
+                        <p>We work with established suppliers to provide competitive pricing and practical sourcing solutions.</p>
                     </div>
-
-                    <h3>
-                        Competitive Solutions
-                    </h3>
-
-                    <p>
-                        We work with established suppliers to
-                        provide competitive pricing and practical
-                        sourcing solutions.
-                    </p>
-
                 </div>
 
 
-                <div class="why-card">
-
-                    <div class="why-icon">
-                        06
+                <!-- Card 06: Image 7 -->
+                <div class="electric-card-wrapper scroll-reveal delay-3 tilt-element">
+                    <div class="why-card" style="background-image: url('{% static 'public/why_choose_us/image7.png' %}');">
+                        <div class="why-icon-badge">06</div>
+                        <h3>Customer-Focused Service</h3>
+                        <p>We believe in building long-term relationships through reliable communication, responsive service, and consistent support.</p>
                     </div>
-
-                    <h3>
-                        Customer-Focused Service
-                    </h3>
-
-                    <p>
-                        We believe in building long-term
-                        relationships through reliable
-                        communication, responsive service,
-                        and consistent support.
-                    </p>
-
                 </div>
 
 
-                <div class="why-card">
-
-                    <div class="why-icon">
-                        07
+                <!-- Card 07: Image 8 -->
+                <div class="electric-card-wrapper scroll-reveal delay-1 tilt-element">
+                    <div class="why-card" style="background-image: url('{% static 'public/why_choose_us/image8.png' %}');">
+                        <div class="why-icon-badge">07</div>
+                        <h3>Diverse Customer Base</h3>
+                        <p>We support electrical traders, MEP companies, contractors, construction companies, oil &amp; gas companies, industrial organizations, and commercial customers.</p>
                     </div>
-
-                    <h3>
-                        Diverse Customer Base
-                    </h3>
-
-                    <p>
-                        We support electrical traders, MEP
-                        companies, contractors, construction
-                        companies, oil &amp; gas companies,
-                        industrial organizations, and
-                        commercial customers.
-                    </p>
-
                 </div>
 
 
-                <div class="why-card">
-
-                    <div class="why-icon">
-                        08
+                <!-- Card 08: Image 9 -->
+                <div class="electric-card-wrapper scroll-reveal delay-2 tilt-element">
+                    <div class="why-card" style="background-image: url('{% static 'public/why_choose_us/image9.png' %}');">
+                        <div class="why-icon-badge">08</div>
+                        <h3>Reliable Supply Partner</h3>
+                        <p>Our objective is to make electrical material sourcing easier through quality products, dependable availability, and efficient supply solutions.</p>
                     </div>
-
-                    <h3>
-                        Reliable Supply Partner
-                    </h3>
-
-                    <p>
-                        Our objective is to make electrical
-                        material sourcing easier through quality
-                        products, dependable availability,
-                        and efficient supply solutions.
-                    </p>
-
                 </div>
 
             </div>
@@ -1111,15 +1503,15 @@
 
 
     <!-- =====================================================
-         BRANDS SECTION
+         BRANDS SECTION WITH SINGLE-LINE INFINITE MARQUEE
     ====================================================== -->
 
-    <section class="brands-section scroll-reveal">
+    <section class="brands-section scroll-reveal" id="brandsSection">
 
         <div class="brands-container">
 
-            <!-- Styled Section Tag Badge with Precise Orbit Lock -->
-            <div class="section-tag-wrapper">
+            <!-- Styled Section Tag Badge -->
+            <div class="section-tag-wrapper scroll-reveal">
                 <div class="section-tag-badge">
                     <span class="section-tag-dot"></span>
                     Our Brands
@@ -1127,12 +1519,12 @@
             </div>
 
 
-            <h2 class="section-title">
+            <h2 class="section-title scroll-reveal delay-1">
                 Trusted Brands We Supply
             </h2>
 
 
-            <p class="brands-description">
+            <p class="brands-description scroll-reveal delay-2">
 
                 We supply electrical materials from a wide
                 selection of reputed international and regional
@@ -1142,37 +1534,74 @@
 
             </p>
 
+        </div>
 
-            <div class="brands-list">
 
-                <span class="brand-item">MK</span>
-                <span class="brand-item">Schneider Electric</span>
-                <span class="brand-item">ABB</span>
-                <span class="brand-item">Hager</span>
-                <span class="brand-item">Legrand</span>
-                <span class="brand-item">Alfanar</span>
-                <span class="brand-item">DUCAB</span>
-                <span class="brand-item">NCI</span>
-                <span class="brand-item">Oman Cables</span>
-                <span class="brand-item">RR Kabel</span>
-                <span class="brand-item">Vortice</span>
-                <span class="brand-item">GEWISS</span>
-                <span class="brand-item">RR</span>
-                <span class="brand-item">CELLPACK</span>
-                <span class="brand-item">Barton</span>
-                <span class="brand-item">Kopex</span>
-                <span class="brand-item">KDK</span>
-                <span class="brand-item">Decoduct</span>
-                <span class="brand-item">BICC</span>
-                <span class="brand-item">Furse</span>
-                <span class="brand-item">MESC</span>
-                <span class="brand-item">Caparo</span>
-                <span class="brand-item">CMP</span>
+        <!-- INFINITE CONTINUOUS SINGLE-LINE MARQUEE SLIDER -->
+        <div class="brands-marquee-wrapper scroll-reveal delay-3">
+
+            <div class="brands-marquee-track">
+
+                <!-- FIRST SET OF CARDS -->
+                <div class="brand-item-wrapper"><div class="brand-card"><div class="brand-logo-container"><img src="{% static 'public/logo/oman_cables.png' %}" alt="Oman Cables Logo" class="brand-logo-img"></div><div class="brand-pill"><span class="brand-dot"></span>Oman Cables</div></div></div>
+                <div class="brand-item-wrapper"><div class="brand-card"><div class="brand-logo-container"><img src="{% static 'public/logo/rr_kabel.png' %}" alt="RR Kabel Logo" class="brand-logo-img"></div><div class="brand-pill"><span class="brand-dot"></span>RR Kabel</div></div></div>
+                <div class="brand-item-wrapper"><div class="brand-card"><div class="brand-logo-container"><img src="{% static 'public/logo/alfanar.png' %}" alt="Alfanar Logo" class="brand-logo-img"></div><div class="brand-pill"><span class="brand-dot"></span>Alfanar</div></div></div>
+                <div class="brand-item-wrapper"><div class="brand-card"><div class="brand-logo-container"><img src="{% static 'public/logo/ducab.png' %}" alt="DUCAB Logo" class="brand-logo-img"></div><div class="brand-pill"><span class="brand-dot"></span>DUCAB</div></div></div>
+                <div class="brand-item-wrapper"><div class="brand-card"><div class="brand-logo-container"><img src="{% static 'public/logo/mesc.png' %}" alt="MESC Logo" class="brand-logo-img"></div><div class="brand-pill"><span class="brand-dot"></span>MESC</div></div></div>
+                <div class="brand-item-wrapper"><div class="brand-card"><div class="brand-logo-container"><img src="{% static 'public/logo/nci.png' %}" alt="NCI Logo" class="brand-logo-img"></div><div class="brand-pill"><span class="brand-dot"></span>NCI</div></div></div>
+                <div class="brand-item-wrapper"><div class="brand-card"><div class="brand-logo-container"><img src="{% static 'public/logo/eaton.png' %}" alt="Eaton Logo" class="brand-logo-img"></div><div class="brand-pill"><span class="brand-dot"></span>Eaton</div></div></div>
+                <div class="brand-item-wrapper"><div class="brand-card"><div class="brand-logo-container"><img src="{% static 'public/logo/legrand.png' %}" alt="Legrand Logo" class="brand-logo-img"></div><div class="brand-pill"><span class="brand-dot"></span>Legrand</div></div></div>
+                <div class="brand-item-wrapper"><div class="brand-card"><div class="brand-logo-container"><img src="{% static 'public/logo/tenby.png' %}" alt="Tenby Logo" class="brand-logo-img"></div><div class="brand-pill"><span class="brand-dot"></span>Tenby</div></div></div>
+                <div class="brand-item-wrapper"><div class="brand-card"><div class="brand-logo-container"><img src="{% static 'public/logo/schneider.png' %}" alt="Schneider Electric Logo" class="brand-logo-img"></div><div class="brand-pill"><span class="brand-dot"></span>Schneider</div></div></div>
+                <div class="brand-item-wrapper"><div class="brand-card"><div class="brand-logo-container"><img src="{% static 'public/logo/kdk.png' %}" alt="KDK Logo" class="brand-logo-img"></div><div class="brand-pill"><span class="brand-dot"></span>KDK</div></div></div>
+                <div class="brand-item-wrapper"><div class="brand-card"><div class="brand-logo-container"><img src="{% static 'public/logo/furse.png' %}" alt="Furse Logo" class="brand-logo-img"></div><div class="brand-pill"><span class="brand-dot"></span>Furse</div></div></div>
+                <div class="brand-item-wrapper"><div class="brand-card"><div class="brand-logo-container"><img src="{% static 'public/logo/Hex.png' %}" alt="HEX Logo" class="brand-logo-img"></div><div class="brand-pill"><span class="brand-dot"></span>HEX</div></div></div>
+                <div class="brand-item-wrapper"><div class="brand-card"><div class="brand-logo-container"><img src="{% static 'public/logo/templair_fan.png' %}" alt="Templair Fans Logo" class="brand-logo-img"></div><div class="brand-pill"><span class="brand-dot"></span>Templair Fans</div></div></div>
+                <div class="brand-item-wrapper"><div class="brand-card"><div class="brand-logo-container"><img src="{% static 'public/logo/Hager.png' %}" alt="Hager Logo" class="brand-logo-img"></div><div class="brand-pill"><span class="brand-dot"></span>Hager</div></div></div>
+                <div class="brand-item-wrapper"><div class="brand-card"><div class="brand-logo-container"><img src="{% static 'public/logo/caparon.png' %}" alt="Caparo Logo" class="brand-logo-img"></div><div class="brand-pill"><span class="brand-dot"></span>Caparo</div></div></div>
+                <div class="brand-item-wrapper"><div class="brand-card"><div class="brand-logo-container"><img src="{% static 'public/logo/decoduct.png' %}" alt="Decoduct Logo" class="brand-logo-img"></div><div class="brand-pill"><span class="brand-dot"></span>Decoduct</div></div></div>
+                <div class="brand-item-wrapper"><div class="brand-card"><div class="brand-logo-container"><img src="{% static 'public/logo/rexton.png' %}" alt="Rexton Logo" class="brand-logo-img"></div><div class="brand-pill"><span class="brand-dot"></span>Rexton</div></div></div>
+                <div class="brand-item-wrapper"><div class="brand-card"><div class="brand-logo-container"><img src="{% static 'public/logo/tenex .png' %}" alt="Tenex Logo" class="brand-logo-img"></div><div class="brand-pill"><span class="brand-dot"></span>Tenex</div></div></div>
+                <div class="brand-item-wrapper"><div class="brand-card"><div class="brand-logo-container"><img src="{% static 'public/logo/cellpack.png' %}" alt="Cellpack Logo" class="brand-logo-img"></div><div class="brand-pill"><span class="brand-dot"></span>Cellpack</div></div></div>
+                <div class="brand-item-wrapper"><div class="brand-card"><div class="brand-logo-container"><img src="{% static 'public/logo/panasonic.png' %}" alt="Panasonic Logo" class="brand-logo-img"></div><div class="brand-pill"><span class="brand-dot"></span>Panasonic</div></div></div>
+                <div class="brand-item-wrapper"><div class="brand-card"><div class="brand-logo-container"><img src="{% static 'public/logo/wd40.png' %}" alt="WD-40 Logo" class="brand-logo-img"></div><div class="brand-pill"><span class="brand-dot"></span>WD-40</div></div></div>
+                <div class="brand-item-wrapper"><div class="brand-card"><div class="brand-logo-container"><img src="{% static 'public/logo/abb.png' %}" alt="ABB Logo" class="brand-logo-img"></div><div class="brand-pill"><span class="brand-dot"></span>ABB</div></div></div>
+                <div class="brand-item-wrapper"><div class="brand-card"><div class="brand-logo-container"><img src="{% static 'public/logo/3m.png' %}" alt="3M Logo" class="brand-logo-img"></div><div class="brand-pill"><span class="brand-dot"></span>3M</div></div></div>
+
+                <!-- DUPLICATED SET FOR SEAMLESS INFINITE LOOP -->
+                <div class="brand-item-wrapper"><div class="brand-card"><div class="brand-logo-container"><img src="{% static 'public/logo/oman_cables.png' %}" alt="Oman Cables Logo" class="brand-logo-img"></div><div class="brand-pill"><span class="brand-dot"></span>Oman Cables</div></div></div>
+                <div class="brand-item-wrapper"><div class="brand-card"><div class="brand-logo-container"><img src="{% static 'public/logo/rr_kabel.png' %}" alt="RR Kabel Logo" class="brand-logo-img"></div><div class="brand-pill"><span class="brand-dot"></span>RR Kabel</div></div></div>
+                <div class="brand-item-wrapper"><div class="brand-card"><div class="brand-logo-container"><img src="{% static 'public/logo/alfanar.png' %}" alt="Alfanar Logo" class="brand-logo-img"></div><div class="brand-pill"><span class="brand-dot"></span>Alfanar</div></div></div>
+                <div class="brand-item-wrapper"><div class="brand-card"><div class="brand-logo-container"><img src="{% static 'public/logo/ducab.png' %}" alt="DUCAB Logo" class="brand-logo-img"></div><div class="brand-pill"><span class="brand-dot"></span>DUCAB</div></div></div>
+                <div class="brand-item-wrapper"><div class="brand-card"><div class="brand-logo-container"><img src="{% static 'public/logo/mesc.png' %}" alt="MESC Logo" class="brand-logo-img"></div><div class="brand-pill"><span class="brand-dot"></span>MESC</div></div></div>
+                <div class="brand-item-wrapper"><div class="brand-card"><div class="brand-logo-container"><img src="{% static 'public/logo/nci.png' %}" alt="NCI Logo" class="brand-logo-img"></div><div class="brand-pill"><span class="brand-dot"></span>NCI</div></div></div>
+                <div class="brand-item-wrapper"><div class="brand-card"><div class="brand-logo-container"><img src="{% static 'public/logo/eaton.png' %}" alt="Eaton Logo" class="brand-logo-img"></div><div class="brand-pill"><span class="brand-dot"></span>Eaton</div></div></div>
+                <div class="brand-item-wrapper"><div class="brand-card"><div class="brand-logo-container"><img src="{% static 'public/logo/legrand.png' %}" alt="Legrand Logo" class="brand-logo-img"></div><div class="brand-pill"><span class="brand-dot"></span>Legrand</div></div></div>
+                <div class="brand-item-wrapper"><div class="brand-card"><div class="brand-logo-container"><img src="{% static 'public/logo/tenby.png' %}" alt="Tenby Logo" class="brand-logo-img"></div><div class="brand-pill"><span class="brand-dot"></span>Tenby</div></div></div>
+                <div class="brand-item-wrapper"><div class="brand-card"><div class="brand-logo-container"><img src="{% static 'public/logo/schneider.png' %}" alt="Schneider Electric Logo" class="brand-logo-img"></div><div class="brand-pill"><span class="brand-dot"></span>Schneider</div></div></div>
+                <div class="brand-item-wrapper"><div class="brand-card"><div class="brand-logo-container"><img src="{% static 'public/logo/kdk.png' %}" alt="KDK Logo" class="brand-logo-img"></div><div class="brand-pill"><span class="brand-dot"></span>KDK</div></div></div>
+                <div class="brand-item-wrapper"><div class="brand-card"><div class="brand-logo-container"><img src="{% static 'public/logo/furse.png' %}" alt="Furse Logo" class="brand-logo-img"></div><div class="brand-pill"><span class="brand-dot"></span>Furse</div></div></div>
+                <div class="brand-item-wrapper"><div class="brand-card"><div class="brand-logo-container"><img src="{% static 'public/logo/Hex.png' %}" alt="HEX Logo" class="brand-logo-img"></div><div class="brand-pill"><span class="brand-dot"></span>HEX</div></div></div>
+                <div class="brand-item-wrapper"><div class="brand-card"><div class="brand-logo-container"><img src="{% static 'public/logo/templair_fan.png' %}" alt="Templair Fans Logo" class="brand-logo-img"></div><div class="brand-pill"><span class="brand-dot"></span>Templair Fans</div></div></div>
+                <div class="brand-item-wrapper"><div class="brand-card"><div class="brand-logo-container"><img src="{% static 'public/logo/Hager.png' %}" alt="Hager Logo" class="brand-logo-img"></div><div class="brand-pill"><span class="brand-dot"></span>Hager</div></div></div>
+                <div class="brand-item-wrapper"><div class="brand-card"><div class="brand-logo-container"><img src="{% static 'public/logo/caparon.png' %}" alt="Caparo Logo" class="brand-logo-img"></div><div class="brand-pill"><span class="brand-dot"></span>Caparo</div></div></div>
+                <div class="brand-item-wrapper"><div class="brand-card"><div class="brand-logo-container"><img src="{% static 'public/logo/decoduct.png' %}" alt="Decoduct Logo" class="brand-logo-img"></div><div class="brand-pill"><span class="brand-dot"></span>Decoduct</div></div></div>
+                <div class="brand-item-wrapper"><div class="brand-card"><div class="brand-logo-container"><img src="{% static 'public/logo/rexton.png' %}" alt="Rexton Logo" class="brand-logo-img"></div><div class="brand-pill"><span class="brand-dot"></span>Rexton</div></div></div>
+                <div class="brand-item-wrapper"><div class="brand-card"><div class="brand-logo-container"><img src="{% static 'public/logo/tenex .png' %}" alt="Tenex Logo" class="brand-logo-img"></div><div class="brand-pill"><span class="brand-dot"></span>Tenex</div></div></div>
+                <div class="brand-item-wrapper"><div class="brand-card"><div class="brand-logo-container"><img src="{% static 'public/logo/cellpack.png' %}" alt="Cellpack Logo" class="brand-logo-img"></div><div class="brand-pill"><span class="brand-dot"></span>Cellpack</div></div></div>
+                <div class="brand-item-wrapper"><div class="brand-card"><div class="brand-logo-container"><img src="{% static 'public/logo/panasonic.png' %}" alt="Panasonic Logo" class="brand-logo-img"></div><div class="brand-pill"><span class="brand-dot"></span>Panasonic</div></div></div>
+                <div class="brand-item-wrapper"><div class="brand-card"><div class="brand-logo-container"><img src="{% static 'public/logo/wd40.png' %}" alt="WD-40 Logo" class="brand-logo-img"></div><div class="brand-pill"><span class="brand-dot"></span>WD-40</div></div></div>
+                <div class="brand-item-wrapper"><div class="brand-card"><div class="brand-logo-container"><img src="{% static 'public/logo/abb.png' %}" alt="ABB Logo" class="brand-logo-img"></div><div class="brand-pill"><span class="brand-dot"></span>ABB</div></div></div>
+                <div class="brand-item-wrapper"><div class="brand-card"><div class="brand-logo-container"><img src="{% static 'public/logo/3m.png' %}" alt="3M Logo" class="brand-logo-img"></div><div class="brand-pill"><span class="brand-dot"></span>3M</div></div></div>
 
             </div>
 
+        </div>
 
-            <p class="brands-contact">
+
+        <div class="brands-container">
+
+            <p class="brands-contact scroll-reveal delay-3">
 
                 Looking for a specific brand or product?
                 <a href="{% url 'public:contact' %}">
@@ -1198,104 +1627,112 @@
 document.addEventListener("DOMContentLoaded", function () {
 
     /* ---------------------------------------------------------
-       1. DYNAMIC HERO BACKGROUND SLIDESHOW
+       1. HIGH-PERFORMANCE ULTRA-SMOOTH 3D TILT EFFECT
+    --------------------------------------------------------- */
+
+    const canHover = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+
+    if (canHover) {
+        const tiltElements = document.querySelectorAll(".tilt-element");
+
+        tiltElements.forEach(function (el) {
+            let rafId = null;
+
+            el.addEventListener("mouseenter", function () {
+                el.style.transition = "transform 0.12s cubic-bezier(0.2, 0, 0.2, 1)";
+            });
+
+            el.addEventListener("mousemove", function (e) {
+                if (rafId) cancelAnimationFrame(rafId);
+
+                rafId = requestAnimationFrame(function () {
+                    const rect = el.getBoundingClientRect();
+                    const centerX = rect.width / 2;
+                    const centerY = rect.height / 2;
+                    const mouseX = e.clientX - rect.left;
+                    const mouseY = e.clientY - rect.top;
+
+                    const rotateX = ((mouseY - centerY) / centerY) * -6.5;
+                    const rotateY = ((mouseX - centerX) / centerX) * 6.5;
+
+                    el.style.transform = "perspective(1000px) rotateX(" + rotateX.toFixed(2) + "deg) rotateY(" + rotateY.toFixed(2) + "deg) scale3d(1.015, 1.015, 1.015)";
+                });
+            });
+
+            el.addEventListener("mouseleave", function () {
+                if (rafId) cancelAnimationFrame(rafId);
+                el.style.transition = "transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)";
+                el.style.transform = "perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)";
+            });
+        });
+    }
+
+
+    /* ---------------------------------------------------------
+       2. DYNAMIC HERO BACKGROUND SLIDESHOW
     --------------------------------------------------------- */
 
     const bgLayers = document.querySelectorAll(".hero-bg-layer");
 
     if (bgLayers.length > 1) {
-
         let currentBgIndex = 0;
 
         function cycleBackground() {
-
             bgLayers[currentBgIndex].classList.remove("active");
-
             currentBgIndex = (currentBgIndex + 1) % bgLayers.length;
-
             bgLayers[currentBgIndex].classList.add("active");
-
         }
 
         setInterval(cycleBackground, 5500);
-
     }
 
 
     /* ---------------------------------------------------------
-       2. SMOOTH SCROLL FOR ARROW BUTTON
+       3. SMOOTH SCROLL FOR ARROW BUTTON & QUICK-LINK CARDS
     --------------------------------------------------------- */
 
     const scrollBtn = document.getElementById("scrollDownBtn");
 
     if (scrollBtn) {
-
         scrollBtn.addEventListener("click", function (e) {
-
             e.preventDefault();
-
             const targetSection = document.getElementById("introSection");
-
             if (targetSection) {
-
                 targetSection.scrollIntoView({
-
                     behavior: "smooth",
-
                     block: "start"
-
                 });
-
             }
-
         });
-
     }
 
 
     /* ---------------------------------------------------------
-       3. SCROLL REVEAL OBSERVER
+       4. SCROLL REVEAL OBSERVER
     --------------------------------------------------------- */
 
     const revealElements = document.querySelectorAll(".scroll-reveal");
 
     if ("IntersectionObserver" in window) {
-
         const revealObserver = new IntersectionObserver(
             function (entries, observer) {
-
                 entries.forEach(function (entry) {
-
                     if (entry.isIntersecting) {
-
                         entry.target.classList.add("is-visible");
-
                         observer.unobserve(entry.target);
-
                     }
-
                 });
-
             },
-            {
-                threshold: 0.12
-            }
+            { threshold: 0.12 }
         );
 
         revealElements.forEach(function (el) {
-
             revealObserver.observe(el);
-
         });
-
     } else {
-
         revealElements.forEach(function (el) {
-
             el.classList.add("is-visible");
-
         });
-
     }
 
 });

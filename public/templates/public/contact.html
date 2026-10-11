@@ -13,27 +13,80 @@
 <style>
 
 /* =========================================================
+   THEME VARIABLES FOR CONTACT PAGE
+========================================================= */
+
+:root, [data-theme="dark"] {
+    --page-bg: #050a14;
+    --hero-bg: #030712;
+    --hero-overlay-grad: linear-gradient(90deg, rgba(3, 7, 18, 0.96) 0%, rgba(15, 23, 42, 0.88) 45%, rgba(15, 23, 42, 0.52) 100%);
+    --card-surface: #0f172a;
+    --card-surface-hover: #111a2e;
+    --card-surface-overlay: rgba(11, 19, 38, 0.88);
+    --card-inner-bg: #080f21;
+    --badge-bg: #090d16;
+    --text-primary: #f8fafc;
+    --text-secondary: #94a3b8;
+    --text-body: #cbd5e1;
+    --accent-cyan: #00e5ff;
+    --accent-cyan-shadow: rgba(0, 229, 255, 0.45);
+    --brand-border: #1e293b;
+    --brand-border-wrapper: rgba(30, 41, 59, 0.85);
+    --input-bg: #080f21;
+    --input-border: #1e293b;
+    --conic-glow: conic-gradient(transparent, rgba(0, 229, 255, 0.35), #00e5ff, #3b82f6, #00d2ff, transparent 45%);
+}
+
+[data-theme="light"] {
+    --page-bg: #f8fafc;
+    --hero-bg: #03122d;
+    --hero-overlay-grad: linear-gradient(90deg, rgba(3, 18, 45, 0.88) 0%, rgba(5, 28, 62, 0.72) 45%, rgba(5, 28, 62, 0.35) 100%);
+    --card-surface: #ffffff;
+    --card-surface-hover: #ffffff;
+    --card-surface-overlay: rgba(255, 255, 255, 0.92);
+    --card-inner-bg: #f8fafc;
+    --badge-bg: #ffffff;
+    --text-primary: #0f172a;
+    --text-secondary: #475569;
+    --text-body: #64748b;
+    --accent-cyan: #2563eb;
+    --accent-cyan-shadow: rgba(37, 99, 235, 0.25);
+    --brand-border: #e2e8f0;
+    --brand-border-wrapper: #dbe4f0;
+    --input-bg: #f8fafc;
+    --input-border: #cbd5e1;
+    --conic-glow: conic-gradient(transparent, rgba(37, 99, 235, 0.25), #2563eb, #3b82f6, #0284c7, transparent 45%);
+}
+
+
+/* =========================================================
    GLOBAL PAGE STYLING & UTILITIES
 ========================================================= */
 
 .contact-page {
-    background: #f8fafc;
-    color: #111a2e;
+    background: var(--page-bg);
+    color: var(--text-primary);
     min-height: 100vh;
+    transition: background 0.35s ease, color 0.35s ease;
 }
 
 .scroll-reveal {
     opacity: 0;
-    transform: translateY(22px);
+    transform: translateY(30px) scale(0.97);
     transition:
-        opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1),
-        transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+        opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1),
+        transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: opacity, transform;
 }
 
 .scroll-reveal.is-visible {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateY(0) scale(1);
 }
+
+.scroll-reveal.delay-1 { transition-delay: 0.15s; }
+.scroll-reveal.delay-2 { transition-delay: 0.3s; }
+.scroll-reveal.delay-3 { transition-delay: 0.45s; }
 
 
 /* =========================================================
@@ -46,7 +99,9 @@
     display: flex;
     align-items: center;
     overflow: hidden;
-    background-color: #03122d;
+    background-color: var(--hero-bg);
+    padding-bottom: 60px;
+    transition: background-color 0.35s ease;
 }
 
 .hero-bg-layer {
@@ -59,28 +114,27 @@
     background-position: center;
     background-repeat: no-repeat;
     opacity: 0;
-    transition: opacity 1.2s ease-in-out;
+    transform: scale(1.15) rotate(0.5deg);
+    transition: opacity 1.4s cubic-bezier(0.4, 0, 0.2, 1), transform 7s ease-out;
     z-index: 1;
+    will-change: transform, opacity;
 }
 
 .hero-bg-layer.active {
     opacity: 1;
+    transform: scale(1) rotate(0deg);
 }
 
-/* Dark Gradient Overlay over Background Images */
+/* Overlay Shade */
 .hero-overlay {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(
-        90deg,
-        rgba(3, 18, 45, 0.94) 0%,
-        rgba(5, 28, 62, 0.86) 48%,
-        rgba(5, 28, 62, 0.42) 100%
-    );
+    background: var(--hero-overlay-grad);
     z-index: 2;
+    transition: background 0.35s ease;
 }
 
 .contact-hero-inner {
@@ -92,16 +146,17 @@
 }
 
 
-/* Dynamic Glass Badge in Hero with Thinner Orbiting Glow */
+/* Dynamic Fluid Glass Badge with Orbiting Glow Loop */
 .hero-company-wrapper {
     display: inline-flex;
     width: fit-content;
     max-width: max-content;
     position: relative;
-    margin-bottom: 22px;
-    padding: 1.2px;
+    margin-bottom: 20px;
+    padding: 2px;
     border-radius: 32px;
     overflow: hidden;
+    box-shadow: 0 0 18px rgba(0, 229, 255, 0.35);
 }
 
 .hero-company-wrapper::before {
@@ -113,12 +168,12 @@
     height: 200%;
     background: conic-gradient(
         transparent,
-        rgba(56, 189, 248, 0.08),
-        #38bdf8,
-        #60a5fa,
-        transparent 25%
+        rgba(0, 229, 255, 0.25),
+        #00e5ff,
+        #3b82f6,
+        transparent 35%
     );
-    animation: rotateBorderGlow 4s linear infinite;
+    animation: rotateBorderGlow 3.5s linear infinite;
     z-index: 0;
 }
 
@@ -132,34 +187,33 @@
     z-index: 1;
     display: inline-flex;
     align-items: center;
-    gap: 9px;
-    padding: 7px 18px;
+    gap: 10px;
+    padding: 8px 18px;
     border-radius: 30px;
-    background: rgba(3, 18, 45, 0.45);
+    background: rgba(11, 19, 38, 0.92);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    color: #94a3b8;
+    color: #ffffff;
     font-size: 12.5px;
-    font-weight: 500;
-    letter-spacing: 1.2px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
     text-transform: uppercase;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
 }
 
 .hero-company-dot {
-    width: 7px;
-    height: 7px;
+    width: 8px;
+    height: 8px;
     border-radius: 50%;
-    background: #38bdf8;
-    box-shadow: 0 0 5px #38bdf8;
+    background: #00e5ff;
+    box-shadow: 0 0 12px #00e5ff, 0 0 20px #00e5ff;
     flex-shrink: 0;
     animation: pulseDot 1.8s infinite;
 }
 
 @keyframes pulseDot {
     0%, 100% { transform: scale(1); opacity: 1; }
-    50% { transform: scale(1.2); opacity: 0.7; }
+    50% { transform: scale(1.4); opacity: 0.7; }
 }
 
 .contact-hero h1 {
@@ -173,13 +227,14 @@
 }
 
 .contact-hero h1 .highlight {
-    color: #60a5fa;
+    color: #00e5ff;
+    text-shadow: 0 0 22px rgba(0, 229, 255, 0.45);
 }
 
 .contact-hero p.hero-subtitle {
     max-width: 760px;
     margin: 0 0 24px;
-    color: rgba(226, 232, 240, 0.90);
+    color: #94a3b8;
     font-size: 16.5px;
     line-height: 1.6;
 }
@@ -187,13 +242,13 @@
 .hero-reach-text {
     color: #94a3b8;
     font-size: 14px;
-    font-weight: 500;
+    font-weight: 600;
     margin-bottom: 14px;
     letter-spacing: 0.5px;
 }
 
 
-/* Glassmorphic Workplace Location Boxes inside Hero */
+/* Glassmorphic Workplace Location Boxes */
 .hero-locations-grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -202,32 +257,33 @@
 }
 
 .hero-glass-box {
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(15, 23, 42, 0.65);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    border-radius: 16px;
-    padding: 20px 22px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
-    transition: border-color 0.3s ease, transform 0.3s ease;
+    border: 1px solid rgba(0, 229, 255, 0.25);
+    border-radius: 18px;
+    padding: 22px 24px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+    transition: border-color 0.35s ease, transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s ease;
 }
 
 .hero-glass-box:hover {
-    border-color: rgba(96, 165, 250, 0.4);
-    transform: translateY(-2px);
+    border-color: #00e5ff;
+    transform: translateY(-4px);
+    box-shadow: 0 0 25px rgba(0, 229, 255, 0.4);
 }
 
 .hero-glass-box h3 {
     margin: 0 0 6px;
     color: #ffffff;
-    font-size: 17px;
-    font-weight: 700;
+    font-size: 18px;
+    font-weight: 800;
 }
 
 .hero-glass-box p {
     margin: 0 0 12px;
     color: #cbd5e1;
-    font-size: 13.5px;
+    font-size: 14px;
     line-height: 1.5;
 }
 
@@ -235,15 +291,16 @@
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    color: #60a5fa;
-    font-size: 14px;
-    font-weight: 600;
+    color: #00e5ff;
+    font-size: 14.5px;
+    font-weight: 700;
     text-decoration: none;
-    transition: color 0.2s ease;
+    transition: color 0.2s ease, text-shadow 0.2s ease;
 }
 
 .hero-location-phone:hover {
-    color: #93c5fd;
+    color: #ffffff;
+    text-shadow: 0 0 10px rgba(0, 229, 255, 0.6);
 }
 
 
@@ -253,7 +310,7 @@
 
 .hero-scroll-wrapper {
     position: absolute;
-    bottom: 22px;
+    bottom: 20px;
     left: 50%;
     transform: translateX(-50%);
     display: flex;
@@ -263,39 +320,39 @@
 }
 
 .hero-scroll-btn {
-    width: 48px;
-    height: 48px;
+    width: 46px;
+    height: 46px;
     border-radius: 50%;
-    border: 1.5px solid rgba(56, 189, 248, 0.85);
+    border: 1.5px solid #00e5ff;
     background: transparent;
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
-    color: #38bdf8;
+    color: #00e5ff;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
     text-decoration: none;
     box-shadow:
-        0 0 12px rgba(56, 189, 248, 0.45),
-        0 0 24px rgba(37, 99, 235, 0.3);
+        0 0 15px rgba(0, 229, 255, 0.6),
+        0 0 30px rgba(0, 114, 255, 0.4);
     transition: all 0.3s ease;
     animation: neonBounceGlow 2.4s infinite ease-in-out;
 }
 
 .hero-scroll-btn svg {
-    filter: drop-shadow(0 0 6px rgba(56, 189, 248, 0.8));
+    filter: drop-shadow(0 0 8px #00e5ff);
     transition: transform 0.25s ease;
 }
 
 .hero-scroll-btn:hover {
-    background: rgba(37, 99, 235, 0.25);
+    background: rgba(0, 229, 255, 0.28);
     color: #ffffff;
-    border-color: #60a5fa;
+    border-color: #00e5ff;
     box-shadow:
-        0 0 22px rgba(96, 165, 250, 0.85),
-        0 0 45px rgba(37, 99, 235, 0.65);
-    transform: scale(1.08);
+        0 0 25px rgba(0, 229, 255, 0.95),
+        0 0 50px rgba(0, 114, 255, 0.85);
+    transform: scale(1.1);
     animation-play-state: paused;
 }
 
@@ -303,14 +360,14 @@
     0%, 100% {
         transform: translateY(0);
         box-shadow:
-            0 0 12px rgba(56, 189, 248, 0.45),
-            0 0 24px rgba(37, 99, 235, 0.3);
+            0 0 15px rgba(0, 229, 255, 0.6),
+            0 0 30px rgba(0, 114, 255, 0.4);
     }
     50% {
-        transform: translateY(8px);
+        transform: translateY(6px);
         box-shadow:
-            0 0 20px rgba(56, 189, 248, 0.75),
-            0 0 35px rgba(37, 99, 235, 0.5);
+            0 0 25px rgba(0, 229, 255, 0.85),
+            0 0 40px rgba(0, 114, 255, 0.65);
     }
 }
 
@@ -322,13 +379,8 @@
 .contact-main {
     width: min(1380px, 90%);
     margin: 0 auto;
-    padding: 60px 0 100px;
+    padding: 70px 0 100px;
 }
-
-
-/* =========================================================
-   CONTACT LOWER SECTION
-========================================================= */
 
 .contact-lower-section {
     display: grid;
@@ -337,26 +389,101 @@
     align-items: stretch;
 }
 
+
+/* Static Electric Border Cards */
+.electric-card-wrapper {
+    position: relative;
+    padding: 1.5px;
+    border-radius: 24px;
+    overflow: hidden;
+    height: 100%;
+    background: var(--brand-border);
+    transition: background 0.3s ease, box-shadow 0.4s ease;
+}
+
+.electric-card-wrapper::before {
+    content: "";
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: var(--conic-glow);
+    animation: rotateElectricBorder 3.5s linear infinite;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    z-index: 0;
+}
+
+.electric-card-wrapper:hover::before {
+    opacity: 1;
+}
+
+.electric-card-wrapper:hover {
+    box-shadow: 0 0 28px var(--accent-cyan-shadow);
+}
+
+@keyframes rotateElectricBorder {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
 .card-box {
-    background: #ffffff;
-    border: 1px solid #e2e8f0;
+    position: relative;
+    z-index: 1;
+    background: var(--card-surface);
     border-radius: 22px;
     padding: 38px;
-    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.05);
+    height: 100%;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+    transition: background 0.35s ease;
 }
 
 .card-box h2 {
     margin: 0 0 10px;
-    color: #0f172a;
+    color: var(--text-primary);
     font-size: 28px;
     font-weight: 800;
 }
 
 .card-box > p {
     margin: 0 0 28px;
-    color: #64748b;
+    color: var(--text-secondary);
     line-height: 1.65;
     font-size: 15.5px;
+}
+
+
+/* =========================================================
+   CONTACT FORM CARD WITH BACKGROUND IMAGE OVERLAY
+========================================================= */
+
+.contact-form-card {
+    background-color: var(--card-surface);
+    background-image: url('{% static "public/cards/cables&flexible_wires.png" %}');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    overflow: hidden;
+}
+
+.contact-form-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--card-surface-overlay);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    z-index: 0;
+    transition: background 0.35s ease;
+}
+
+.contact-form-card > * {
+    position: relative;
+    z-index: 1;
 }
 
 
@@ -381,7 +508,7 @@
 .form-group label {
     display: block;
     margin-bottom: 8px;
-    color: #0f172a;
+    color: var(--text-primary);
     font-size: 14px;
     font-weight: 750;
 }
@@ -391,18 +518,15 @@
 .form-group textarea {
     width: 100%;
     box-sizing: border-box;
-    border: 1px solid #cbd5e1;
-    border-radius: 11px;
-    background: #f8fafc;
-    color: #0f172a;
+    border: 1px solid var(--input-border);
+    border-radius: 12px;
+    background: var(--input-bg);
+    color: var(--text-primary);
     padding: 14px 16px;
     font-family: inherit;
     font-size: 15px;
     outline: none;
-    transition:
-        border-color 0.2s ease,
-        box-shadow 0.2s ease,
-        background 0.2s ease;
+    transition: border-color 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
 }
 
 .form-group input,
@@ -415,38 +539,39 @@
     resize: vertical;
 }
 
+.form-group select option {
+    background: var(--card-surface);
+    color: var(--text-primary);
+}
+
 .form-group input:focus,
 .form-group select:focus,
 .form-group textarea:focus {
-    border-color: #3b82f6;
-    background: #ffffff;
-    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.12);
+    border-color: var(--accent-cyan);
+    background: var(--card-inner-bg);
+    box-shadow: 0 0 0 3px var(--accent-cyan-shadow);
 }
 
 .submit-button {
     width: 100%;
     height: 54px;
-    border: 1px solid #2563eb;
-    border-radius: 11px;
-    background: #2563eb;
-    color: #ffffff;
+    border: 1px solid var(--accent-cyan);
+    border-radius: 12px;
+    background: var(--accent-cyan);
+    color: #030712;
     font-family: inherit;
     font-size: 16.5px;
     font-weight: 800;
     cursor: pointer;
-    transition:
-        background 0.25s ease,
-        border-color 0.25s ease,
-        transform 0.25s ease,
-        box-shadow 0.25s ease;
-    box-shadow: 0 4px 15px rgba(37, 99, 235, 0.25);
+    transition: background 0.25s ease, border-color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
+    box-shadow: 0 4px 15px var(--accent-cyan-shadow);
 }
 
 .submit-button:hover {
-    background: #1d4ed8;
-    border-color: #1d4ed8;
+    background: #00d2ff;
+    border-color: #00d2ff;
     transform: translateY(-2px);
-    box-shadow: 0 8px 22px rgba(37, 99, 235, 0.35);
+    box-shadow: 0 8px 22px var(--accent-cyan-shadow);
 }
 
 .submit-button:disabled {
@@ -465,12 +590,12 @@
     display: none;
     margin-bottom: 22px;
     padding: 15px 18px;
-    border-radius: 10px;
-    background: #ecfdf5;
-    border: 1px solid #a7f3d0;
-    color: #047857;
+    border-radius: 12px;
+    background: rgba(16, 185, 129, 0.15);
+    border: 1px solid #10b981;
+    color: #10b981;
     font-size: 15px;
-    font-weight: 650;
+    font-weight: 700;
 }
 
 #formSuccessBanner.active {
@@ -494,10 +619,10 @@
 
 .map-button {
     padding: 10px 18px;
-    border: 1px solid #cbd5e1;
-    border-radius: 9px;
-    background: #ffffff;
-    color: #475569;
+    border: 1px solid var(--input-border);
+    border-radius: 10px;
+    background: var(--card-inner-bg);
+    color: var(--text-secondary);
     font-family: inherit;
     font-size: 14px;
     font-weight: 750;
@@ -506,22 +631,54 @@
 }
 
 .map-button:hover {
-    border-color: #2563eb;
-    color: #2563eb;
+    border-color: var(--accent-cyan);
+    color: var(--accent-cyan);
 }
 
 .map-button.active {
-    border-color: #2563eb;
-    background: #2563eb;
-    color: #ffffff;
-    box-shadow: 0 4px 14px rgba(37, 99, 235, 0.25);
+    border-color: var(--accent-cyan);
+    background: var(--accent-cyan);
+    color: #030712;
+    box-shadow: 0 4px 14px var(--accent-cyan-shadow);
 }
 
 .map-frame-wrapper {
+    position: relative;
     overflow: hidden;
-    border-radius: 15px;
-    border: 1px solid #e2e8f0;
-    background: #f1f5f9;
+    border-radius: 18px;
+    border: 1px solid var(--brand-border);
+    background: var(--card-inner-bg);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.map-external-link {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    z-index: 5;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 14px;
+    border-radius: 20px;
+    background: rgba(11, 19, 38, 0.88);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(0, 229, 255, 0.35);
+    color: #ffffff;
+    font-size: 12.5px;
+    font-weight: 700;
+    text-decoration: none;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    transition: all 0.25s ease;
+}
+
+.map-external-link:hover {
+    background: var(--accent-cyan);
+    color: #030712;
+    border-color: var(--accent-cyan);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px var(--accent-cyan-shadow);
 }
 
 #googleMapIframe {
@@ -529,6 +686,7 @@
     width: 100%;
     height: 390px;
     border: 0;
+    filter: contrast(1.02) saturate(1.05);
 }
 
 .map-info {
@@ -537,19 +695,19 @@
     gap: 25px;
     margin-top: 20px;
     padding-top: 20px;
-    border-top: 1px solid #f1f5f9;
+    border-top: 1px solid var(--brand-border);
 }
 
 .map-info-label {
     display: block;
     margin-bottom: 5px;
-    color: #94a3b8;
+    color: var(--text-secondary);
     font-size: 13px;
     font-weight: 600;
 }
 
 .map-info-value {
-    color: #0f172a;
+    color: var(--text-primary);
     font-size: 15.5px;
     font-weight: 750;
 }
@@ -572,16 +730,14 @@
     background: #25D366;
     color: #ffffff;
     text-decoration: none;
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.20);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.35);
     z-index: 9999;
-    transition:
-        transform 0.25s ease,
-        box-shadow 0.25s ease;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
 .whatsapp-float:hover {
-    transform: translateY(-4px) scale(1.05);
-    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.28);
+    transform: translateY(-4px) scale(1.08);
+    box-shadow: 0 12px 30px rgba(37, 211, 102, 0.5);
 }
 
 .whatsapp-float svg {
@@ -591,10 +747,7 @@
 }
 
 
-/* =========================================================
-   HONEYPOT FIELD
-========================================================= */
-
+/* Honeypot Anti-Spam Field */
 .honeypot-field {
     display: none !important;
 }
@@ -701,7 +854,7 @@
         <div class="contact-hero-inner">
 
             <!-- DYNAMIC FLUID GLASS BADGE WITH SLIMMER ORBITING GLOW LOOP -->
-            <div class="hero-company-wrapper">
+            <div class="hero-company-wrapper scroll-reveal">
 
                 <div class="hero-company">
                     <span class="hero-company-dot"></span>
@@ -710,29 +863,29 @@
 
             </div>
 
-            <h1>
+            <h1 class="scroll-reveal delay-1">
                 Contact <span class="highlight">Us.</span>
             </h1>
 
-            <p class="hero-subtitle">
+            <p class="hero-subtitle scroll-reveal delay-2">
                 Have a product requirement or need bulk electrical
                 materials in the UAE? Reach out directly or send us
                 an enquiry below.
             </p>
 
 
-            <div class="hero-reach-text">
+            <div class="hero-reach-text scroll-reveal delay-3">
                 Providing a contact form to reach us &amp; workplace locations:
             </div>
 
             <!-- TWO SEPARATE GLASSMORPHIC WORKPLACE LOCATION BOXES -->
-            <div class="hero-locations-grid">
+            <div class="hero-locations-grid scroll-reveal delay-3">
 
                 <div class="hero-glass-box">
                     <h3>Showroom Location</h3>
                     <p>
-                        Shop No. 14 &amp; 15, Behind Al Ghuwair Post Office,
-                        Rolla, Sharjah, U.A.E.
+                        Shop No. 14 &amp; 15, Hafida Ibrahim St, Al Ghuwair,
+                        Sharjah - U.A.E.
                     </p>
                     <a class="hero-location-phone" href="tel:+97165215407">
                         📞 +971 6 5215407
@@ -742,7 +895,7 @@
                 <div class="hero-glass-box">
                     <h3>Warehouse Location</h3>
                     <p>
-                        Shed No. L11, Ind. Area 12, Sharjah, U.A.E.
+                        Shed No. L11, Ind. Area 11, Sharjah, U.A.E.
                     </p>
                     <a class="hero-location-phone" href="tel:+97165100937">
                         📞 +971 6 5100937
@@ -756,7 +909,7 @@
 
         <!-- NEON GLOW SCROLL BUTTON -->
 
-        <div class="hero-scroll-wrapper">
+        <div class="hero-scroll-wrapper scroll-reveal delay-3">
 
             <a
                 href="#formAndMapSection"
@@ -801,167 +954,171 @@
              CONTACT FORM + MAP SECTION
         ================================================== -->
 
-        <div class="contact-lower-section scroll-reveal">
+        <div class="contact-lower-section">
 
 
             <!-- =============================================
                  CONTACT FORM
             ============================================== -->
 
-            <div class="card-box">
+            <div class="electric-card-wrapper scroll-reveal delay-1">
 
-                <h2>
-                    Send Us an Enquiry
-                </h2>
+                <div class="card-box contact-form-card">
 
-                <p>
-                    Tell us what electrical materials you need and
-                    our team will get back to you.
-                </p>
+                    <h2>
+                        Send Us an Enquiry
+                    </h2>
 
-
-                <div id="formSuccessBanner">
-                    ✓ Your enquiry has been sent successfully.
-                    Our team will contact you shortly.
-                </div>
+                    <p>
+                        Tell us what electrical materials you need and
+                        our team will get back to you.
+                    </p>
 
 
-                <form
-                    id="contactForm"
-                    action="{% url 'public:contact' %}"
-                    method="POST"
-                    onsubmit="handleFormSubmit(event)"
-                >
-
-                    {% csrf_token %}
-
-
-                    <!-- Honeypot Anti-Spam Field -->
-                    <input
-                        type="text"
-                        name="website_hp"
-                        class="honeypot-field"
-                        tabindex="-1"
-                        autocomplete="off"
-                    >
-
-
-                    <div class="form-row">
-
-
-                        <div class="form-group">
-
-                            <label for="name">
-                                Full Name
-                            </label>
-
-                            <input
-                                type="text"
-                                id="name"
-                                name="name"
-                                placeholder="Enter your full name"
-                                required
-                            >
-
-                        </div>
-
-
-                        <div class="form-group">
-
-                            <label for="email">
-                                Email Address
-                            </label>
-
-                            <input
-                                type="email"
-                                id="email"
-                                name="email"
-                                placeholder="Enter your email address"
-                                required
-                            >
-
-                        </div>
-
-
-                        <div class="form-group">
-
-                            <label for="phone">
-                                Phone / WhatsApp
-                            </label>
-
-                            <input
-                                type="tel"
-                                id="phone"
-                                name="phone"
-                                placeholder="Enter your phone number"
-                                required
-                            >
-
-                        </div>
-
-
-                        <div class="form-group">
-
-                            <label for="subject">
-                                Subject
-                            </label>
-
-                            <select
-                                id="subject"
-                                name="subject"
-                                required
-                            >
-                                <option value="">
-                                    Select a requirement
-                                </option>
-
-                                <option value="Product Enquiry">
-                                    Product Enquiry
-                                </option>
-
-                                <option value="Bulk Requirement">
-                                    Bulk Requirement
-                                </option>
-
-                                <option value="Quotation">
-                                    Quotation
-                                </option>
-
-                                <option value="General Enquiry">
-                                    General Enquiry
-                                </option>
-
-                            </select>
-
-                        </div>
-
-
-                        <div class="form-group full-width">
-
-                            <label for="message">
-                                Your Requirement
-                            </label>
-
-                            <textarea
-                                id="message"
-                                name="message"
-                                placeholder="Tell us about the products, quantities, brands or specifications you require..."
-                                required
-                            ></textarea>
-
-                        </div>
-
+                    <div id="formSuccessBanner">
+                        ✓ Your enquiry has been sent successfully.
+                        Our team will contact you shortly.
                     </div>
 
 
-                    <button
-                        type="submit"
-                        class="submit-button"
+                    <form
+                        id="contactForm"
+                        action="{% url 'public:contact' %}"
+                        method="POST"
+                        onsubmit="handleFormSubmit(event)"
                     >
-                        Send Requirement
-                    </button>
 
-                </form>
+                        {% csrf_token %}
+
+
+                        <!-- Honeypot Anti-Spam Field -->
+                        <input
+                            type="text"
+                            name="website_hp"
+                            class="honeypot-field"
+                            tabindex="-1"
+                            autocomplete="off"
+                        >
+
+
+                        <div class="form-row">
+
+
+                            <div class="form-group">
+
+                                <label for="name">
+                                    Full Name
+                                </label>
+
+                                <input
+                                    type="text"
+                                    id="name"
+                                    name="name"
+                                    placeholder="Enter your full name"
+                                    required
+                                >
+
+                            </div>
+
+
+                            <div class="form-group">
+
+                                <label for="email">
+                                    Email Address
+                                </label>
+
+                                <input
+                                    type="email"
+                                    id="email"
+                                    name="email"
+                                    placeholder="Enter your email address"
+                                    required
+                                >
+
+                            </div>
+
+
+                            <div class="form-group">
+
+                                <label for="phone">
+                                    Phone / WhatsApp
+                                </label>
+
+                                <input
+                                    type="tel"
+                                    id="phone"
+                                    name="phone"
+                                    placeholder="Enter your phone number"
+                                    required
+                                >
+
+                            </div>
+
+
+                            <div class="form-group">
+
+                                <label for="subject">
+                                    Subject
+                                </label>
+
+                                <select
+                                    id="subject"
+                                    name="subject"
+                                    required
+                                >
+                                    <option value="">
+                                        Select a requirement
+                                    </option>
+
+                                    <option value="Product Enquiry">
+                                        Product Enquiry
+                                    </option>
+
+                                    <option value="Bulk Requirement">
+                                        Bulk Requirement
+                                    </option>
+
+                                    <option value="Quotation">
+                                        Quotation
+                                    </option>
+
+                                    <option value="General Enquiry">
+                                        General Enquiry
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+
+                            <div class="form-group full-width">
+
+                                <label for="message">
+                                    Your Requirement
+                                </label>
+
+                                <textarea
+                                    id="message"
+                                    name="message"
+                                    placeholder="Tell us about the products, quantities, brands or specifications you require..."
+                                    required
+                                ></textarea>
+
+                            </div>
+
+                        </div>
+
+
+                        <button
+                            type="submit"
+                            class="submit-button"
+                        >
+                            Send Requirement
+                        </button>
+
+                    </form>
+
+                </div>
 
             </div>
 
@@ -970,80 +1127,94 @@
                  MAP EMBED CARD
             ============================================== -->
 
-            <div class="card-box map-card">
+            <div class="electric-card-wrapper scroll-reveal delay-2">
 
-                <h2>
-                    Find Our Location
-                </h2>
+                <div class="card-box map-card">
 
-                <p>
-                    Select a location below to view it on the map.
-                </p>
+                    <h2>
+                        Find Our Location
+                    </h2>
 
-
-                <div class="map-buttons">
-
-                    <button
-                        type="button"
-                        id="btnWarehouse"
-                        class="map-button active"
-                        onclick="showWarehouse()"
-                    >
-                        Warehouse
-                    </button>
-
-                    <button
-                        type="button"
-                        id="btnShowroom"
-                        class="map-button"
-                        onclick="showShowroom()"
-                    >
-                        Showroom
-                    </button>
-
-                </div>
+                    <p>
+                        Select a location below to view it on the map.
+                    </p>
 
 
-                <div class="map-frame-wrapper">
+                    <div class="map-buttons">
 
-                    <iframe
-                        id="googleMapIframe"
-                        src="https://www.google.com/maps?q=Shed%20No.%20L11%2C%20Industrial%20Area%2012%2C%20Sharjah%2C%20UAE&output=embed"
-                        loading="lazy"
-                        allowfullscreen
-                        referrerpolicy="no-referrer-when-downgrade"
-                    ></iframe>
-
-                </div>
-
-
-                <div class="map-info">
-
-                    <div>
-
-                        <span class="map-info-label">
-                            Active View
-                        </span>
-
-                        <span
-                            class="map-info-value"
-                            id="mapTargetName"
+                        <button
+                            type="button"
+                            id="btnWarehouse"
+                            class="map-button active"
+                            onclick="showWarehouse()"
                         >
-                            Warehouse (Ind. Area 12)
-                        </span>
+                            Warehouse
+                        </button>
+
+                        <button
+                            type="button"
+                            id="btnShowroom"
+                            class="map-button"
+                            onclick="showShowroom()"
+                        >
+                            Showroom
+                        </button>
 
                     </div>
 
 
-                    <div>
+                    <div class="map-frame-wrapper">
 
-                        <span class="map-info-label">
-                            Timing
-                        </span>
+                        <a
+                            href="https://www.google.com/maps/place/Sharjah+Industrial+area+11/@25.2938803,55.4288672,17z/"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="map-external-link"
+                            id="mapDirectLink"
+                        >
+                            Open in Google Maps ↗
+                        </a>
 
-                        <span class="map-info-value">
-                            Sat - Thu: 8:00 AM - 8:00 PM
-                        </span>
+                        <iframe
+                            id="googleMapIframe"
+                            src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d3606.5413156291!2d55.4262923753856!3d25.293885077655887!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMjXCsDE3JzM3LjkiTiA1NcKwMjUnNDMuOSJF!5e0!3m2!1sen!2sae!4v1710000000000!5m2!1sen!2sae"
+                            loading="lazy"
+                            allowfullscreen
+                            referrerpolicy="no-referrer-when-downgrade"
+                        ></iframe>
+
+                    </div>
+
+
+                    <div class="map-info">
+
+                        <div>
+
+                            <span class="map-info-label">
+                                Active View
+                            </span>
+
+                            <span
+                                class="map-info-value"
+                                id="mapTargetName"
+                            >
+                                Warehouse (Ind. Area 11)
+                            </span>
+
+                        </div>
+
+
+                        <div>
+
+                            <span class="map-info-label">
+                                Timing
+                            </span>
+
+                            <span class="map-info-value">
+                                Sat - Thu: 8:00 AM - 8:00 PM
+                            </span>
+
+                        </div>
 
                     </div>
 
@@ -1087,236 +1258,244 @@
 
 <script>
 
-    document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", function () {
 
-        /* ---------------------------------------------------------
-           1. DYNAMIC CONTACT HERO BACKGROUND SLIDESHOW
-        --------------------------------------------------------- */
+    /* ---------------------------------------------------------
+       1. DYNAMIC CONTACT HERO BACKGROUND SLIDESHOW
+    --------------------------------------------------------- */
 
-        const bgLayers = document.querySelectorAll(".hero-bg-layer");
+    const bgLayers = document.querySelectorAll(".hero-bg-layer");
 
-        if (bgLayers.length > 1) {
+    if (bgLayers.length > 1) {
 
-            let currentBgIndex = 0;
+        let currentBgIndex = 0;
 
-            function cycleBackground() {
+        function cycleBackground() {
 
-                bgLayers[currentBgIndex].classList.remove("active");
+            bgLayers[currentBgIndex].classList.remove("active");
 
-                currentBgIndex = (currentBgIndex + 1) % bgLayers.length;
+            currentBgIndex = (currentBgIndex + 1) % bgLayers.length;
 
-                bgLayers[currentBgIndex].classList.add("active");
+            bgLayers[currentBgIndex].classList.add("active");
+
+        }
+
+        setInterval(cycleBackground, 5500);
+
+    }
+
+
+    /* ---------------------------------------------------------
+       2. SMOOTH SCROLL FOR ARROW BUTTON
+    --------------------------------------------------------- */
+
+    const scrollBtn = document.getElementById("scrollDownBtn");
+
+    if (scrollBtn) {
+
+        scrollBtn.addEventListener("click", function (e) {
+
+            e.preventDefault();
+
+            const targetSection = document.getElementById("formAndMapSection");
+
+            if (targetSection) {
+
+                targetSection.scrollIntoView({
+
+                    behavior: "smooth",
+
+                    block: "start"
+
+                });
 
             }
 
-            setInterval(cycleBackground, 5500);
+        });
 
-        }
-
-
-        /* ---------------------------------------------------------
-           2. SMOOTH SCROLL FOR ARROW BUTTON
-        --------------------------------------------------------- */
-
-        const scrollBtn = document.getElementById("scrollDownBtn");
-
-        if (scrollBtn) {
-
-            scrollBtn.addEventListener("click", function (e) {
-
-                e.preventDefault();
-
-                const targetSection = document.getElementById("formAndMapSection");
-
-                if (targetSection) {
-
-                    targetSection.scrollIntoView({
-
-                        behavior: "smooth",
-
-                        block: "start"
-
-                    });
-
-                }
-
-            });
-
-        }
+    }
 
 
-        /* ---------------------------------------------------------
-           3. SCROLL REVEAL OBSERVER
-        --------------------------------------------------------- */
+    /* ---------------------------------------------------------
+       3. SCROLL REVEAL OBSERVER
+    --------------------------------------------------------- */
 
-        const revealElements = document.querySelectorAll(".scroll-reveal");
+    const revealElements = document.querySelectorAll(".scroll-reveal");
 
-        if ("IntersectionObserver" in window) {
+    if ("IntersectionObserver" in window) {
 
-            const revealObserver = new IntersectionObserver(
-                function (entries, observer) {
+        const revealObserver = new IntersectionObserver(
+            function (entries, observer) {
 
-                    entries.forEach(function (entry) {
+                entries.forEach(function (entry) {
 
-                        if (entry.isIntersecting) {
+                    if (entry.isIntersecting) {
 
-                            entry.target.classList.add("is-visible");
+                        entry.target.classList.add("is-visible");
 
-                            observer.unobserve(entry.target);
+                        observer.unobserve(entry.target);
 
-                        }
+                    }
 
-                    });
+                });
 
+            },
+            {
+                threshold: 0.12
+            }
+        );
+
+        revealElements.forEach(function (el) {
+
+            revealObserver.observe(el);
+
+        });
+
+    } else {
+
+        revealElements.forEach(function (el) {
+
+            el.classList.add("is-visible");
+
+        });
+
+    }
+
+});
+
+
+/* ---------------------------------------------------------
+   4. MAP SWITCHING LOGIC (CLEAN SINGLE-PIN COORDINATES)
+--------------------------------------------------------- */
+
+function showWarehouse() {
+
+    const iframe = document.getElementById("googleMapIframe");
+    const mapTargetName = document.getElementById("mapTargetName");
+    const directLink = document.getElementById("mapDirectLink");
+
+    const warehouseButton = document.getElementById("btnWarehouse");
+    const showroomButton = document.getElementById("btnShowroom");
+
+    /* Single Exact Coordinate Pin for Sharjah Industrial Area 11 (25.2938803, 55.4288672) */
+    iframe.src =
+        "https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d3606.5413156291!2d55.4262923753856!3d25.293885077655887!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMjXCsDE3JzM3LjkiTiA1NcKwMjUnNDMuOSJF!5e0!3m2!1sen!2sae!4v1710000000000!5m2!1sen!2sae";
+
+    directLink.href = "https://www.google.com/maps/place/Sharjah+Industrial+area+11/@25.2938803,55.4288672,17z/";
+
+    mapTargetName.textContent =
+        "Warehouse (Ind. Area 11)";
+
+    warehouseButton.classList.add("active");
+    showroomButton.classList.remove("active");
+}
+
+
+function showShowroom() {
+
+    const iframe = document.getElementById("googleMapIframe");
+    const mapTargetName = document.getElementById("mapTargetName");
+    const directLink = document.getElementById("mapDirectLink");
+
+    const warehouseButton = document.getElementById("btnWarehouse");
+    const showroomButton = document.getElementById("btnShowroom");
+
+    /* Single Exact Coordinate Pin for Showroom (Rolla, Sharjah) */
+    iframe.src =
+        "https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d3605.8080182410317!2d55.38541607538656!3d25.357608077604622!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMjXCsDIxJzI3LjQiTiA1NcKwMjMnMTYuOCJF!5e0!3m2!1sen!2sae!4v1710000000000!5m2!1sen!2sae";
+
+    directLink.href = "https://www.google.com/maps?q=Shop+No.+14+%26+15,+Behind+Al+Ghuwair+Post+Office,+Rolla,+Sharjah,+UAE";
+
+    mapTargetName.textContent =
+        "Showroom (Rolla, Sharjah)";
+
+    showroomButton.classList.add("active");
+    warehouseButton.classList.remove("active");
+}
+
+
+/* ---------------------------------------------------------
+   5. CONTACT FORM AJAX SUBMISSION
+--------------------------------------------------------- */
+
+async function handleFormSubmit(event) {
+
+    event.preventDefault();
+
+    const form = document.getElementById("contactForm");
+    const submitButton = form.querySelector(
+        'button[type="submit"]'
+    );
+
+    const successBanner =
+        document.getElementById("formSuccessBanner");
+
+    const originalButtonText =
+        submitButton.textContent;
+
+    submitButton.disabled = true;
+    submitButton.textContent = "Sending...";
+
+    successBanner.classList.remove("active");
+
+
+    try {
+
+        const formData = new FormData(form);
+
+        const response = await fetch(
+            form.action,
+            {
+                method: "POST",
+                body: formData,
+
+                headers: {
+                    "X-Requested-With": "XMLHttpRequest",
                 },
-                {
-                    threshold: 0.12
-                }
-            );
+            }
+        );
 
-            revealElements.forEach(function (el) {
 
-                revealObserver.observe(el);
+        const data = await response.json();
 
+
+        if (response.ok && data.status === "success") {
+
+            successBanner.classList.add("active");
+
+            form.reset();
+
+            successBanner.scrollIntoView({
+                behavior: "smooth",
+                block: "center"
             });
 
         } else {
 
-            revealElements.forEach(function (el) {
-
-                el.classList.add("is-visible");
-
-            });
-
+            alert(
+                data.message ||
+                "Something went wrong. Please try again."
+            );
         }
 
-    });
 
+    } catch (error) {
 
-    /* ---------------------------------------------------------
-       4. MAP SWITCHING LOGIC
-    --------------------------------------------------------- */
-
-    function showWarehouse() {
-
-        const iframe = document.getElementById("googleMapIframe");
-        const mapTargetName = document.getElementById("mapTargetName");
-
-        const warehouseButton = document.getElementById("btnWarehouse");
-        const showroomButton = document.getElementById("btnShowroom");
-
-        iframe.src =
-            "https://www.google.com/maps?q=Shed%20No.%20L11%2C%20Industrial%20Area%2012%2C%20Sharjah%2C%20UAE&output=embed";
-
-        mapTargetName.textContent =
-            "Warehouse (Ind. Area 12)";
-
-        warehouseButton.classList.add("active");
-        showroomButton.classList.remove("active");
-    }
-
-
-    function showShowroom() {
-
-        const iframe = document.getElementById("googleMapIframe");
-        const mapTargetName = document.getElementById("mapTargetName");
-
-        const warehouseButton = document.getElementById("btnWarehouse");
-        const showroomButton = document.getElementById("btnShowroom");
-
-        iframe.src =
-            "https://www.google.com/maps?q=Shop%20No.%2014%20%26%2015%2C%20Behind%20Al%20Ghuwair%20Post%20Office%2C%20Rolla%2C%20Sharjah%2C%20UAE&output=embed";
-
-        mapTargetName.textContent =
-            "Showroom (Rolla, Sharjah)";
-
-        showroomButton.classList.add("active");
-        warehouseButton.classList.remove("active");
-    }
-
-
-    /* ---------------------------------------------------------
-       5. CONTACT FORM AJAX SUBMISSION
-    --------------------------------------------------------- */
-
-    async function handleFormSubmit(event) {
-
-        event.preventDefault();
-
-        const form = document.getElementById("contactForm");
-        const submitButton = form.querySelector(
-            'button[type="submit"]'
+        console.error(
+            "Contact form error:",
+            error
         );
 
-        const successBanner =
-            document.getElementById("formSuccessBanner");
+        alert(
+            "Unable to send your enquiry right now. Please try again."
+        );
 
-        const originalButtonText =
-            submitButton.textContent;
+    } finally {
 
-        submitButton.disabled = true;
-        submitButton.textContent = "Sending...";
-
-        successBanner.classList.remove("active");
-
-
-        try {
-
-            const formData = new FormData(form);
-
-            const response = await fetch(
-                form.action,
-                {
-                    method: "POST",
-                    body: formData,
-
-                    headers: {
-                        "X-Requested-With": "XMLHttpRequest",
-                    },
-                }
-            );
-
-
-            const data = await response.json();
-
-
-            if (response.ok && data.status === "success") {
-
-                successBanner.classList.add("active");
-
-                form.reset();
-
-                successBanner.scrollIntoView({
-                    behavior: "smooth",
-                    block: "center"
-                });
-
-            } else {
-
-                alert(
-                    data.message ||
-                    "Something went wrong. Please try again."
-                );
-            }
-
-
-        } catch (error) {
-
-            console.error(
-                "Contact form error:",
-                error
-            );
-
-            alert(
-                "Unable to send your enquiry right now. Please try again."
-            );
-
-        } finally {
-
-            submitButton.disabled = false;
-            submitButton.textContent = originalButtonText;
-        }
+        submitButton.disabled = false;
+        submitButton.textContent = originalButtonText;
     }
+}
 
 </script>
 

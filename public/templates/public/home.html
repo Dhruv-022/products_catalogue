@@ -13,16 +13,86 @@
 <style>
 
 /* =========================================================
+   THEME VARIABLES (DARK IS THE PRIMARY MASTER REGIME)
+========================================================= */
+
+:root, [data-theme="dark"] {
+    --hero-bg: #030712;
+    --hero-overlay-grad: linear-gradient(90deg, rgba(3, 7, 18, 0.96) 0%, rgba(15, 23, 42, 0.88) 45%, rgba(15, 23, 42, 0.52) 100%);
+    --stats-bg: #080f21;
+    --stats-border: #1e293b;
+    --intro-bg: #050a14;
+    --products-bg: #090e1a;
+    --brands-bg: linear-gradient(180deg, #090e1a 0%, #050a14 100%);
+    --card-surface: #111a2e;
+    --card-surface-hover: #070d19;
+    --intro-card-bg: #0f172a;
+    --badge-bg: #090d16;
+    --text-primary: #f8fafc;
+    --text-secondary: #94a3b8;
+    --text-card-body: #cbd5e1;
+    --text-brand-pill: #e2e8f0;
+    --accent-cyan: #00e5ff;
+    --accent-cyan-shadow: rgba(0, 229, 255, 0.45);
+    --brand-border: #1e293b;
+    --brand-border-wrapper: rgba(30, 41, 59, 0.85);
+    --marquee-mask-left: linear-gradient(90deg, #090e1a 0%, rgba(9, 14, 26, 0) 100%);
+    --marquee-mask-right: linear-gradient(-90deg, #050a14 0%, rgba(5, 10, 20, 0) 100%);
+    --hero-scroll-bg: transparent;
+    --card-product-bg: rgba(9, 14, 26, 0.85);
+    --card-product-overlay: linear-gradient(180deg, rgba(17, 26, 46, 0.88) 0%, rgba(9, 14, 26, 0.96) 100%);
+    --card-product-title: #f8fafc;
+    --card-product-desc: #cbd5e1;
+    --card-product-footer: #00e5ff;
+    --conic-glow: conic-gradient(transparent, rgba(0, 229, 255, 0.35), #00e5ff, #3b82f6, #00d2ff, transparent 45%);
+}
+
+[data-theme="light"] {
+    --hero-bg: #03122d;
+    --hero-overlay-grad: linear-gradient(90deg, rgba(3, 18, 45, 0.88) 0%, rgba(5, 28, 62, 0.72) 45%, rgba(5, 28, 62, 0.35) 100%);
+    --stats-bg: #ffffff;
+    --stats-border: #e2e8f0;
+    --intro-bg: #f8fafc;
+    --products-bg: #ffffff;
+    --brands-bg: linear-gradient(180deg, #ffffff 0%, #f1f5f9 100%);
+    --card-surface: #ffffff;
+    --card-surface-hover: #f8fafc;
+    --intro-card-bg: #ffffff;
+    --badge-bg: #ffffff;
+    --text-primary: #0f172a;
+    --text-secondary: #475569;
+    --text-card-body: #64748b;
+    --text-brand-pill: #334155;
+    --accent-cyan: #2563eb;
+    --accent-cyan-shadow: rgba(37, 99, 235, 0.25);
+    --brand-border: #cbd5e1;
+    --brand-border-wrapper: #dbe4f0;
+    --marquee-mask-left: linear-gradient(90deg, #ffffff 0%, rgba(255, 255, 255, 0) 100%);
+    --marquee-mask-right: linear-gradient(-90deg, #f1f5f9 0%, rgba(241, 245, 249, 0) 100%);
+    --hero-scroll-bg: transparent;
+    --card-product-bg: #eff6ff;
+    --card-product-overlay: linear-gradient(180deg, rgba(255, 255, 255, 0.90) 0%, rgba(241, 245, 249, 0.96) 100%);
+    --card-product-title: #0f172a;
+    --card-product-desc: #475569;
+    --card-product-footer: #2563eb;
+    --conic-glow: conic-gradient(transparent, rgba(37, 99, 235, 0.25), #2563eb, #3b82f6, #0284c7, transparent 45%);
+}
+
+
+/* =========================================================
    HERO SECTION & DYNAMIC BACKGROUND SLIDESHOW
 ========================================================= */
 
 .hero {
-    min-height: calc(100vh - 88px);
+    height: calc(100vh - 88px);
+    min-height: 580px;
     position: relative;
     display: flex;
     align-items: center;
     overflow: hidden;
-    background-color: #03122d;
+    background-color: var(--hero-bg);
+    padding-bottom: 60px;
+    transition: background-color 0.35s ease;
 }
 
 .hero-bg-layer {
@@ -35,28 +105,27 @@
     background-position: center;
     background-repeat: no-repeat;
     opacity: 0;
-    transition: opacity 1.2s ease-in-out;
+    transform: scale(1.15) rotate(0.5deg);
+    transition: opacity 1.4s cubic-bezier(0.4, 0, 0.2, 1), transform 7s ease-out;
     z-index: 1;
+    will-change: transform, opacity;
 }
 
 .hero-bg-layer.active {
     opacity: 1;
+    transform: scale(1) rotate(0deg);
 }
 
-/* Dark Gradient Overlay */
+/* Gradient Overlay */
 .hero-overlay {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(
-        90deg,
-        rgba(3, 18, 45, 0.93) 0%,
-        rgba(5, 28, 62, 0.84) 45%,
-        rgba(5, 28, 62, 0.38) 100%
-    );
+    background: var(--hero-overlay-grad);
     z-index: 2;
+    transition: background 0.35s ease;
 }
 
 
@@ -68,10 +137,44 @@
     width: 100%;
     max-width: 1400px;
     margin: 0 auto;
-    padding: 40px 7% 50px;
-    color: white;
+    padding: 10px 7% 0;
+    color: #ffffff;
     position: relative;
     z-index: 3;
+}
+
+@keyframes wordSlideUp {
+    0% {
+        opacity: 0;
+        transform: translateY(110%);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0%);
+    }
+}
+
+@keyframes heroFadeUp {
+    0% {
+        opacity: 0;
+        transform: translateY(24px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.hero-animate-badge {
+    animation: heroFadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both;
+}
+
+.hero-animate-desc {
+    animation: heroFadeUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.5s both;
+}
+
+.hero-animate-btns {
+    animation: heroFadeUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.65s both;
 }
 
 
@@ -84,10 +187,11 @@
     width: fit-content;
     max-width: max-content;
     position: relative;
-    margin-bottom: 22px;
+    margin-bottom: 16px;
     padding: 2px;
     border-radius: 32px;
     overflow: hidden;
+    box-shadow: 0 0 18px rgba(0, 229, 255, 0.35);
 }
 
 .hero-label-wrapper::before {
@@ -99,12 +203,12 @@
     height: 200%;
     background: conic-gradient(
         transparent,
-        rgba(56, 189, 248, 0.1),
-        #38bdf8,
-        #60a5fa,
-        transparent 30%
+        rgba(0, 229, 255, 0.25),
+        #00e5ff,
+        #3b82f6,
+        transparent 35%
     );
-    animation: rotateBorderGlow 4s linear infinite;
+    animation: rotateBorderGlow 3.5s linear infinite;
     z-index: 0;
 }
 
@@ -121,33 +225,33 @@
     gap: 10px;
     width: auto;
     max-width: 100%;
-    padding: 9px 20px;
+    padding: 8px 18px;
     border-radius: 30px;
-    background: rgba(3, 18, 45, 0.88);
+    background: rgba(11, 19, 38, 0.92);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     color: #ffffff;
-    font-size: 13px;
+    font-size: 12.5px;
     font-weight: 700;
     letter-spacing: 1.5px;
     text-transform: uppercase;
     transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
 }
 
 .hero-label-dot {
     width: 8px;
     height: 8px;
     border-radius: 50%;
-    background: #38bdf8;
-    box-shadow: 0 0 10px #38bdf8;
+    background: #00e5ff;
+    box-shadow: 0 0 12px #00e5ff, 0 0 20px #00e5ff;
     flex-shrink: 0;
     animation: pulseDot 1.8s infinite;
 }
 
 @keyframes pulseDot {
     0%, 100% { transform: scale(1); opacity: 1; }
-    50% { transform: scale(1.3); opacity: 0.6; }
+    50% { transform: scale(1.4); opacity: 0.7; }
 }
 
 .hero-label-text {
@@ -166,33 +270,50 @@
 
 
 /* =========================================================
-   HERO HEADING & DESCRIPTION
+   HERO HEADING WITH OVERFLOW WORD REVEAL
 ========================================================= */
 
 .hero h1 {
-    max-width: 900px;
-    margin-bottom: 20px;
-    font-size: clamp(46px, 5.4vw, 76px);
-    line-height: 1.02;
+    max-width: 860px;
+    margin-bottom: 18px;
+    font-size: clamp(38px, 4.2vw, 60px);
+    line-height: 1.1;
     font-weight: 800;
-    letter-spacing: -2px;
+    letter-spacing: -1.5px;
+    color: #f8fafc;
 }
 
+.text-word-mask {
+    display: inline-block;
+    overflow: hidden;
+    vertical-align: bottom;
+}
+
+.text-word-mask span {
+    display: inline-block;
+    animation: wordSlideUp 0.85s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.word-delay-1 { animation-delay: 0.2s !important; }
+.word-delay-2 { animation-delay: 0.32s !important; }
+.word-delay-3 { animation-delay: 0.44s !important; }
+
 .hero h1 .highlight {
-    color: #60a5fa;
+    color: #00e5ff;
+    text-shadow: 0 0 22px rgba(0, 229, 255, 0.45);
 }
 
 .hero-description {
-    max-width: 760px;
-    margin-bottom: 28px;
-    font-size: 18px;
-    line-height: 1.65;
-    color: rgba(255, 255, 255, 0.90);
+    max-width: 720px;
+    margin-bottom: 24px;
+    font-size: clamp(15px, 1.25vw, 17px);
+    line-height: 1.6;
+    color: #94a3b8;
 }
 
 
 /* =========================================================
-   HERO BUTTONS & SUBTLE GLOW ON CONTACT US
+   HERO BUTTONS
 ========================================================= */
 
 .hero-buttons {
@@ -200,7 +321,12 @@
     align-items: center;
     gap: 16px;
     flex-wrap: wrap;
-    margin-bottom: 24px;
+}
+
+.tilt-element {
+    will-change: transform;
+    transform-style: preserve-3d;
+    transition: transform 0.15s cubic-bezier(0.2, 0, 0.2, 1);
 }
 
 .hero-button {
@@ -213,24 +339,21 @@
     font-size: 15px;
     font-weight: 700;
     transition:
-        transform 0.25s ease,
         background 0.25s ease,
         box-shadow 0.25s ease;
 }
 
 .hero-button-primary {
-    background: #2563eb;
-    color: white;
-    box-shadow: 0 10px 25px rgba(37, 99, 235, 0.30);
+    background: linear-gradient(135deg, #00d2ff 0%, #0072ff 100%);
+    color: #ffffff;
+    box-shadow: 0 0 22px rgba(0, 210, 255, 0.55), 0 10px 25px rgba(0, 114, 255, 0.45);
 }
 
 .hero-button-primary:hover {
-    background: #1d4ed8;
-    transform: scale(1.04);
-    box-shadow: 0 14px 30px rgba(37, 99, 235, 0.40);
+    background: linear-gradient(135deg, #00e5ff 0%, #0052d4 100%);
+    box-shadow: 0 0 32px rgba(0, 229, 255, 0.85), 0 14px 30px rgba(0, 114, 255, 0.65);
 }
 
-/* Subtle Continuous Orbiting Glow Wrapper for Contact Us Button */
 .hero-button-secondary-wrapper {
     display: inline-flex;
     position: relative;
@@ -248,28 +371,37 @@
     height: 200%;
     background: conic-gradient(
         transparent,
-        rgba(255, 255, 255, 0.1),
-        rgba(96, 165, 250, 0.6),
-        rgba(56, 189, 248, 0.7),
-        transparent 30%
+        rgba(255, 255, 255, 0.2),
+        #00e5ff,
+        #3b82f6,
+        transparent 35%
     );
-    animation: rotateBorderGlow 4.5s linear infinite;
+    animation: rotateBorderGlow 4s linear infinite;
     z-index: 0;
 }
 
 .hero-button-secondary {
     position: relative;
     z-index: 1;
-    color: white;
+    color: #ffffff;
     border: none;
-    background: rgba(3, 18, 45, 0.85);
+    background: rgba(15, 23, 42, 0.9);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
 }
 
 .hero-button-secondary:hover {
-    background: rgba(15, 23, 42, 0.95);
-    transform: scale(1.04);
+    background: rgba(2, 132, 199, 0.28);
+    color: #00e5ff;
+}
+
+
+/* =========================================================
+   MOBILE HERO STATS CARD
+========================================================= */
+
+.hero-mobile-stats {
+    display: none;
 }
 
 
@@ -279,7 +411,7 @@
 
 .hero-scroll-wrapper {
     position: absolute;
-    bottom: 22px;
+    bottom: 20px;
     left: 50%;
     transform: translateX(-50%);
     display: flex;
@@ -289,39 +421,39 @@
 }
 
 .hero-scroll-btn {
-    width: 48px;
-    height: 48px;
+    width: 46px;
+    height: 46px;
     border-radius: 50%;
-    border: 1.5px solid rgba(56, 189, 248, 0.85);
+    border: 1.5px solid #00e5ff;
     background: transparent;
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
-    color: #38bdf8;
+    color: #00e5ff;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
     text-decoration: none;
     box-shadow:
-        0 0 12px rgba(56, 189, 248, 0.45),
-        0 0 24px rgba(37, 99, 235, 0.3);
+        0 0 15px rgba(0, 229, 255, 0.6),
+        0 0 30px rgba(0, 114, 255, 0.4);
     transition: all 0.3s ease;
     animation: neonBounceGlow 2.4s infinite ease-in-out;
 }
 
 .hero-scroll-btn svg {
-    filter: drop-shadow(0 0 6px rgba(56, 189, 248, 0.8));
+    filter: drop-shadow(0 0 8px #00e5ff);
     transition: transform 0.25s ease;
 }
 
 .hero-scroll-btn:hover {
-    background: rgba(37, 99, 235, 0.25);
+    background: rgba(0, 229, 255, 0.28);
     color: #ffffff;
-    border-color: #60a5fa;
+    border-color: #00e5ff;
     box-shadow:
-        0 0 22px rgba(96, 165, 250, 0.85),
-        0 0 45px rgba(37, 99, 235, 0.65);
-    transform: scale(1.08);
+        0 0 25px rgba(0, 229, 255, 0.95),
+        0 0 50px rgba(0, 114, 255, 0.85);
+    transform: scale(1.1);
     animation-play-state: paused;
 }
 
@@ -329,14 +461,14 @@
     0%, 100% {
         transform: translateY(0);
         box-shadow:
-            0 0 12px rgba(56, 189, 248, 0.45),
-            0 0 24px rgba(37, 99, 235, 0.3);
+            0 0 15px rgba(0, 229, 255, 0.6),
+            0 0 30px rgba(0, 114, 255, 0.4);
     }
     50% {
-        transform: translateY(8px);
+        transform: translateY(6px);
         box-shadow:
-            0 0 20px rgba(56, 189, 248, 0.75),
-            0 0 35px rgba(37, 99, 235, 0.5);
+            0 0 25px rgba(0, 229, 255, 0.85),
+            0 0 40px rgba(0, 114, 255, 0.65);
     }
 }
 
@@ -346,9 +478,11 @@
 ========================================================= */
 
 .stats-bar-section {
-    background: #0b192e;
+    background: var(--stats-bg);
     padding: 30px 7%;
-    border-bottom: 1px solid #1e293b;
+    border-bottom: 1px solid var(--stats-border);
+    box-shadow: inset 0 1px 0 rgba(0, 229, 255, 0.18);
+    transition: background 0.35s ease;
 }
 
 .stats-bar-container {
@@ -364,50 +498,107 @@
 .stats-bar-item {
     display: flex;
     align-items: baseline;
-    gap: 8px;
+    gap: 4px;
 }
 
-.stats-bar-number {
+.stats-bar-number-wrap {
     font-size: 20px;
     font-weight: 800;
-    color: #60a5fa;
+    color: var(--accent-cyan);
+    text-shadow: 0 0 12px var(--accent-cyan-shadow);
+    display: inline-flex;
+    align-items: center;
 }
 
 .stats-bar-label {
     font-size: 13.5px;
     font-weight: 600;
-    color: #94a3b8;
+    color: var(--text-secondary);
     letter-spacing: 0.3px;
+    margin-left: 6px;
 }
 
 .stats-bar-divider {
     width: 4px;
     height: 4px;
     border-radius: 50%;
-    background: rgba(255, 255, 255, 0.2);
+    background: rgba(0, 229, 255, 0.45);
+    box-shadow: 0 0 6px rgba(0, 229, 255, 0.85);
+}
+
+[data-theme="light"] .stats-bar-divider {
+    background: rgba(37, 99, 235, 0.35);
+    box-shadow: 0 0 6px rgba(37, 99, 235, 0.3);
 }
 
 
 /* =========================================================
-   ENTRANCE ANIMATION UTILITIES
+   ENTRANCE ANIMATION UTILITIES FOR CARDS & SECTIONS
 ========================================================= */
 
 .scroll-reveal {
     opacity: 0;
-    transform: translateY(22px);
+    transform: translateY(35px) scale(0.96);
     transition:
-        opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1),
-        transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+        opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+        transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: opacity, transform;
 }
 
 .scroll-reveal.is-visible {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateY(0) scale(1);
+}
+
+.scroll-reveal.delay-1 { transition-delay: 0.15s; }
+.scroll-reveal.delay-2 { transition-delay: 0.3s; }
+.scroll-reveal.delay-3 { transition-delay: 0.45s; }
+
+
+/* =========================================================
+   DYNAMIC ELECTRIC BORDER WRAPPER FOR CARDS
+========================================================= */
+
+.electric-card-wrapper {
+    position: relative;
+    padding: 1.5px;
+    border-radius: 18px;
+    overflow: hidden;
+    height: 100%;
+    background: var(--brand-border);
+    transition: background 0.3s ease, box-shadow 0.4s ease;
+}
+
+.electric-card-wrapper::before {
+    content: "";
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: var(--conic-glow);
+    animation: rotateElectricBorder 3s linear infinite;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    z-index: 0;
+}
+
+.electric-card-wrapper:hover::before {
+    opacity: 1;
+}
+
+.electric-card-wrapper:hover {
+    box-shadow: 0 0 28px var(--accent-cyan-shadow);
+}
+
+@keyframes rotateElectricBorder {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }
 
 
 /* =========================================================
-   LIGHT-THEME SECTION TAG BADGES (PRECISE ORBIT LOCK)
+   SECTION TAG BADGES
 ========================================================= */
 
 .section-tag-wrapper {
@@ -419,6 +610,7 @@
     padding: 1.5px;
     border-radius: 30px;
     overflow: hidden;
+    box-shadow: 0 0 10px var(--accent-cyan-shadow);
 }
 
 .section-tag-wrapper::before {
@@ -428,18 +620,12 @@
     left: -50%;
     width: 200%;
     height: 200%;
-    background: conic-gradient(
-        transparent,
-        rgba(37, 99, 235, 0.08),
-        rgba(37, 99, 235, 0.4),
-        rgba(96, 165, 250, 0.45),
-        transparent 35%
-    );
-    animation: rotateLightBorderGlow 4.5s linear infinite;
+    background: var(--conic-glow);
+    animation: rotateDarkBorderGlow 4s linear infinite;
     z-index: 0;
 }
 
-@keyframes rotateLightBorderGlow {
+@keyframes rotateDarkBorderGlow {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
 }
@@ -452,13 +638,13 @@
     gap: 8px;
     padding: 7px 18px;
     border-radius: 30px;
-    background: #ffffff;
-    color: #2563eb;
+    background: var(--badge-bg);
+    color: var(--accent-cyan);
     font-size: 12.5px;
     font-weight: 750;
     letter-spacing: 1.5px;
     text-transform: uppercase;
-    box-shadow: 0 4px 14px rgba(37, 99, 235, 0.08);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
     white-space: nowrap;
 }
 
@@ -466,21 +652,22 @@
     width: 7px;
     height: 7px;
     border-radius: 50%;
-    background: #2563eb;
-    box-shadow: 0 0 8px rgba(37, 99, 235, 0.6);
+    background: var(--accent-cyan);
+    box-shadow: 0 0 10px var(--accent-cyan), 0 0 18px var(--accent-cyan);
     flex-shrink: 0;
     animation: pulseDot 1.8s infinite;
 }
 
 
 /* =========================================================
-   COMPANY INTRODUCTION
+   COMPANY INTRODUCTION & INTRO CARD
 ========================================================= */
 
 .intro-section {
     padding: 85px 7%;
-    background: #f8fafc;
+    background: var(--intro-bg);
     position: relative;
+    transition: background 0.35s ease;
 }
 
 .intro-container {
@@ -501,33 +688,33 @@
 
 .intro-title {
     margin-bottom: 22px;
-    color: #0f172a;
+    color: var(--text-primary);
     font-size: 40px;
     line-height: 1.18;
     font-weight: 800;
 }
 
 .intro-text {
-    color: #475569;
+    color: var(--text-secondary);
     font-size: 17px;
     line-height: 1.8;
 }
 
-/* Enhanced Card */
-.intro-card {
-    background: white;
-    border: 1px solid #e2e8f0;
-    border-radius: 20px;
-    overflow: hidden;
-    box-shadow: 0 15px 35px rgba(15, 23, 42, 0.08);
-    display: flex;
-    flex-direction: column;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+.intro-card-perspective {
+    perspective: 1000px;
 }
 
-.intro-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 22px 45px rgba(15, 23, 42, 0.12);
+.intro-card {
+    position: relative;
+    z-index: 1;
+    background: var(--intro-card-bg);
+    border-radius: 17px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    transition: box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1), background 0.35s ease;
 }
 
 .intro-card-image-wrapper {
@@ -537,8 +724,8 @@
     background-image:
         linear-gradient(
             180deg,
-            rgba(15, 23, 42, 0.2) 0%,
-            rgba(15, 23, 42, 0.75) 100%
+            rgba(3, 7, 18, 0.3) 0%,
+            rgba(15, 23, 42, 0.95) 100%
         ),
         url("{% static 'public/images/sub-hero.jpg' %}");
     background-size: cover;
@@ -546,6 +733,11 @@
     display: flex;
     align-items: flex-end;
     padding: 24px 30px;
+    transition: transform 0.5s ease;
+}
+
+.electric-card-wrapper:hover .intro-card-image-wrapper {
+    transform: scale(1.04);
 }
 
 .intro-card-image-title {
@@ -553,7 +745,7 @@
     font-size: 24px;
     font-weight: 800;
     margin: 0;
-    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8), 0 0 15px rgba(0, 229, 255, 0.45);
 }
 
 .intro-card-body {
@@ -565,7 +757,7 @@
 }
 
 .intro-card-body p {
-    color: #64748b;
+    color: var(--text-card-body);
     line-height: 1.8;
     font-size: 15.5px;
     margin: 0;
@@ -573,13 +765,14 @@
 
 
 /* =========================================================
-   PRODUCTS & VARIETIES OVERVIEW SECTION
+   PRODUCTS OVERVIEW SECTION & HYPER CATEGORY CARDS
 ========================================================= */
 
 .products-overview-section {
     padding: 85px 7%;
-    background: #ffffff;
-    border-top: 1px solid #e2e8f0;
+    background: var(--products-bg);
+    border-top: 1px solid var(--brand-border);
+    transition: background 0.35s ease;
 }
 
 .products-overview-container {
@@ -593,7 +786,7 @@
 }
 
 .products-overview-header h2 {
-    color: #0f172a;
+    color: var(--text-primary);
     font-size: 34px;
     font-weight: 800;
     margin: 0;
@@ -606,100 +799,149 @@
 }
 
 .product-cat-card {
-    background: #f8fafc;
-    border: 1px solid #e2e8f0;
-    border-radius: 16px;
+    position: relative;
+    z-index: 1;
+    background-size: cover;
+    background-position: center;
+    border: 1px solid var(--brand-border);
+    border-radius: 17px;
     padding: 30px 24px;
     display: flex;
     flex-direction: column;
     text-decoration: none;
     color: inherit;
+    overflow: hidden;
+    height: 100%;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
     transition:
-        transform 0.3s ease,
         border-color 0.3s ease,
-        box-shadow 0.3s ease,
-        background 0.3s ease;
+        box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+        transform 0.35s ease;
 }
 
-.product-cat-card:hover {
-    transform: translateY(-4px);
-    border-color: #93c5fd;
-    background: #ffffff;
-    box-shadow: 0 14px 35px rgba(37, 99, 235, 0.09);
+/* Background Overlay Dynamic per Theme */
+.product-cat-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--card-product-overlay);
+    z-index: -1;
+    transition: background 0.35s ease;
 }
 
-.product-cat-card:hover h3 {
-    color: #2563eb;
+.electric-card-wrapper:hover .product-cat-card::before {
+    background: var(--card-product-overlay);
+    opacity: 0.92;
+}
+
+.electric-card-wrapper:hover .product-cat-card {
+    border-color: transparent;
+    box-shadow: 0 15px 35px var(--accent-cyan-shadow);
 }
 
 .product-cat-badge {
-    width: 46px;
-    height: 46px;
-    border-radius: 12px;
-    background: #eff6ff;
-    border: 1px solid #dbeafe;
+    position: relative;
+    z-index: 2;
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+    background: var(--card-product-bg);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid var(--brand-border);
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 22px;
     margin-bottom: 20px;
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.electric-card-wrapper:hover .product-cat-badge {
+    transform: scale(1.18) rotate(-8deg);
+    background: linear-gradient(135deg, #00d2ff 0%, #0052d4 100%);
+    border-color: var(--accent-cyan);
+    color: #ffffff;
+    box-shadow: 0 0 20px var(--accent-cyan-shadow);
 }
 
 .product-cat-card h3 {
+    position: relative;
+    z-index: 2;
     font-size: 18px;
     font-weight: 700;
-    color: #0f172a;
+    color: var(--card-product-title);
     margin-bottom: 10px;
-    transition: color 0.25s ease;
+    transition: color 0.25s ease, transform 0.3s ease, text-shadow 0.3s ease;
+}
+
+.electric-card-wrapper:hover h3 {
+    color: var(--card-product-footer);
+    text-shadow: 0 0 12px var(--accent-cyan-shadow);
+    transform: translateX(3px);
 }
 
 .product-cat-card p {
+    position: relative;
+    z-index: 2;
     font-size: 14px;
-    color: #64748b;
+    color: var(--card-product-desc);
     line-height: 1.6;
     margin: 0;
     flex: 1;
 }
 
 .product-cat-footer {
+    position: relative;
+    z-index: 2;
     margin-top: 20px;
     font-size: 13.5px;
     font-weight: 700;
-    color: #2563eb;
+    color: var(--card-product-footer);
     display: flex;
     align-items: center;
     gap: 6px;
+    text-shadow: 0 0 8px var(--accent-cyan-shadow);
+    transition: gap 0.3s ease, color 0.3s ease;
+}
+
+.electric-card-wrapper:hover .product-cat-footer {
+    gap: 12px;
 }
 
 
 /* =========================================================
-   TRUSTED BRANDS SECTION
+   TRUSTED BRANDS SECTION (DYNAMIC CONTINUOUS GLOW & WAVE MARQUEE)
 ========================================================= */
 
 .brands-section {
-    background: #ffffff;
-    padding: 65px 0 70px;
+    background: var(--brands-bg);
+    padding: 75px 0 80px;
     overflow: hidden;
-    border-top: 1px solid #f1f5f9;
-    border-bottom: 1px solid #e5e7eb;
+    border-top: 1px solid var(--brand-border);
+    border-bottom: 1px solid var(--brand-border);
+    transition: background 0.35s ease;
 }
 
 .brands-heading {
     text-align: center;
-    margin-bottom: 35px;
+    margin-bottom: 40px;
     padding: 0 20px;
 }
 
 .brands-heading h2 {
-    color: #0f172a;
-    font-size: 32px;
+    color: var(--text-primary);
+    font-size: 34px;
     font-weight: 800;
 }
 
 .brands-heading p {
     max-width: 750px;
     margin: 12px auto 0;
-    color: #64748b;
+    color: var(--text-secondary);
     font-size: 16px;
     line-height: 1.7;
 }
@@ -708,14 +950,36 @@
     position: relative;
     width: 100%;
     overflow: hidden;
-    padding: 10px 0 15px;
+    padding: 20px 0 25px;
+}
+
+/* Linear edge fade masks */
+.brands-marquee::before,
+.brands-marquee::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    width: 140px;
+    height: 100%;
+    z-index: 5;
+    pointer-events: none;
+}
+
+.brands-marquee::before {
+    left: 0;
+    background: var(--marquee-mask-left);
+}
+
+.brands-marquee::after {
+    right: 0;
+    background: var(--marquee-mask-right);
 }
 
 .brands-track {
     display: flex;
     align-items: center;
     width: max-content;
-    animation: brandScroll 38s linear infinite;
+    animation: brandScrollSmooth 32s linear infinite;
     will-change: transform;
 }
 
@@ -723,44 +987,122 @@
     animation-play-state: paused;
 }
 
-.brand-item {
+.brand-item-wrapper {
+    position: relative;
+    padding: 1.5px;
+    border-radius: 20px;
+    margin: 0 10px;
+    overflow: hidden;
     display: inline-flex;
+    background: var(--brand-border-wrapper);
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease;
+}
+
+.brand-item-wrapper::before {
+    content: "";
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: var(--conic-glow);
+    animation: rotateElectricBorder 4s linear infinite;
+    opacity: 0;
+    transition: opacity 0.35s ease;
+    z-index: 0;
+}
+
+.brand-item-wrapper:hover::before {
+    opacity: 1;
+}
+
+.brand-item-wrapper:hover {
+    transform: translateY(-8px) scale(1.06);
+    box-shadow: 0 0 25px var(--accent-cyan-shadow);
+}
+
+.brand-card {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
-    min-width: 150px;
-    height: 54px;
-    margin: 0 8px;
-    padding: 0 22px;
-    border: 1px solid #dbe4f0;
+    padding: 14px 22px;
+    border-radius: 19px;
+    background: var(--card-surface);
+    min-width: 145px;
+    gap: 10px;
+    transition: background 0.3s ease;
+}
+
+.brand-item-wrapper:hover .brand-card {
+    background: var(--card-surface-hover);
+}
+
+.brand-logo-container {
+    width: 110px;
+    height: 52px;
     border-radius: 10px;
-    background: rgba(255, 255, 255, 0.96);
-    color: #334155;
-    font-size: 16px;
-    font-weight: 650;
+    background: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+    transition: border-color 0.3s ease, transform 0.3s ease;
+}
+
+.brand-item-wrapper:hover .brand-logo-container {
+    border-color: var(--accent-cyan);
+    transform: scale(1.03);
+}
+
+.brand-logo-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.brand-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--text-brand-pill);
+    font-size: 13.5px;
+    font-weight: 700;
     white-space: nowrap;
-    box-shadow: 0 5px 15px rgba(15, 23, 42, 0.05);
-    transition:
-        transform 0.25s ease,
-        border-color 0.25s ease,
-        box-shadow 0.25s ease,
-        color 0.25s ease;
+    transition: color 0.3s ease;
 }
 
-.brand-item:hover {
-    transform: scale(1.05);
-    border-color: #93c5fd;
-    color: #2563eb;
-    box-shadow: 0 10px 25px rgba(37, 99, 235, 0.12);
+.brand-item-wrapper:hover .brand-pill {
+    color: var(--accent-cyan);
 }
 
-@keyframes brandScroll {
-    from { transform: translateX(0); }
-    to { transform: translateX(-50%); }
+.brand-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #64748b;
+    transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.brand-item-wrapper:hover .brand-dot {
+    background: var(--accent-cyan);
+    box-shadow: 0 0 12px var(--accent-cyan), 0 0 20px var(--accent-cyan);
+    transform: scale(1.4);
+}
+
+@keyframes brandScrollSmooth {
+    0% { transform: translate3d(0, 0, 0); }
+    100% { transform: translate3d(-50%, 0, 0); }
 }
 
 
 /* =========================================================
-   RESPONSIVE MEDIA QUERIES
+   RESPONSIVE MEDIA QUERIES (DESKTOP / TABLET / MOBILE)
 ========================================================= */
 
 @media (max-width: 1024px) {
@@ -770,17 +1112,14 @@
 }
 
 @media (max-width: 900px) {
-    .hero {
-        min-height: calc(100vh - 75px);
-    }
     .hero-content {
-        padding: 40px 5% 50px;
+        padding: 40px 5% 0;
     }
     .hero h1 {
-        font-size: clamp(42px, 7vw, 62px);
+        font-size: clamp(36px, 6.5vw, 54px);
     }
     .hero-description {
-        font-size: 17px;
+        font-size: 16px;
         max-width: 680px;
     }
     .intro-container {
@@ -798,123 +1137,270 @@
     }
 }
 
-@media (max-width: 700px) {
+/* LOCKED SYMMETRICAL MOBILE LAYOUT (<= 768px ONLY) */
+@media (max-width: 768px) {
+
     .hero {
-        min-height: calc(100vh - 72px);
-        align-items: flex-start;
+        height: auto !important;
+        min-height: unset !important;
+        max-height: none !important;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 24px 0 20px;
+        box-sizing: border-box;
     }
+
     .hero-content {
-        padding: 45px 25px 60px;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 0 18px;
+        margin-top: 0;
+        width: 100%;
     }
+
+    .hero-label-wrapper {
+        margin-bottom: 12px;
+    }
+
     .hero-label {
-        font-size: 11px;
-        letter-spacing: 1px;
-        padding: 8px 14px;
+        font-size: 10.5px;
+        letter-spacing: 0.8px;
+        padding: 5px 12px;
     }
+
     .hero h1 {
-        font-size: 44px;
-        line-height: 1.04;
-        letter-spacing: -1px;
-        margin-bottom: 18px;
+        font-size: 23px;
+        line-height: 1.25;
+        letter-spacing: -0.3px;
+        margin-bottom: 12px;
     }
+
     .hero-description {
-        font-size: 16px;
-        line-height: 1.65;
-        margin-bottom: 23px;
+        font-size: 13px;
+        line-height: 1.5;
+        margin-bottom: 16px;
+        opacity: 0.92;
     }
+
     .hero-buttons {
+        display: flex;
+        flex-direction: column;
         gap: 10px;
         margin-bottom: 18px;
+        width: 100%;
     }
+
     .hero-button {
-        padding: 12px 20px;
-        font-size: 14px;
+        width: 100%;
+        padding: 11px 16px;
+        font-size: 13.5px;
+        border-radius: 8px;
     }
-    .stats-bar-container {
+
+    .hero-button-secondary-wrapper {
+        width: 100%;
+        display: flex;
+    }
+
+    .hero-button-secondary-wrapper .hero-button-secondary {
+        width: 100%;
+    }
+
+    .hero-mobile-stats {
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        padding: 10px 12px;
+        margin-top: 0;
+        margin-bottom: 0;
+        width: 100%;
+        background: rgba(11, 19, 38, 0.88);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid rgba(0, 229, 255, 0.28);
+        border-radius: 12px;
+        box-shadow: 0 0 15px rgba(0, 229, 255, 0.18);
+    }
+
+    .hero-mobile-stat-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .hero-mobile-stat-value {
+        display: inline-flex;
+        align-items: baseline;
         justify-content: center;
-        gap: 14px;
+        white-space: nowrap;
+        gap: 1px;
     }
-    .stats-bar-divider {
-        display: none;
+
+    .hero-mobile-stat-num {
+        font-size: 13.5px;
+        font-weight: 850;
+        color: #00e5ff;
+        line-height: 1.1;
+        text-shadow: 0 0 8px rgba(0, 229, 255, 0.6);
     }
+
+    .hero-mobile-stat-num,
+    .hero-mobile-stat-symbol {
+        font-size: 14px;
+        font-weight: 850;
+        color: #00e5ff;
+        line-height: 1.1;
+    }
+
+    .hero-mobile-stat-lbl {
+        font-size: 9.5px;
+        font-weight: 600;
+        color: rgba(255, 255, 255, 0.85);
+        margin-top: 3px;
+        white-space: nowrap;
+    }
+
+    .stats-bar-section {
+        display: none !important;
+    }
+
+    .hero-scroll-wrapper {
+        position: relative;
+        bottom: auto;
+        left: auto;
+        transform: none;
+        margin-top: 20px;
+        margin-bottom: 0;
+        z-index: 10;
+        flex-shrink: 0;
+    }
+
     .hero-scroll-btn {
-        width: 42px;
+        width: 46px;
+        height: 46px;
+    }
+
+    .hero-scroll-btn svg {
+        width: 20px;
+        height: 20px;
+    }
+
+    .intro-section, .products-overview-section {
+        padding: 45px 18px;
+    }
+
+    .intro-title, .products-overview-header h2 {
+        font-size: 25px;
+    }
+
+    .intro-text {
+        font-size: 14.5px;
+    }
+
+    .intro-card-image-wrapper {
+        height: 140px;
+        padding: 14px 18px;
+    }
+
+    .intro-card-image-title {
+        font-size: 18px;
+    }
+
+    .intro-card-body {
+        padding: 18px;
+    }
+
+    /* COMPACT MOBILE HORIZONTAL FOOTPRINT FOR PRODUCT CARDS */
+    .products-grid {
+        gap: 14px;
+        width: 100%;
+        max-width: 480px;
+        margin: 0 auto;
+    }
+
+    .product-cat-card {
+        padding: 20px 16px;
+        border-radius: 14px;
+    }
+
+    .product-cat-badge {
+        width: 40px;
+        height: 40px;
+        font-size: 18px;
+        margin-bottom: 14px;
+        border-radius: 10px;
+    }
+
+    .product-cat-card h3 {
+        font-size: 16px;
+        margin-bottom: 6px;
+    }
+
+    .product-cat-card p {
+        font-size: 13px;
+        line-height: 1.5;
+    }
+
+    .product-cat-footer {
+        margin-top: 14px;
+        font-size: 12.5px;
+    }
+
+    .brands-section {
+        padding: 40px 0 45px;
+    }
+
+    .brands-heading {
+        margin-bottom: 20px;
+    }
+
+    .brands-heading h2 {
+        font-size: 24px;
+    }
+
+    .brands-heading p {
+        font-size: 13.5px;
+        padding: 0 10px;
+    }
+
+    .brand-card {
+        padding: 10px 16px;
+        min-width: 120px;
+        gap: 8px;
+    }
+
+    .brand-logo-container {
+        width: 90px;
         height: 42px;
     }
-    .intro-section, .products-overview-section {
-        padding: 60px 25px;
-    }
-    .intro-title, .products-overview-header h2 {
-        font-size: 30px;
-    }
-    .intro-text {
-        font-size: 16px;
-    }
-    .intro-card-image-wrapper {
-        height: 160px;
-        padding: 18px 22px;
-    }
-    .intro-card-image-title {
-        font-size: 21px;
-    }
-    .intro-card-body {
-        padding: 22px;
-    }
-    .brands-section {
-        padding: 50px 0 55px;
-    }
-    .brands-heading {
-        margin-bottom: 25px;
-    }
-    .brands-heading h2 {
-        font-size: 28px;
-    }
-    .brands-heading p {
-        font-size: 15px;
-        padding: 0 15px;
-    }
-    .brand-item {
-        min-width: 135px;
-        height: 50px;
-        font-size: 15px;
-        padding: 0 18px;
+
+    .brand-pill {
+        font-size: 12px;
     }
 }
 
-@media (max-width: 500px) {
+@media (max-width: 480px) {
     .products-grid {
         grid-template-columns: 1fr;
     }
+
     .hero-content {
-        padding: 35px 20px 50px;
+        padding: 0 14px;
     }
-    .hero-label {
-        font-size: 10px;
-        letter-spacing: 0.8px;
-    }
+
     .hero h1 {
-        font-size: 38px;
-        letter-spacing: -0.8px;
+        font-size: 22px;
     }
+
     .hero-description {
-        font-size: 15px;
-        line-height: 1.6;
+        font-size: 12.5px;
     }
-    .hero-buttons {
-        flex-direction: column;
-        align-items: stretch;
-    }
-    .hero-button {
-        width: 100%;
-    }
+
     .intro-title {
-        font-size: 29px;
-    }
-    .brand-item {
-        min-width: 125px;
-        height: 48px;
-        font-size: 14px;
-        margin: 0 6px;
+        font-size: 22px;
     }
 }
 
@@ -930,7 +1416,7 @@
      HERO SECTION
 ========================================================= -->
 
-<section class="hero">
+<section class="hero" id="heroSection">
 
     <!-- DYNAMIC BACKGROUND SLIDESHOW LAYERS -->
     <div
@@ -960,7 +1446,7 @@
     <div class="hero-content">
 
         <!-- DYNAMIC FLUID GLASS BADGE WITH ORBITING GLOW LOOP -->
-        <div class="hero-label-wrapper">
+        <div class="hero-label-wrapper hero-animate-badge">
 
             <div class="hero-label">
 
@@ -975,25 +1461,24 @@
         </div>
 
 
-        <!-- HERO HEADING -->
+        <!-- HERO HEADING WITH SLIDING OVERFLOW WORD REVEAL -->
 
         <h1>
-
-            Quality Electrical
-
-            <span class="highlight">
-                Materials.
+            <span class="text-word-mask">
+                <span class="word-delay-1">Quality Electrical</span>
             </span>
-
-            Trusted Brands.
-            Reliable Supply.
-
+            <span class="text-word-mask">
+                <span class="highlight word-delay-2">Materials.</span>
+            </span>
+            <span class="text-word-mask">
+                <span class="word-delay-3">Trusted Brands. Reliable Supply.</span>
+            </span>
         </h1>
 
 
         <!-- HERO DESCRIPTION -->
 
-        <p class="hero-description">
+        <p class="hero-description hero-animate-desc">
 
             Al Baraq Elect. Ware Tr. is your trusted electrical
             material supplier in the UAE, providing quality
@@ -1003,19 +1488,19 @@
         </p>
 
 
-        <!-- BUTTONS -->
+        <!-- BUTTONS WITH MOUSE TILT -->
 
-        <div class="hero-buttons">
+        <div class="hero-buttons hero-animate-btns">
 
             <a
                 href="{% url 'public:products' %}"
-                class="hero-button hero-button-primary"
+                class="hero-button hero-button-primary tilt-element"
             >
                 Explore Products
             </a>
 
             <!-- Contact Us Button with Subtle Orbiting Glow -->
-            <div class="hero-button-secondary-wrapper">
+            <div class="hero-button-secondary-wrapper tilt-element">
                 <a
                     href="{% url 'public:contact' %}"
                     class="hero-button hero-button-secondary"
@@ -1027,8 +1512,44 @@
         </div>
 
 
-    </div>
+        <!-- COMPACT MOBILE HERO STATS STRIP -->
 
+        <div class="hero-mobile-stats">
+
+            <div class="hero-mobile-stat-item">
+                <div class="hero-mobile-stat-value">
+                    <span class="hero-mobile-stat-num counter" data-target="12">0</span>
+                    <span class="hero-mobile-stat-symbol">+</span>
+                </div>
+                <span class="hero-mobile-stat-lbl">Years UAE</span>
+            </div>
+
+            <div class="hero-mobile-stat-item">
+                <div class="hero-mobile-stat-value">
+                    <span class="hero-mobile-stat-num counter" data-target="20">0</span>
+                    <span class="hero-mobile-stat-symbol">+</span>
+                </div>
+                <span class="hero-mobile-stat-lbl">Brands</span>
+            </div>
+
+            <div class="hero-mobile-stat-item">
+                <div class="hero-mobile-stat-value">
+                    <span class="hero-mobile-stat-num counter" data-target="7">0</span>
+                </div>
+                <span class="hero-mobile-stat-lbl">Emirates</span>
+            </div>
+
+            <div class="hero-mobile-stat-item">
+                <div class="hero-mobile-stat-value">
+                    <span class="hero-mobile-stat-num counter" data-target="100">0</span>
+                    <span class="hero-mobile-stat-symbol">%</span>
+                </div>
+                <span class="hero-mobile-stat-lbl">Authentic</span>
+            </div>
+
+        </div>
+
+    </div>
 
     <!-- NEON GLOW SCROLL BUTTON -->
 
@@ -1036,9 +1557,9 @@
 
         <a
             href="#statsSection"
-            class="hero-scroll-btn"
+            class="hero-scroll-btn tilt-element"
             id="scrollDownBtn"
-            aria-label="Scroll down to stats and about section"
+            aria-label="Scroll down to stats section"
             title="Scroll Down"
         >
 
@@ -1067,7 +1588,7 @@
 
 
 <!-- =========================================================
-     STATS BAR SECTION (REVEALED ON SCROLL BELOW HERO)
+     STATS BAR SECTION WITH ANIMATED COUNT-UP NUMBERS
 ========================================================= -->
 
 <section class="stats-bar-section scroll-reveal" id="statsSection">
@@ -1075,28 +1596,36 @@
     <div class="stats-bar-container">
 
         <div class="stats-bar-item">
-            <span class="stats-bar-number">12+</span>
+            <div class="stats-bar-number-wrap">
+                <span class="counter" data-target="12">0</span>+
+            </div>
             <span class="stats-bar-label">Years in UAE</span>
         </div>
 
         <span class="stats-bar-divider"></span>
 
         <div class="stats-bar-item">
-            <span class="stats-bar-number">50+</span>
+            <div class="stats-bar-number-wrap">
+                <span class="counter" data-target="20">0</span>+
+            </div>
             <span class="stats-bar-label">Reputed Brands</span>
         </div>
 
         <span class="stats-bar-divider"></span>
 
         <div class="stats-bar-item">
-            <span class="stats-bar-number">7</span>
+            <div class="stats-bar-number-wrap">
+                <span class="counter" data-target="7">0</span>
+            </div>
             <span class="stats-bar-label">Emirates Delivered</span>
         </div>
 
         <span class="stats-bar-divider"></span>
 
         <div class="stats-bar-item">
-            <span class="stats-bar-number">100%</span>
+            <div class="stats-bar-number-wrap">
+                <span class="counter" data-target="100">0</span>%
+            </div>
             <span class="stats-bar-label">Authentic Materials</span>
         </div>
 
@@ -1106,18 +1635,18 @@
 
 
 <!-- =========================================================
-     COMPANY INTRODUCTION (ENHANCED MIDDLE SECTION)
+     COMPANY INTRODUCTION
 ========================================================= -->
 
-<section class="intro-section scroll-reveal">
+<section class="intro-section" id="introSection">
 
 
     <div class="intro-container">
 
 
-        <div class="intro-left-content">
+        <div class="intro-left-content scroll-reveal">
 
-            <!-- Styled Section Tag Badge with Precise Orbit Lock -->
+            <!-- Styled Section Tag Badge -->
             <div class="section-tag-wrapper">
                 <div class="section-tag-badge">
                     <span class="section-tag-dot"></span>
@@ -1147,30 +1676,38 @@
         </div>
 
 
-        <!-- SUB-HERO IMAGE CARD INTEGRATION -->
+        <!-- SUB-HERO CARD WITH ELECTRIC BORDER & 3D MOUSE TILT -->
 
-        <div class="intro-card">
+        <div class="intro-card-perspective scroll-reveal delay-1">
 
-            <div class="intro-card-image-wrapper">
+            <div class="electric-card-wrapper tilt-element">
 
-                <h3 class="intro-card-image-title">
-                    Serving All Seven Emirates
-                </h3>
+                <div class="intro-card">
 
-            </div>
+                    <div class="intro-card-image-wrapper">
 
-            <div class="intro-card-body">
+                        <h3 class="intro-card-image-title">
+                            Serving All Seven Emirates
+                        </h3>
 
-                <p>
+                    </div>
 
-                    We provide electrical materials to traders,
-                    MEP companies, contractors, oil &amp; gas companies,
-                    industrial organizations and commercial customers.
+                    <div class="intro-card-body">
 
-                    Our focus is simple — quality products, trusted
-                    brands, competitive solutions and reliable supply.
+                        <p>
 
-                </p>
+                            We provide electrical materials to traders,
+                            MEP companies, contractors, oil &amp; gas companies,
+                            industrial organizations and commercial customers.
+
+                            Our focus is simple — quality products, trusted
+                            brands, competitive solutions and reliable supply.
+
+                        </p>
+
+                    </div>
+
+                </div>
 
             </div>
 
@@ -1187,13 +1724,12 @@
      PRODUCTS & VARIETIES OVERVIEW SECTION
 ========================================================= -->
 
-<section class="products-overview-section scroll-reveal">
+<section class="products-overview-section">
 
     <div class="products-overview-container">
 
-        <div class="products-overview-header">
+        <div class="products-overview-header scroll-reveal">
 
-            <!-- Styled Section Tag Badge with Precise Orbit Lock -->
             <div class="section-tag-wrapper">
                 <div class="section-tag-badge">
                     <span class="section-tag-dot"></span>
@@ -1207,45 +1743,53 @@
 
         <div class="products-grid">
 
-            <a href="{% url 'public:products' %}" class="product-cat-card">
-                <div class="product-cat-badge">🔌</div>
-                <h3>Cables &amp; Flexible Wires</h3>
-                <p>Armored cables, single core building wires, flexible cords, and control cables for commercial &amp; industrial setups.</p>
+            <div class="electric-card-wrapper scroll-reveal delay-1 tilt-element">
+                <a href="{% url 'public:products' %}" class="product-cat-card" style="background-image: url('{% static 'public/cards/cables&flexible_wires.png' %}');">
+                    <div class="product-cat-badge">🔌</div>
+                    <h3>Cables &amp; Flexible Wires</h3>
+                    <p>Armored cables, single core building wires, flexible cords, and control cables for commercial &amp; industrial setups.</p>
 
-                <div class="product-cat-footer">
-                    Explore Varieties &rarr;
-                </div>
-            </a>
+                    <div class="product-cat-footer">
+                        Explore Varieties &rarr;
+                    </div>
+                </a>
+            </div>
 
-            <a href="{% url 'public:products' %}" class="product-cat-card">
-                <div class="product-cat-badge">⚡</div>
-                <h3>Switchgear &amp; Protection</h3>
-                <p>MCBs, MCCBs, isolators, RCCBs, distribution boards, and circuit protection systems from leading brands.</p>
+            <div class="electric-card-wrapper scroll-reveal delay-2 tilt-element">
+                <a href="{% url 'public:products' %}" class="product-cat-card" style="background-image: url('{% static 'public/cards/switchgear&protection.png' %}');">
+                    <div class="product-cat-badge">⚡</div>
+                    <h3>Switchgear &amp; Protection</h3>
+                    <p>MCBs, MCCBs, isolators, RCCBs, distribution boards, and circuit protection systems from leading brands.</p>
 
-                <div class="product-cat-footer">
-                    Explore Varieties &rarr;
-                </div>
-            </a>
+                    <div class="product-cat-footer">
+                        Explore Varieties &rarr;
+                    </div>
+                </a>
+            </div>
 
-            <a href="{% url 'public:products' %}" class="product-cat-card">
-                <div class="product-cat-badge">🏗</div>
-                <h3>Conduits &amp; Fittings</h3>
-                <p>PVC &amp; GI rigid conduits, flexible conduits, adaptable boxes, trunking, and cable management fittings.</p>
+            <div class="electric-card-wrapper scroll-reveal delay-3 tilt-element">
+                <a href="{% url 'public:products' %}" class="product-cat-card" style="background-image: url('{% static 'public/cards/conduits&fittings.png' %}');">
+                    <div class="product-cat-badge">🏗</div>
+                    <h3>Conduits &amp; Fittings</h3>
+                    <p>PVC &amp; GI rigid conduits, flexible conduits, adaptable boxes, trunking, and cable management fittings.</p>
 
-                <div class="product-cat-footer">
-                    Explore Varieties &rarr;
-                </div>
-            </a>
+                    <div class="product-cat-footer">
+                        Explore Varieties &rarr;
+                    </div>
+                </a>
+            </div>
 
-            <a href="{% url 'public:products' %}" class="product-cat-card">
-                <div class="product-cat-badge">💡</div>
-                <h3>Wiring &amp; Accessories</h3>
-                <p>Switches, sockets, industrial plugs, LED lighting fixtures, ventilation fans, and copper earthing accessories.</p>
+            <div class="electric-card-wrapper scroll-reveal delay-1 tilt-element">
+                <a href="{% url 'public:products' %}" class="product-cat-card" style="background-image: url('{% static 'public/cards/wires&accessories.png' %}');">
+                    <div class="product-cat-badge">💡</div>
+                    <h3>Wiring &amp; Accessories</h3>
+                    <p>Switches, sockets, industrial plugs, LED lighting fixtures, ventilation fans, and copper earthing accessories.</p>
 
-                <div class="product-cat-footer">
-                    Explore Varieties &rarr;
-                </div>
-            </a>
+                    <div class="product-cat-footer">
+                        Explore Varieties &rarr;
+                    </div>
+                </a>
+            </div>
 
         </div>
 
@@ -1258,12 +1802,11 @@
      TRUSTED BRANDS
 ========================================================= -->
 
-<section class="brands-section scroll-reveal">
+<section class="brands-section">
 
 
-    <div class="brands-heading">
+    <div class="brands-heading scroll-reveal">
 
-        <!-- Styled Section Tag Badge with Precise Orbit Lock -->
         <div class="section-tag-wrapper">
             <div class="section-tag-badge">
                 <span class="section-tag-dot"></span>
@@ -1289,7 +1832,7 @@
 
 
 
-    <div class="brands-marquee">
+    <div class="brands-marquee scroll-reveal delay-1">
 
 
         <div class="brands-track">
@@ -1297,73 +1840,60 @@
 
             <!-- FIRST SET -->
 
-            <div class="brand-item">Omar Cables</div>
-            <div class="brand-item">RR Kabel</div>
-            <div class="brand-item">Alfanar</div>
-            <div class="brand-item">DUCAB</div>
-            <div class="brand-item">MESC</div>
-            <div class="brand-item">NCI</div>
-            <div class="brand-item">Eaton</div>
-            <div class="brand-item">Legrand</div>
-            <div class="brand-item">Tenby</div>
-            <div class="brand-item">Schneider Electric</div>
-            <div class="brand-item">KDK</div>
-            <div class="brand-item">Furse</div>
-            <div class="brand-item">HEX</div>
-            <div class="brand-item">Templair Fans</div>
-            <div class="brand-item">ABB</div>
-            <div class="brand-item">Hager</div>
-            <div class="brand-item">Caparo</div>
-            <div class="brand-item">Barton Engineering</div>
-            <div class="brand-item">Decoduct</div>
-            <div class="brand-item">MD</div>
-            <div class="brand-item">Rexton</div>
-            <div class="brand-item">Tenex</div>
-            <div class="brand-item">Cellpack</div>
-            <div class="brand-item">BICC Components</div>
-            <div class="brand-item">Panasonic</div>
-            <div class="brand-item">Vortice</div>
-            <div class="brand-item">3M</div>
-            <div class="brand-item">WD-40</div>
+            <div class="brand-item-wrapper"><div class="brand-card"><div class="brand-logo-container"><img src="{% static 'public/logo/oman_cables.png' %}" alt="Omar Cables Logo" class="brand-logo-img"></div><div class="brand-pill"><span class="brand-dot"></span>Omar Cables</div></div></div>
+            <div class="brand-item-wrapper"><div class="brand-card"><div class="brand-logo-container"><img src="{% static 'public/logo/rr_kabel.png' %}" alt="RR Kabel Logo" class="brand-logo-img"></div><div class="brand-pill"><span class="brand-dot"></span>RR Kabel</div></div></div>
+            <div class="brand-item-wrapper"><div class="brand-card"><div class="brand-logo-container"><img src="{% static 'public/logo/alfanar.png' %}" alt="Alfanar Logo" class="brand-logo-img"></div><div class="brand-pill"><span class="brand-dot"></span>Alfanar</div></div></div>
+            <div class="brand-item-wrapper"><div class="brand-card"><div class="brand-logo-container"><img src="{% static 'public/logo/ducab.png' %}" alt="DUCAB Logo" class="brand-logo-img"></div><div class="brand-pill"><span class="brand-dot"></span>DUCAB</div></div></div>
+            <div class="brand-item-wrapper"><div class="brand-card"><div class="brand-logo-container"><img src="{% static 'public/logo/mesc.png' %}" alt="MESC Logo" class="brand-logo-img"></div><div class="brand-pill"><span class="brand-dot"></span>MESC</div></div></div>
+            <div class="brand-item-wrapper"><div class="brand-card"><div class="brand-logo-container"><img src="{% static 'public/logo/nci.png' %}" alt="NCI Logo" class="brand-logo-img"></div><div class="brand-pill"><span class="brand-dot"></span>NCI</div></div></div>
+            <div class="brand-item-wrapper"><div class="brand-card"><div class="brand-logo-container"><img src="{% static 'public/logo/eaton.png' %}" alt="Eaton Logo" class="brand-logo-img"></div><div class="brand-pill"><span class="brand-dot"></span>Eaton</div></div></div>
+            <div class="brand-item-wrapper"><div class="brand-card"><div class="brand-logo-container"><img src="{% static 'public/logo/legrand.png' %}" alt="Legrand Logo" class="brand-logo-img"></div><div class="brand-pill"><span class="brand-dot"></span>Legrand</div></div></div>
+            <div class="brand-item-wrapper"><div class="brand-card"><div class="brand-logo-container"><img src="{% static 'public/logo/tenby.png' %}" alt="Tenby Logo" class="brand-logo-img"></div><div class="brand-pill"><span class="brand-dot"></span>Tenby</div></div></div>
+            <div class="brand-item-wrapper"><div class="brand-card"><div class="brand-logo-container"><img src="{% static 'public/logo/schneider.png' %}" alt="Schneider Electric Logo" class="brand-logo-img"></div><div class="brand-pill"><span class="brand-dot"></span>Schneider Electric</div></div></div>
+            <div class="brand-item-wrapper"><div class="brand-card"><div class="brand-logo-container"><img src="{% static 'public/logo/kdk.png' %}" alt="KDK Logo" class="brand-logo-img"></div><div class="brand-pill"><span class="brand-dot"></span>KDK</div></div></div>
+            <div class="brand-item-wrapper"><div class="brand-card"><div class="brand-logo-container"><img src="{% static 'public/logo/furse.png' %}" alt="Furse Logo" class="brand-logo-img"></div><div class="brand-pill"><span class="brand-dot"></span>Furse</div></div></div>
+            <div class="brand-item-wrapper"><div class="brand-card"><div class="brand-logo-container"><img src="{% static 'public/logo/Hex.png' %}" alt="HEX Logo" class="brand-logo-img"></div><div class="brand-pill"><span class="brand-dot"></span>HEX</div></div></div>
+            <div class="brand-item-wrapper"><div class="brand-card"><div class="brand-logo-container"><img src="{% static 'public/logo/templair_fan.png' %}" alt="Templair Fans Logo" class="brand-logo-img"></div><div class="brand-pill"><span class="brand-dot"></span>Templair Fans</div></div></div>
+            <div class="brand-item-wrapper"><div class="brand-card"><div class="brand-logo-container"><img src="{% static 'public/logo/Hager.png' %}" alt="Hager Logo" class="brand-logo-img"></div><div class="brand-pill"><span class="brand-dot"></span>Hager</div></div></div>
+            <div class="brand-item-wrapper"><div class="brand-card"><div class="brand-logo-container"><img src="{% static 'public/logo/caparon.png' %}" alt="Caparo Logo" class="brand-logo-img"></div><div class="brand-pill"><span class="brand-dot"></span>Caparo</div></div></div>
+            <div class="brand-item-wrapper"><div class="brand-card"><div class="brand-logo-container"><img src="{% static 'public/logo/decoduct.png' %}" alt="Decoduct Logo" class="brand-logo-img"></div><div class="brand-pill"><span class="brand-dot"></span>Decoduct</div></div></div>
+            <div class="brand-item-wrapper"><div class="brand-card"><div class="brand-logo-container"><img src="{% static 'public/logo/rexton.png' %}" alt="Rexton Logo" class="brand-logo-img"></div><div class="brand-pill"><span class="brand-dot"></span>Rexton</div></div></div>
+            <div class="brand-item-wrapper"><div class="brand-card"><div class="brand-logo-container"><img src="{% static 'public/logo/tenex .png' %}" alt="Tenex Logo" class="brand-logo-img"></div><div class="brand-pill"><span class="brand-dot"></span>Tenex</div></div></div>
+            <div class="brand-item-wrapper"><div class="brand-card"><div class="brand-logo-container"><img src="{% static 'public/logo/cellpack.png' %}" alt="Cellpack Logo" class="brand-logo-img"></div><div class="brand-pill"><span class="brand-dot"></span>Cellpack</div></div></div>
+            <div class="brand-item-wrapper"><div class="brand-card"><div class="brand-logo-container"><img src="{% static 'public/logo/panasonic.png' %}" alt="Panasonic Logo" class="brand-logo-img"></div><div class="brand-pill"><span class="brand-dot"></span>Panasonic</div></div></div>
+            <div class="brand-item-wrapper"><div class="brand-card"><div class="brand-logo-container"><img src="{% static 'public/logo/wd40.png' %}" alt="WD-40 Logo" class="brand-logo-img"></div><div class="brand-pill"><span class="brand-dot"></span>WD-40</div></div></div>
 
 
-            <!-- SECOND SET (Exact duplicate for seamless looping) -->
+            <!-- SECOND SET (Exact duplicate for seamless infinite looping) -->
 
-            <div class="brand-item">Omar Cables</div>
-            <div class="brand-item">RR Kabel</div>
-            <div class="brand-item">Alfanar</div>
-            <div class="brand-item">DUCAB</div>
-            <div class="brand-item">MESC</div>
-            <div class="brand-item">NCI</div>
-            <div class="brand-item">Eaton</div>
-            <div class="brand-item">Legrand</div>
-            <div class="brand-item">Tenby</div>
-            <div class="brand-item">Schneider Electric</div>
-            <div class="brand-item">KDK</div>
-            <div class="brand-item">Furse</div>
-            <div class="brand-item">HEX</div>
-            <div class="brand-item">Templair Fans</div>
-            <div class="brand-item">ABB</div>
-            <div class="brand-item">Hager</div>
-            <div class="brand-item">Caparo</div>
-            <div class="brand-item">Barton Engineering</div>
-            <div class="brand-item">Decoduct</div>
-            <div class="brand-item">MD</div>
-            <div class="brand-item">Rexton</div>
-            <div class="brand-item">Tenex</div>
-            <div class="brand-item">Cellpack</div>
-            <div class="brand-item">BICC Components</div>
-            <div class="brand-item">Panasonic</div>
-            <div class="brand-item">Vortice</div>
-            <div class="brand-item">3M</div>
-            <div class="brand-item">WD-40</div>
+            <div class="brand-item-wrapper"><div class="brand-card"><div class="brand-logo-container"><img src="{% static 'public/logo/oman_cables.png' %}" alt="Omar Cables Logo" class="brand-logo-img"></div><div class="brand-pill"><span class="brand-dot"></span>Omar Cables</div></div></div>
+            <div class="brand-item-wrapper"><div class="brand-card"><div class="brand-logo-container"><img src="{% static 'public/logo/rr_kabel.png' %}" alt="RR Kabel Logo" class="brand-logo-img"></div><div class="brand-pill"><span class="brand-dot"></span>RR Kabel</div></div></div>
+            <div class="brand-item-wrapper"><div class="brand-card"><div class="brand-logo-container"><img src="{% static 'public/logo/alfanar.png' %}" alt="Alfanar Logo" class="brand-logo-img"></div><div class="brand-pill"><span class="brand-dot"></span>Alfanar</div></div></div>
+            <div class="brand-item-wrapper"><div class="brand-card"><div class="brand-logo-container"><img src="{% static 'public/logo/ducab.png' %}" alt="DUCAB Logo" class="brand-logo-img"></div><div class="brand-pill"><span class="brand-dot"></span>DUCAB</div></div></div>
+            <div class="brand-item-wrapper"><div class="brand-card"><div class="brand-logo-container"><img src="{% static 'public/logo/mesc.png' %}" alt="MESC Logo" class="brand-logo-img"></div><div class="brand-pill"><span class="brand-dot"></span>MESC</div></div></div>
+            <div class="brand-item-wrapper"><div class="brand-card"><div class="brand-logo-container"><img src="{% static 'public/logo/nci.png' %}" alt="NCI Logo" class="brand-logo-img"></div><div class="brand-pill"><span class="brand-dot"></span>NCI</div></div></div>
+            <div class="brand-item-wrapper"><div class="brand-card"><div class="brand-logo-container"><img src="{% static 'public/logo/eaton.png' %}" alt="Eaton Logo" class="brand-logo-img"></div><div class="brand-pill"><span class="brand-dot"></span>Eaton</div></div></div>
+            <div class="brand-item-wrapper"><div class="brand-card"><div class="brand-logo-container"><img src="{% static 'public/logo/legrand.png' %}" alt="Legrand Logo" class="brand-logo-img"></div><div class="brand-pill"><span class="brand-dot"></span>Legrand</div></div></div>
+            <div class="brand-item-wrapper"><div class="brand-card"><div class="brand-logo-container"><img src="{% static 'public/logo/tenby.png' %}" alt="Tenby Logo" class="brand-logo-img"></div><div class="brand-pill"><span class="brand-dot"></span>Tenby</div></div></div>
+            <div class="brand-item-wrapper"><div class="brand-card"><div class="brand-logo-container"><img src="{% static 'public/logo/schneider.png' %}" alt="Schneider Electric Logo" class="brand-logo-img"></div><div class="brand-pill"><span class="brand-dot"></span>Schneider Electric</div></div></div>
+            <div class="brand-item-wrapper"><div class="brand-card"><div class="brand-logo-container"><img src="{% static 'public/logo/kdk.png' %}" alt="KDK Logo" class="brand-logo-img"></div><div class="brand-pill"><span class="brand-dot"></span>KDK</div></div></div>
+            <div class="brand-item-wrapper"><div class="brand-card"><div class="brand-logo-container"><img src="{% static 'public/logo/furse.png' %}" alt="Furse Logo" class="brand-logo-img"></div><div class="brand-pill"><span class="brand-dot"></span>Furse</div></div></div>
+            <div class="brand-item-wrapper"><div class="brand-card"><div class="brand-logo-container"><img src="{% static 'public/logo/Hex.png' %}" alt="HEX Logo" class="brand-logo-img"></div><div class="brand-pill"><span class="brand-dot"></span>HEX</div></div></div>
+            <div class="brand-item-wrapper"><div class="brand-card"><div class="brand-logo-container"><img src="{% static 'public/logo/templair_fan.png' %}" alt="Templair Fans Logo" class="brand-logo-img"></div><div class="brand-pill"><span class="brand-dot"></span>Templair Fans</div></div></div>
+            <div class="brand-item-wrapper"><div class="brand-card"><div class="brand-logo-container"><img src="{% static 'public/logo/Hager.png' %}" alt="Hager Logo" class="brand-logo-img"></div><div class="brand-pill"><span class="brand-dot"></span>Hager</div></div></div>
+            <div class="brand-item-wrapper"><div class="brand-card"><div class="brand-logo-container"><img src="{% static 'public/logo/caparon.png' %}" alt="Caparo Logo" class="brand-logo-img"></div><div class="brand-pill"><span class="brand-dot"></span>Caparo</div></div></div>
+            <div class="brand-item-wrapper"><div class="brand-card"><div class="brand-logo-container"><img src="{% static 'public/logo/decoduct.png' %}" alt="Decoduct Logo" class="brand-logo-img"></div><div class="brand-pill"><span class="brand-dot"></span>Decoduct</div></div></div>
+            <div class="brand-item-wrapper"><div class="brand-card"><div class="brand-logo-container"><img src="{% static 'public/logo/rexton.png' %}" alt="Rexton Logo" class="brand-logo-img"></div><div class="brand-pill"><span class="brand-dot"></span>Rexton</div></div></div>
+            <div class="brand-item-wrapper"><div class="brand-card"><div class="brand-logo-container"><img src="{% static 'public/logo/tenex .png' %}" alt="Tenex Logo" class="brand-logo-img"></div><div class="brand-pill"><span class="brand-dot"></span>Tenex</div></div></div>
+            <div class="brand-item-wrapper"><div class="brand-card"><div class="brand-logo-container"><img src="{% static 'public/logo/cellpack.png' %}" alt="Cellpack Logo" class="brand-logo-img"></div><div class="brand-pill"><span class="brand-dot"></span>Cellpack</div></div></div>
+            <div class="brand-item-wrapper"><div class="brand-card"><div class="brand-logo-container"><img src="{% static 'public/logo/panasonic.png' %}" alt="Panasonic Logo" class="brand-logo-img"></div><div class="brand-pill"><span class="brand-dot"></span>Panasonic</div></div></div>
+            <div class="brand-item-wrapper"><div class="brand-card"><div class="brand-logo-container"><img src="{% static 'public/logo/wd40.png' %}" alt="WD-40 Logo" class="brand-logo-img"></div><div class="brand-pill"><span class="brand-dot"></span>WD-40</div></div></div>
 
 
         </div>
 
 
     </div>
-
 
 </section>
 
@@ -1380,180 +1910,196 @@ document.addEventListener(
     function () {
 
         /* ---------------------------------------------------------
-           1. DYNAMIC TEXT INSIDE FLUID GLASS LABEL BOX
+           1. ANIMATED NUMBER COUNTERS (FROM 0 TO TARGET VALUE)
         --------------------------------------------------------- */
 
-        const dynamicLabel =
-            document.getElementById(
-                "heroDynamicLabel"
-            );
+        const counterElements = document.querySelectorAll(".counter");
+        let countersAnimated = false;
 
+        function startCounters() {
+            if (countersAnimated) return;
+            countersAnimated = true;
+
+            counterElements.forEach(function (counter) {
+                const target = +counter.getAttribute("data-target");
+                const duration = 1800;
+                const increment = target / (duration / 16);
+                let current = 0;
+
+                function updateCount() {
+                    current += increment;
+                    if (current < target) {
+                        counter.textContent = Math.ceil(current);
+                        requestAnimationFrame(updateCount);
+                    } else {
+                        counter.textContent = target;
+                    }
+                }
+
+                updateCount();
+            });
+        }
+
+        // Trigger mobile hero counter numbers right on page load
+        if (window.innerWidth <= 768) {
+            startCounters();
+        }
+
+
+        /* ---------------------------------------------------------
+           2. HIGH-PERFORMANCE ULTRA-SMOOTH 3D TILT EFFECT
+        --------------------------------------------------------- */
+
+        const canHover = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+
+        if (canHover) {
+            const tiltElements = document.querySelectorAll(".tilt-element");
+
+            tiltElements.forEach(function (el) {
+                let rafId = null;
+
+                el.addEventListener("mouseenter", function () {
+                    el.style.transition = "transform 0.12s cubic-bezier(0.2, 0, 0.2, 1)";
+                });
+
+                el.addEventListener("mousemove", function (e) {
+                    if (rafId) cancelAnimationFrame(rafId);
+
+                    rafId = requestAnimationFrame(function () {
+                        const rect = el.getBoundingClientRect();
+                        const centerX = rect.width / 2;
+                        const centerY = rect.height / 2;
+                        const mouseX = e.clientX - rect.left;
+                        const mouseY = e.clientY - rect.top;
+
+                        const rotateX = ((mouseY - centerY) / centerY) * -6.5;
+                        const rotateY = ((mouseX - centerX) / centerX) * 6.5;
+
+                        el.style.transform = "perspective(1000px) rotateX(" + rotateX.toFixed(2) + "deg) rotateY(" + rotateY.toFixed(2) + "deg) scale3d(1.015, 1.015, 1.015)";
+                    });
+                });
+
+                el.addEventListener("mouseleave", function () {
+                    if (rafId) cancelAnimationFrame(rafId);
+                    el.style.transition = "transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)";
+                    el.style.transform = "perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)";
+                });
+            });
+        }
+
+
+        /* ---------------------------------------------------------
+           3. DYNAMIC TEXT INSIDE FLUID GLASS LABEL BOX
+        --------------------------------------------------------- */
+
+        const dynamicLabel = document.getElementById("heroDynamicLabel");
 
         if (dynamicLabel) {
-
             const labelMessages = [
-
                 "Electrical Products & Solutions",
-
                 "Quality Electrical Materials",
-
                 "Trusted Electrical Brands",
-
                 "Reliable Supply Across the UAE",
-
                 "Solutions for Every Requirement",
-
                 "Quality You Can Rely On"
-
             ];
-
 
             let currentLabelIndex = 0;
 
-
             function changeHeroLabel() {
-
                 dynamicLabel.classList.add("hide");
 
-                setTimeout(
-                    function () {
-
-                        currentLabelIndex =
-                            (
-                                currentLabelIndex + 1
-                            ) % labelMessages.length;
-
-                        dynamicLabel.textContent =
-                            labelMessages[currentLabelIndex];
-
-                        dynamicLabel.classList.remove(
-                            "hide"
-                        );
-
-                    },
-                    350
-                );
-
+                setTimeout(function () {
+                    currentLabelIndex = (currentLabelIndex + 1) % labelMessages.length;
+                    dynamicLabel.textContent = labelMessages[currentLabelIndex];
+                    dynamicLabel.classList.remove("hide");
+                }, 350);
             }
 
-
-            setInterval(
-                changeHeroLabel,
-                3600
-            );
-
+            setInterval(changeHeroLabel, 3600);
         }
 
 
         /* ---------------------------------------------------------
-           2. DYNAMIC HERO BACKGROUND SLIDESHOW
+           4. DYNAMIC HERO BACKGROUND SLIDESHOW WITH ZOOM/PAN
         --------------------------------------------------------- */
 
-        const bgLayers =
-            document.querySelectorAll(
-                ".hero-bg-layer"
-            );
-
+        const bgLayers = document.querySelectorAll(".hero-bg-layer");
 
         if (bgLayers.length > 1) {
-
             let currentBgIndex = 0;
 
-
             function cycleBackground() {
-
                 bgLayers[currentBgIndex].classList.remove("active");
-
                 currentBgIndex = (currentBgIndex + 1) % bgLayers.length;
-
                 bgLayers[currentBgIndex].classList.add("active");
-
             }
 
-
-            setInterval(
-                cycleBackground,
-                5500
-            );
-
+            setInterval(cycleBackground, 5500);
         }
 
 
         /* ---------------------------------------------------------
-           3. SMOOTH SCROLL FOR ARROW BUTTON
+           5. SMOOTH SCROLL FOR HERO DOWN BUTTON
         --------------------------------------------------------- */
 
         const scrollBtn = document.getElementById("scrollDownBtn");
 
         if (scrollBtn) {
-
             scrollBtn.addEventListener("click", function (e) {
-
                 e.preventDefault();
 
-                const targetSection = document.getElementById("statsSection");
+                const statsSection = document.getElementById("statsSection");
+                const introSection = document.getElementById("introSection");
 
-                if (targetSection) {
-
-                    targetSection.scrollIntoView({
-
-                        behavior: "smooth",
-
-                        block: "start"
-
-                    });
-
+                let targetSection = statsSection;
+                if (!statsSection || window.getComputedStyle(statsSection).display === "none") {
+                    targetSection = introSection;
                 }
 
+                if (targetSection) {
+                    targetSection.scrollIntoView({
+                        behavior: "smooth",
+                        block: "start"
+                    });
+                }
             });
-
         }
 
 
         /* ---------------------------------------------------------
-           4. SCROLL REVEAL OBSERVER
+           6. ENTRANCE SCROLL REVEAL OBSERVER & COUNTER TRIGGER
         --------------------------------------------------------- */
 
         const revealElements = document.querySelectorAll(".scroll-reveal");
 
         if ("IntersectionObserver" in window) {
-
             const revealObserver = new IntersectionObserver(
                 function (entries, observer) {
-
                     entries.forEach(function (entry) {
-
                         if (entry.isIntersecting) {
-
                             entry.target.classList.add("is-visible");
 
+                            if (entry.target.id === "statsSection") {
+                                startCounters();
+                            }
+
                             observer.unobserve(entry.target);
-
                         }
-
                     });
-
                 },
-                {
-                    threshold: 0.12
-                }
+                { threshold: 0.12 }
             );
 
-
             revealElements.forEach(function (el) {
-
                 revealObserver.observe(el);
-
             });
-
         } else {
-
             revealElements.forEach(function (el) {
-
                 el.classList.add("is-visible");
-
             });
 
+            startCounters();
         }
 
     }
