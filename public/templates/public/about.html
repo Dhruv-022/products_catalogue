@@ -771,7 +771,7 @@
 
 
 /* =========================================================
-   TRUSTED BRANDS SECTION (MATCHES HOME PAGE MARQUEE)
+   TRUSTED BRANDS SECTION (DYNAMIC THEME LOGO SWITCHING)
 ========================================================= */
 
 .brands-section {
@@ -862,6 +862,24 @@
     max-width: 160px;
     object-fit: contain;
     border-radius: 6px;
+}
+
+/* Dynamic theme logo visibility control */
+.brand-logo-dark {
+    display: block;
+}
+
+.brand-logo-light {
+    display: none;
+}
+
+/* Show light theme (_d) images when data-theme="light" */
+[data-theme="light"] .brand-logo-dark {
+    display: none;
+}
+
+[data-theme="light"] .brand-logo-light {
+    display: block;
 }
 
 @keyframes brandScrollSmooth {
@@ -1429,61 +1447,269 @@
 
             <div class="brands-track">
 
-                <!-- FIRST SET (All 26 Logos) -->
-                <div class="brand-logo-item"><img src="{% static 'public/logo/abb.png' %}" alt="ABB" class="brand-logo-img"></div>
-                <div class="brand-logo-item"><img src="{% static 'public/logo/alfanar.png' %}" alt="Alfanar" class="brand-logo-img"></div>
-                <div class="brand-logo-item"><img src="{% static 'public/logo/barton.png' %}" alt="Barton" class="brand-logo-img"></div>
-                <div class="brand-logo-item"><img src="{% static 'public/logo/bicc.png' %}" alt="BICC" class="brand-logo-img"></div>
-                <div class="brand-logo-item"><img src="{% static 'public/logo/caparon.png' %}" alt="Caparo" class="brand-logo-img"></div>
-                <div class="brand-logo-item"><img src="{% static 'public/logo/cellpack.png' %}" alt="Cellpack" class="brand-logo-img"></div>
-                <div class="brand-logo-item"><img src="{% static 'public/logo/dd.png' %}" alt="Decoduct" class="brand-logo-img"></div>
-                <div class="brand-logo-item"><img src="{% static 'public/logo/ducab.png' %}" alt="DUCAB" class="brand-logo-img"></div>
-                <div class="brand-logo-item"><img src="{% static 'public/logo/eaton.png' %}" alt="Eaton" class="brand-logo-img"></div>
-                <div class="brand-logo-item"><img src="{% static 'public/logo/furse.png' %}" alt="Furse" class="brand-logo-img"></div>
-                <div class="brand-logo-item"><img src="{% static 'public/logo/gewiss.png' %}" alt="Gewiss" class="brand-logo-img"></div>
-                <div class="brand-logo-item"><img src="{% static 'public/logo/hager.png' %}" alt="Hager" class="brand-logo-img"></div>
-                <div class="brand-logo-item"><img src="{% static 'public/logo/hex.png' %}" alt="HEX" class="brand-logo-img"></div>
-                <div class="brand-logo-item"><img src="{% static 'public/logo/images.png' %}" alt="Brand Logo" class="brand-logo-img"></div>
-                <div class="brand-logo-item"><img src="{% static 'public/logo/legrand.png' %}" alt="Legrand" class="brand-logo-img"></div>
-                <div class="brand-logo-item"><img src="{% static 'public/logo/mesc.png' %}" alt="MESC" class="brand-logo-img"></div>
-                <div class="brand-logo-item"><img src="{% static 'public/logo/mk.png' %}" alt="MK" class="brand-logo-img"></div>
-                <div class="brand-logo-item"><img src="{% static 'public/logo/nci.png' %}" alt="NCI" class="brand-logo-img"></div>
-                <div class="brand-logo-item"><img src="{% static 'public/logo/oman.png' %}" alt="Oman Cables" class="brand-logo-img"></div>
-                <div class="brand-logo-item"><img src="{% static 'public/logo/panasonic.png' %}" alt="Panasonic" class="brand-logo-img"></div>
-                <div class="brand-logo-item"><img src="{% static 'public/logo/rexton.png' %}" alt="Rexton" class="brand-logo-img"></div>
-                <div class="brand-logo-item"><img src="{% static 'public/logo/rr.png' %}" alt="RR Kabel" class="brand-logo-img"></div>
-                <div class="brand-logo-item"><img src="{% static 'public/logo/sch.png' %}" alt="Schneider Electric" class="brand-logo-img"></div>
-                <div class="brand-logo-item"><img src="{% static 'public/logo/tenby.png' %}" alt="Tenby" class="brand-logo-img"></div>
-                <div class="brand-logo-item"><img src="{% static 'public/logo/vortice.png' %}" alt="Vortice" class="brand-logo-img"></div>
-                <div class="brand-logo-item"><img src="{% static 'public/logo/wd-40.png' %}" alt="WD-40" class="brand-logo-img"></div>
+                <!-- FIRST SET (All 26 Logos with Theme Pairs) -->
+                <div class="brand-logo-item">
+                    <img src="{% static 'public/logo/abb.png' %}" alt="ABB" class="brand-logo-img brand-logo-dark">
+                    <img src="{% static 'public/logo/abb_d.png' %}" alt="ABB" class="brand-logo-img brand-logo-light">
+                </div>
+
+                <div class="brand-logo-item">
+                    <img src="{% static 'public/logo/alfanar.png' %}" alt="Alfanar" class="brand-logo-img brand-logo-dark">
+                    <img src="{% static 'public/logo/alfanar_d.png' %}" alt="Alfanar" class="brand-logo-img brand-logo-light">
+                </div>
+
+                <div class="brand-logo-item">
+                    <img src="{% static 'public/logo/barton.png' %}" alt="Barton" class="brand-logo-img brand-logo-dark">
+                    <img src="{% static 'public/logo/barton_d.png' %}" alt="Barton" class="brand-logo-img brand-logo-light">
+                </div>
+
+                <div class="brand-logo-item">
+                    <img src="{% static 'public/logo/bicc.png' %}" alt="BICC" class="brand-logo-img brand-logo-dark">
+                    <img src="{% static 'public/logo/bicc_d.png' %}" alt="BICC" class="brand-logo-img brand-logo-light">
+                </div>
+
+                <div class="brand-logo-item">
+                    <img src="{% static 'public/logo/caparon.png' %}" alt="Caparo" class="brand-logo-img brand-logo-dark">
+                    <img src="{% static 'public/logo/caparo_d.png' %}" alt="Caparo" class="brand-logo-img brand-logo-light">
+                </div>
+
+                <div class="brand-logo-item">
+                    <img src="{% static 'public/logo/cellpack.png' %}" alt="Cellpack" class="brand-logo-img brand-logo-dark">
+                    <img src="{% static 'public/logo/cellpack_d.png' %}" alt="Cellpack" class="brand-logo-img brand-logo-light">
+                </div>
+
+                <div class="brand-logo-item">
+                    <img src="{% static 'public/logo/dd.png' %}" alt="Decoduct" class="brand-logo-img brand-logo-dark">
+                    <img src="{% static 'public/logo/dd_d.png' %}" alt="Decoduct" class="brand-logo-img brand-logo-light">
+                </div>
+
+                <div class="brand-logo-item">
+                    <img src="{% static 'public/logo/ducab.png' %}" alt="DUCAB" class="brand-logo-img brand-logo-dark">
+                    <img src="{% static 'public/logo/ducab_d.png' %}" alt="DUCAB" class="brand-logo-img brand-logo-light">
+                </div>
+
+                <div class="brand-logo-item">
+                    <img src="{% static 'public/logo/eaton.png' %}" alt="Eaton" class="brand-logo-img brand-logo-dark">
+                    <img src="{% static 'public/logo/eaton_d.png' %}" alt="Eaton" class="brand-logo-img brand-logo-light">
+                </div>
+
+                <div class="brand-logo-item">
+                    <img src="{% static 'public/logo/furse.png' %}" alt="Furse" class="brand-logo-img brand-logo-dark">
+                    <img src="{% static 'public/logo/furse_d.png' %}" alt="Furse" class="brand-logo-img brand-logo-light">
+                </div>
+
+                <div class="brand-logo-item">
+                    <img src="{% static 'public/logo/gewiss.png' %}" alt="Gewiss" class="brand-logo-img brand-logo-dark">
+                    <img src="{% static 'public/logo/gewiss_d.png' %}" alt="Gewiss" class="brand-logo-img brand-logo-light">
+                </div>
+
+                <div class="brand-logo-item">
+                    <img src="{% static 'public/logo/hager.png' %}" alt="Hager" class="brand-logo-img brand-logo-dark">
+                    <img src="{% static 'public/logo/hager_d.png' %}" alt="Hager" class="brand-logo-img brand-logo-light">
+                </div>
+
+                <div class="brand-logo-item">
+                    <img src="{% static 'public/logo/hex.png' %}" alt="HEX" class="brand-logo-img brand-logo-dark">
+                    <img src="{% static 'public/logo/hex_d.png' %}" alt="HEX" class="brand-logo-img brand-logo-light">
+                </div>
+
+                <div class="brand-logo-item">
+                    <img src="{% static 'public/logo/images.png' %}" alt="Brand Logo" class="brand-logo-img brand-logo-dark">
+                    <img src="{% static 'public/logo/images_d.png' %}" alt="Brand Logo" class="brand-logo-img brand-logo-light">
+                </div>
+
+                <div class="brand-logo-item">
+                    <img src="{% static 'public/logo/legrand.png' %}" alt="Legrand" class="brand-logo-img brand-logo-dark">
+                    <img src="{% static 'public/logo/legrand_d.png' %}" alt="Legrand" class="brand-logo-img brand-logo-light">
+                </div>
+
+                <div class="brand-logo-item">
+                    <img src="{% static 'public/logo/mesc.png' %}" alt="MESC" class="brand-logo-img brand-logo-dark">
+                    <img src="{% static 'public/logo/mecs_d.png' %}" alt="MESC" class="brand-logo-img brand-logo-light">
+                </div>
+
+                <div class="brand-logo-item">
+                    <img src="{% static 'public/logo/mk.png' %}" alt="MK" class="brand-logo-img brand-logo-dark">
+                    <img src="{% static 'public/logo/mk_d.png' %}" alt="MK" class="brand-logo-img brand-logo-light">
+                </div>
+
+                <div class="brand-logo-item">
+                    <img src="{% static 'public/logo/nci.png' %}" alt="NCI" class="brand-logo-img brand-logo-dark">
+                    <img src="{% static 'public/logo/nci_d.png' %}" alt="NCI" class="brand-logo-img brand-logo-light">
+                </div>
+
+                <div class="brand-logo-item">
+                    <img src="{% static 'public/logo/oman.png' %}" alt="Oman Cables" class="brand-logo-img brand-logo-dark">
+                    <img src="{% static 'public/logo/oman_d.png' %}" alt="Oman Cables" class="brand-logo-img brand-logo-light">
+                </div>
+
+                <div class="brand-logo-item">
+                    <img src="{% static 'public/logo/panasonic.png' %}" alt="Panasonic" class="brand-logo-img brand-logo-dark">
+                    <img src="{% static 'public/logo/panasonic_d.png' %}" alt="Panasonic" class="brand-logo-img brand-logo-light">
+                </div>
+
+                <div class="brand-logo-item">
+                    <img src="{% static 'public/logo/rexton.png' %}" alt="Rexton" class="brand-logo-img brand-logo-dark">
+                    <img src="{% static 'public/logo/rexton_d.png' %}" alt="Rexton" class="brand-logo-img brand-logo-light">
+                </div>
+
+                <div class="brand-logo-item">
+                    <img src="{% static 'public/logo/rr.png' %}" alt="RR Kabel" class="brand-logo-img brand-logo-dark">
+                    <img src="{% static 'public/logo/rr_d.png' %}" alt="RR Kabel" class="brand-logo-img brand-logo-light">
+                </div>
+
+                <div class="brand-logo-item">
+                    <img src="{% static 'public/logo/sch.png' %}" alt="Schneider Electric" class="brand-logo-img brand-logo-dark">
+                    <img src="{% static 'public/logo/sch_d.png' %}" alt="Schneider Electric" class="brand-logo-img brand-logo-light">
+                </div>
+
+                <div class="brand-logo-item">
+                    <img src="{% static 'public/logo/tenby.png' %}" alt="Tenby" class="brand-logo-img brand-logo-dark">
+                    <img src="{% static 'public/logo/tenby_d.png' %}" alt="Tenby" class="brand-logo-img brand-logo-light">
+                </div>
+
+                <div class="brand-logo-item">
+                    <img src="{% static 'public/logo/vortice.png' %}" alt="Vortice" class="brand-logo-img brand-logo-dark">
+                    <img src="{% static 'public/logo/vortice_d.png' %}" alt="Vortice" class="brand-logo-img brand-logo-light">
+                </div>
+
+                <div class="brand-logo-item">
+                    <img src="{% static 'public/logo/wd-40.png' %}" alt="WD-40" class="brand-logo-img brand-logo-dark">
+                    <img src="{% static 'public/logo/wd-40_d.png' %}" alt="WD-40" class="brand-logo-img brand-logo-light">
+                </div>
+
 
                 <!-- SECOND SET (Exact Duplicate for Seamless Infinite Loop) -->
-                <div class="brand-logo-item"><img src="{% static 'public/logo/abb.png' %}" alt="ABB" class="brand-logo-img"></div>
-                <div class="brand-logo-item"><img src="{% static 'public/logo/alfanar.png' %}" alt="Alfanar" class="brand-logo-img"></div>
-                <div class="brand-logo-item"><img src="{% static 'public/logo/barton.png' %}" alt="Barton" class="brand-logo-img"></div>
-                <div class="brand-logo-item"><img src="{% static 'public/logo/bicc.png' %}" alt="BICC" class="brand-logo-img"></div>
-                <div class="brand-logo-item"><img src="{% static 'public/logo/caparon.png' %}" alt="Caparo" class="brand-logo-img"></div>
-                <div class="brand-logo-item"><img src="{% static 'public/logo/cellpack.png' %}" alt="Cellpack" class="brand-logo-img"></div>
-                <div class="brand-logo-item"><img src="{% static 'public/logo/dd.png' %}" alt="Decoduct" class="brand-logo-img"></div>
-                <div class="brand-logo-item"><img src="{% static 'public/logo/ducab.png' %}" alt="DUCAB" class="brand-logo-img"></div>
-                <div class="brand-logo-item"><img src="{% static 'public/logo/eaton.png' %}" alt="Eaton" class="brand-logo-img"></div>
-                <div class="brand-logo-item"><img src="{% static 'public/logo/furse.png' %}" alt="Furse" class="brand-logo-img"></div>
-                <div class="brand-logo-item"><img src="{% static 'public/logo/gewiss.png' %}" alt="Gewiss" class="brand-logo-img"></div>
-                <div class="brand-logo-item"><img src="{% static 'public/logo/hager.png' %}" alt="Hager" class="brand-logo-img"></div>
-                <div class="brand-logo-item"><img src="{% static 'public/logo/hex.png' %}" alt="HEX" class="brand-logo-img"></div>
-                <div class="brand-logo-item"><img src="{% static 'public/logo/images.png' %}" alt="Brand Logo" class="brand-logo-img"></div>
-                <div class="brand-logo-item"><img src="{% static 'public/logo/legrand.png' %}" alt="Legrand" class="brand-logo-img"></div>
-                <div class="brand-logo-item"><img src="{% static 'public/logo/mesc.png' %}" alt="MESC" class="brand-logo-img"></div>
-                <div class="brand-logo-item"><img src="{% static 'public/logo/mk.png' %}" alt="MK" class="brand-logo-img"></div>
-                <div class="brand-logo-item"><img src="{% static 'public/logo/nci.png' %}" alt="NCI" class="brand-logo-img"></div>
-                <div class="brand-logo-item"><img src="{% static 'public/logo/oman.png' %}" alt="Oman Cables" class="brand-logo-img"></div>
-                <div class="brand-logo-item"><img src="{% static 'public/logo/panasonic.png' %}" alt="Panasonic" class="brand-logo-img"></div>
-                <div class="brand-logo-item"><img src="{% static 'public/logo/rexton.png' %}" alt="Rexton" class="brand-logo-img"></div>
-                <div class="brand-logo-item"><img src="{% static 'public/logo/rr.png' %}" alt="RR Kabel" class="brand-logo-img"></div>
-                <div class="brand-logo-item"><img src="{% static 'public/logo/sch.png' %}" alt="Schneider Electric" class="brand-logo-img"></div>
-                <div class="brand-logo-item"><img src="{% static 'public/logo/tenby.png' %}" alt="Tenby" class="brand-logo-img"></div>
-                <div class="brand-logo-item"><img src="{% static 'public/logo/vortice.png' %}" alt="Vortice" class="brand-logo-img"></div>
-                <div class="brand-logo-item"><img src="{% static 'public/logo/wd-40.png' %}" alt="WD-40" class="brand-logo-img"></div>
+
+                <div class="brand-logo-item">
+                    <img src="{% static 'public/logo/abb.png' %}" alt="ABB" class="brand-logo-img brand-logo-dark">
+                    <img src="{% static 'public/logo/abb_d.png' %}" alt="ABB" class="brand-logo-img brand-logo-light">
+                </div>
+
+                <div class="brand-logo-item">
+                    <img src="{% static 'public/logo/alfanar.png' %}" alt="Alfanar" class="brand-logo-img brand-logo-dark">
+                    <img src="{% static 'public/logo/alfanar_d.png' %}" alt="Alfanar" class="brand-logo-img brand-logo-light">
+                </div>
+
+                <div class="brand-logo-item">
+                    <img src="{% static 'public/logo/barton.png' %}" alt="Barton" class="brand-logo-img brand-logo-dark">
+                    <img src="{% static 'public/logo/barton_d.png' %}" alt="Barton" class="brand-logo-img brand-logo-light">
+                </div>
+
+                <div class="brand-logo-item">
+                    <img src="{% static 'public/logo/bicc.png' %}" alt="BICC" class="brand-logo-img brand-logo-dark">
+                    <img src="{% static 'public/logo/bicc_d.png' %}" alt="BICC" class="brand-logo-img brand-logo-light">
+                </div>
+
+                <div class="brand-logo-item">
+                    <img src="{% static 'public/logo/caparon.png' %}" alt="Caparo" class="brand-logo-img brand-logo-dark">
+                    <img src="{% static 'public/logo/caparo_d.png' %}" alt="Caparo" class="brand-logo-img brand-logo-light">
+                </div>
+
+                <div class="brand-logo-item">
+                    <img src="{% static 'public/logo/cellpack.png' %}" alt="Cellpack" class="brand-logo-img brand-logo-dark">
+                    <img src="{% static 'public/logo/cellpack_d.png' %}" alt="Cellpack" class="brand-logo-img brand-logo-light">
+                </div>
+
+                <div class="brand-logo-item">
+                    <img src="{% static 'public/logo/dd.png' %}" alt="Decoduct" class="brand-logo-img brand-logo-dark">
+                    <img src="{% static 'public/logo/dd_d.png' %}" alt="Decoduct" class="brand-logo-img brand-logo-light">
+                </div>
+
+                <div class="brand-logo-item">
+                    <img src="{% static 'public/logo/ducab.png' %}" alt="DUCAB" class="brand-logo-img brand-logo-dark">
+                    <img src="{% static 'public/logo/ducab_d.png' %}" alt="DUCAB" class="brand-logo-img brand-logo-light">
+                </div>
+
+                <div class="brand-logo-item">
+                    <img src="{% static 'public/logo/eaton.png' %}" alt="Eaton" class="brand-logo-img brand-logo-dark">
+                    <img src="{% static 'public/logo/eaton_d.png' %}" alt="Eaton" class="brand-logo-img brand-logo-light">
+                </div>
+
+                <div class="brand-logo-item">
+                    <img src="{% static 'public/logo/furse.png' %}" alt="Furse" class="brand-logo-img brand-logo-dark">
+                    <img src="{% static 'public/logo/furse_d.png' %}" alt="Furse" class="brand-logo-img brand-logo-light">
+                </div>
+
+                <div class="brand-logo-item">
+                    <img src="{% static 'public/logo/gewiss.png' %}" alt="Gewiss" class="brand-logo-img brand-logo-dark">
+                    <img src="{% static 'public/logo/gewiss_d.png' %}" alt="Gewiss" class="brand-logo-img brand-logo-light">
+                </div>
+
+                <div class="brand-logo-item">
+                    <img src="{% static 'public/logo/hager.png' %}" alt="Hager" class="brand-logo-img brand-logo-dark">
+                    <img src="{% static 'public/logo/hager_d.png' %}" alt="Hager" class="brand-logo-img brand-logo-light">
+                </div>
+
+                <div class="brand-logo-item">
+                    <img src="{% static 'public/logo/hex.png' %}" alt="HEX" class="brand-logo-img brand-logo-dark">
+                    <img src="{% static 'public/logo/hex_d.png' %}" alt="HEX" class="brand-logo-img brand-logo-light">
+                </div>
+
+                <div class="brand-logo-item">
+                    <img src="{% static 'public/logo/images.png' %}" alt="Brand Logo" class="brand-logo-img brand-logo-dark">
+                    <img src="{% static 'public/logo/images_d.png' %}" alt="Brand Logo" class="brand-logo-img brand-logo-light">
+                </div>
+
+                <div class="brand-logo-item">
+                    <img src="{% static 'public/logo/legrand.png' %}" alt="Legrand" class="brand-logo-img brand-logo-dark">
+                    <img src="{% static 'public/logo/legrand_d.png' %}" alt="Legrand" class="brand-logo-img brand-logo-light">
+                </div>
+
+                <div class="brand-logo-item">
+                    <img src="{% static 'public/logo/mesc.png' %}" alt="MESC" class="brand-logo-img brand-logo-dark">
+                    <img src="{% static 'public/logo/mecs_d.png' %}" alt="MESC" class="brand-logo-img brand-logo-light">
+                </div>
+
+                <div class="brand-logo-item">
+                    <img src="{% static 'public/logo/mk.png' %}" alt="MK" class="brand-logo-img brand-logo-dark">
+                    <img src="{% static 'public/logo/mk_d.png' %}" alt="MK" class="brand-logo-img brand-logo-light">
+                </div>
+
+                <div class="brand-logo-item">
+                    <img src="{% static 'public/logo/nci.png' %}" alt="NCI" class="brand-logo-img brand-logo-dark">
+                    <img src="{% static 'public/logo/nci_d.png' %}" alt="NCI" class="brand-logo-img brand-logo-light">
+                </div>
+
+                <div class="brand-logo-item">
+                    <img src="{% static 'public/logo/oman.png' %}" alt="Oman Cables" class="brand-logo-img brand-logo-dark">
+                    <img src="{% static 'public/logo/oman_d.png' %}" alt="Oman Cables" class="brand-logo-img brand-logo-light">
+                </div>
+
+                <div class="brand-logo-item">
+                    <img src="{% static 'public/logo/panasonic.png' %}" alt="Panasonic" class="brand-logo-img brand-logo-dark">
+                    <img src="{% static 'public/logo/panasonic_d.png' %}" alt="Panasonic" class="brand-logo-img brand-logo-light">
+                </div>
+
+                <div class="brand-logo-item">
+                    <img src="{% static 'public/logo/rexton.png' %}" alt="Rexton" class="brand-logo-img brand-logo-dark">
+                    <img src="{% static 'public/logo/rexton_d.png' %}" alt="Rexton" class="brand-logo-img brand-logo-light">
+                </div>
+
+                <div class="brand-logo-item">
+                    <img src="{% static 'public/logo/rr.png' %}" alt="RR Kabel" class="brand-logo-img brand-logo-dark">
+                    <img src="{% static 'public/logo/rr_d.png' %}" alt="RR Kabel" class="brand-logo-img brand-logo-light">
+                </div>
+
+                <div class="brand-logo-item">
+                    <img src="{% static 'public/logo/sch.png' %}" alt="Schneider Electric" class="brand-logo-img brand-logo-dark">
+                    <img src="{% static 'public/logo/sch_d.png' %}" alt="Schneider Electric" class="brand-logo-img brand-logo-light">
+                </div>
+
+                <div class="brand-logo-item">
+                    <img src="{% static 'public/logo/tenby.png' %}" alt="Tenby" class="brand-logo-img brand-logo-dark">
+                    <img src="{% static 'public/logo/tenby_d.png' %}" alt="Tenby" class="brand-logo-img brand-logo-light">
+                </div>
+
+                <div class="brand-logo-item">
+                    <img src="{% static 'public/logo/vortice.png' %}" alt="Vortice" class="brand-logo-img brand-logo-dark">
+                    <img src="{% static 'public/logo/vortice_d.png' %}" alt="Vortice" class="brand-logo-img brand-logo-light">
+                </div>
+
+                <div class="brand-logo-item">
+                    <img src="{% static 'public/logo/wd-40.png' %}" alt="WD-40" class="brand-logo-img brand-logo-dark">
+                    <img src="{% static 'public/logo/wd-40_d.png' %}" alt="WD-40" class="brand-logo-img brand-logo-light">
+                </div>
 
             </div>
 
