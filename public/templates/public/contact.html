@@ -10,6 +10,11 @@
 
 {% block extra_css %}
 
+<!-- GOOGLE FONTS IMPORT FOR CLEAN modern UI TYPOGRAPHY -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
+
 <style>
 
 /* =========================================================
@@ -64,6 +69,7 @@
 ========================================================= */
 
 .contact-page {
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
     background: var(--page-bg);
     color: var(--text-primary);
     min-height: 100vh;
@@ -183,6 +189,7 @@
 }
 
 .hero-company {
+    font-family: 'Plus Jakarta Sans', sans-serif;
     position: relative;
     z-index: 1;
     display: inline-flex;
@@ -217,11 +224,12 @@
 }
 
 .contact-hero h1 {
+    font-family: 'Plus Jakarta Sans', sans-serif;
     max-width: 900px;
     margin: 0 0 14px;
     font-size: clamp(40px, 4.8vw, 64px);
     line-height: 1.05;
-    font-weight: 850;
+    font-weight: 800;
     letter-spacing: -1.5px;
     color: #ffffff;
 }
@@ -232,19 +240,22 @@
 }
 
 .contact-hero p.hero-subtitle {
+    font-family: 'Plus Jakarta Sans', sans-serif;
     max-width: 760px;
     margin: 0 0 24px;
     color: #94a3b8;
     font-size: 16.5px;
     line-height: 1.6;
+    font-weight: 450;
 }
 
 .hero-reach-text {
+    font-family: 'Plus Jakarta Sans', sans-serif;
     color: #94a3b8;
     font-size: 14px;
     font-weight: 600;
     margin-bottom: 14px;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.2px;
 }
 
 
@@ -274,13 +285,16 @@
 }
 
 .hero-glass-box h3 {
+    font-family: 'Plus Jakarta Sans', sans-serif;
     margin: 0 0 6px;
     color: #ffffff;
     font-size: 18px;
-    font-weight: 800;
+    font-weight: 700;
+    letter-spacing: -0.2px;
 }
 
 .hero-glass-box p {
+    font-family: 'Plus Jakarta Sans', sans-serif;
     margin: 0 0 12px;
     color: #cbd5e1;
     font-size: 14px;
@@ -288,6 +302,7 @@
 }
 
 .hero-location-phone {
+    font-family: 'Plus Jakarta Sans', sans-serif;
     display: inline-flex;
     align-items: center;
     gap: 6px;
@@ -440,17 +455,21 @@
 }
 
 .card-box h2 {
+    font-family: 'Plus Jakarta Sans', sans-serif;
     margin: 0 0 10px;
     color: var(--text-primary);
-    font-size: 28px;
+    font-size: 26px;
     font-weight: 800;
+    letter-spacing: -0.4px;
 }
 
 .card-box > p {
+    font-family: 'Plus Jakarta Sans', sans-serif;
     margin: 0 0 28px;
     color: var(--text-secondary);
-    line-height: 1.65;
-    font-size: 15.5px;
+    line-height: 1.6;
+    font-size: 15px;
+    font-weight: 450;
 }
 
 
@@ -506,16 +525,19 @@
 }
 
 .form-group label {
+    font-family: 'Plus Jakarta Sans', sans-serif;
     display: block;
     margin-bottom: 8px;
     color: var(--text-primary);
-    font-size: 14px;
-    font-weight: 750;
+    font-size: 13.5px;
+    font-weight: 650;
+    letter-spacing: 0.1px;
 }
 
 .form-group input,
 .form-group select,
 .form-group textarea {
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
     width: 100%;
     box-sizing: border-box;
     border: 1px solid var(--input-border);
@@ -523,8 +545,8 @@
     background: var(--input-bg);
     color: var(--text-primary);
     padding: 14px 16px;
-    font-family: inherit;
-    font-size: 15px;
+    font-size: 14.5px;
+    font-weight: 500;
     outline: none;
     transition: border-color 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
 }
@@ -553,15 +575,16 @@
 }
 
 .submit-button {
+    font-family: 'Plus Jakarta Sans', sans-serif;
     width: 100%;
     height: 54px;
     border: 1px solid var(--accent-cyan);
     border-radius: 12px;
     background: var(--accent-cyan);
     color: #030712;
-    font-family: inherit;
-    font-size: 16.5px;
-    font-weight: 800;
+    font-size: 15.5px;
+    font-weight: 750;
+    letter-spacing: 0.2px;
     cursor: pointer;
     transition: background 0.25s ease, border-color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
     box-shadow: 0 4px 15px var(--accent-cyan-shadow);
@@ -587,6 +610,7 @@
 ========================================================= */
 
 #formSuccessBanner {
+    font-family: 'Plus Jakarta Sans', sans-serif;
     display: none;
     margin-bottom: 22px;
     padding: 15px 18px;
@@ -594,8 +618,8 @@
     background: rgba(16, 185, 129, 0.15);
     border: 1px solid #10b981;
     color: #10b981;
-    font-size: 15px;
-    font-weight: 700;
+    font-size: 14.5px;
+    font-weight: 650;
 }
 
 #formSuccessBanner.active {
@@ -609,6 +633,8 @@
 
 .map-card {
     overflow: hidden;
+    display: flex;
+    flex-direction: column;
 }
 
 .map-buttons {
@@ -618,14 +644,14 @@
 }
 
 .map-button {
+    font-family: 'Plus Jakarta Sans', sans-serif;
     padding: 10px 18px;
     border: 1px solid var(--input-border);
     border-radius: 10px;
     background: var(--card-inner-bg);
     color: var(--text-secondary);
-    font-family: inherit;
-    font-size: 14px;
-    font-weight: 750;
+    font-size: 13.5px;
+    font-weight: 700;
     cursor: pointer;
     transition: all 0.25s ease;
 }
@@ -652,6 +678,7 @@
 }
 
 .map-external-link {
+    font-family: 'Plus Jakarta Sans', sans-serif;
     position: absolute;
     top: 14px;
     right: 14px;
@@ -666,7 +693,7 @@
     -webkit-backdrop-filter: blur(10px);
     border: 1px solid rgba(0, 229, 255, 0.35);
     color: #ffffff;
-    font-size: 12.5px;
+    font-size: 12px;
     font-weight: 700;
     text-decoration: none;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
@@ -684,32 +711,67 @@
 #googleMapIframe {
     display: block;
     width: 100%;
-    height: 390px;
+    height: 360px;
     border: 0;
     filter: contrast(1.02) saturate(1.05);
 }
 
-.map-info {
+/* Timing Grid Breakdown */
+.map-timings-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 25px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
     margin-top: 20px;
     padding-top: 20px;
     border-top: 1px solid var(--brand-border);
 }
 
-.map-info-label {
-    display: block;
-    margin-bottom: 5px;
-    color: var(--text-secondary);
-    font-size: 13px;
-    font-weight: 600;
+.timing-card {
+    background: var(--card-inner-bg);
+    border: 1px solid var(--brand-border);
+    border-radius: 14px;
+    padding: 14px 16px;
+    transition: border-color 0.25s ease;
 }
 
-.map-info-value {
+.timing-card.active-facility {
+    border-color: var(--accent-cyan);
+    box-shadow: 0 0 12px var(--accent-cyan-shadow);
+}
+
+.timing-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+
+.timing-title {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 13.5px;
+    font-weight: 800;
     color: var(--text-primary);
-    font-size: 15.5px;
-    font-weight: 750;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.timing-days {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--accent-cyan);
+    background: rgba(0, 229, 255, 0.1);
+    padding: 3px 8px;
+    border-radius: 6px;
+}
+
+.timing-hours {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-body);
+    line-height: 1.5;
 }
 
 
@@ -798,9 +860,9 @@
     .form-group.full-width {
         grid-column: auto;
     }
-    .map-info {
+    .map-timings-grid {
         grid-template-columns: 1fr;
-        gap: 15px;
+        gap: 12px;
     }
     .whatsapp-float {
         right: 20px;
@@ -884,8 +946,7 @@
                 <div class="hero-glass-box">
                     <h3>Showroom Location</h3>
                     <p>
-                        Shop No. 14 &amp; 15, Hafida Ibrahim St, Al Ghuwair,
-                        Sharjah - U.A.E.
+                        Shop No. 14 &amp; 15, Hafida Ibrahim St., Al Ghuwair, Sharjah
                     </p>
                     <a class="hero-location-phone" href="tel:+97165215407">
                         📞 +971 6 5215407
@@ -895,7 +956,7 @@
                 <div class="hero-glass-box">
                     <h3>Warehouse Location</h3>
                     <p>
-                        Shed No. L11, Ind. Area 11, Sharjah, U.A.E.
+                        Shed No. L-11, Near Tasjeel, Industrial Area-12, Sharjah
                     </p>
                     <a class="hero-location-phone" href="tel:+97165100937">
                         📞 +971 6 5100937
@@ -1136,7 +1197,7 @@
                     </h2>
 
                     <p>
-                        Select a location below to view it on the map.
+                        Select a facility below to view its location on the map.
                     </p>
 
 
@@ -1144,20 +1205,20 @@
 
                         <button
                             type="button"
-                            id="btnWarehouse"
+                            id="btnShowroom"
                             class="map-button active"
-                            onclick="showWarehouse()"
+                            onclick="showShowroom()"
                         >
-                            Warehouse
+                            Showroom
                         </button>
 
                         <button
                             type="button"
-                            id="btnShowroom"
+                            id="btnWarehouse"
                             class="map-button"
-                            onclick="showShowroom()"
+                            onclick="showWarehouse()"
                         >
-                            Showroom
+                            Warehouse
                         </button>
 
                     </div>
@@ -1166,7 +1227,7 @@
                     <div class="map-frame-wrapper">
 
                         <a
-                            href="https://www.google.com/maps/place/Sharjah+Industrial+area+11/@25.2938803,55.4288672,17z/"
+                            href="https://maps.app.goo.gl/W4hLX94DusdGZ7yr6"
                             target="_blank"
                             rel="noopener noreferrer"
                             class="map-external-link"
@@ -1177,7 +1238,7 @@
 
                         <iframe
                             id="googleMapIframe"
-                            src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d3606.5413156291!2d55.4262923753856!3d25.293885077655887!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMjXCsDE3JzM3LjkiTiA1NcKwMjUnNDMuOSJF!5e0!3m2!1sen!2sae!4v1710000000000!5m2!1sen!2sae"
+                            src="https://maps.google.com/maps?q=25.314192,55.434977&hl=en&z=17&output=embed"
                             loading="lazy"
                             allowfullscreen
                             referrerpolicy="no-referrer-when-downgrade"
@@ -1186,34 +1247,29 @@
                     </div>
 
 
-                    <div class="map-info">
+                    <!-- TIMINGS AND WORKING DAYS SECTION -->
+                    <div class="map-timings-grid">
 
-                        <div>
-
-                            <span class="map-info-label">
-                                Active View
-                            </span>
-
-                            <span
-                                class="map-info-value"
-                                id="mapTargetName"
-                            >
-                                Warehouse (Ind. Area 11)
-                            </span>
-
+                        <div class="timing-card active-facility" id="cardShowroomTiming">
+                            <div class="timing-header">
+                                <span class="timing-title">Showroom</span>
+                                <span class="timing-days">MON - SAT</span>
+                            </div>
+                            <div class="timing-hours">
+                                8:00 AM - 1:30 PM<br>
+                                4:00 PM - 8:30 PM
+                            </div>
                         </div>
 
-
-                        <div>
-
-                            <span class="map-info-label">
-                                Timing
-                            </span>
-
-                            <span class="map-info-value">
-                                Sat - Thu: 8:00 AM - 8:00 PM
-                            </span>
-
+                        <div class="timing-card" id="cardWarehouseTiming">
+                            <div class="timing-header">
+                                <span class="timing-title">Warehouse</span>
+                                <span class="timing-days">MON - SAT</span>
+                            </div>
+                            <div class="timing-hours">
+                                8:00 AM - 1:00 PM<br>
+                                3:00 PM - 6:00 PM
+                            </div>
                         </div>
 
                     </div>
@@ -1365,52 +1421,56 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 /* ---------------------------------------------------------
-   4. MAP SWITCHING LOGIC (CLEAN SINGLE-PIN COORDINATES)
+   4. MAP SWITCHING LOGIC
 --------------------------------------------------------- */
-
-function showWarehouse() {
-
-    const iframe = document.getElementById("googleMapIframe");
-    const mapTargetName = document.getElementById("mapTargetName");
-    const directLink = document.getElementById("mapDirectLink");
-
-    const warehouseButton = document.getElementById("btnWarehouse");
-    const showroomButton = document.getElementById("btnShowroom");
-
-    /* Single Exact Coordinate Pin for Sharjah Industrial Area 11 (25.2938803, 55.4288672) */
-    iframe.src =
-        "https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d3606.5413156291!2d55.4262923753856!3d25.293885077655887!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMjXCsDE3JzM3LjkiTiA1NcKwMjUnNDMuOSJF!5e0!3m2!1sen!2sae!4v1710000000000!5m2!1sen!2sae";
-
-    directLink.href = "https://www.google.com/maps/place/Sharjah+Industrial+area+11/@25.2938803,55.4288672,17z/";
-
-    mapTargetName.textContent =
-        "Warehouse (Ind. Area 11)";
-
-    warehouseButton.classList.add("active");
-    showroomButton.classList.remove("active");
-}
-
 
 function showShowroom() {
 
     const iframe = document.getElementById("googleMapIframe");
-    const mapTargetName = document.getElementById("mapTargetName");
     const directLink = document.getElementById("mapDirectLink");
 
     const warehouseButton = document.getElementById("btnWarehouse");
     const showroomButton = document.getElementById("btnShowroom");
 
-    /* Single Exact Coordinate Pin for Showroom (Rolla, Sharjah) */
+    const cardShowroom = document.getElementById("cardShowroomTiming");
+    const cardWarehouse = document.getElementById("cardWarehouseTiming");
+
+    /* Exact Coordinates for Showroom Pin (25.314192, 55.434977) */
     iframe.src =
-        "https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d3605.8080182410317!2d55.38541607538656!3d25.357608077604622!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMjXCsDIxJzI3LjQiTiA1NcKwMjMnMTYuOCJF!5e0!3m2!1sen!2sae!4v1710000000000!5m2!1sen!2sae";
+        "https://maps.google.com/maps?q=25.314192,55.434977&hl=en&z=17&output=embed";
 
-    directLink.href = "https://www.google.com/maps?q=Shop+No.+14+%26+15,+Behind+Al+Ghuwair+Post+Office,+Rolla,+Sharjah,+UAE";
-
-    mapTargetName.textContent =
-        "Showroom (Rolla, Sharjah)";
+    directLink.href = "https://maps.app.goo.gl/W4hLX94DusdGZ7yr6";
 
     showroomButton.classList.add("active");
     warehouseButton.classList.remove("active");
+
+    cardShowroom.classList.add("active-facility");
+    cardWarehouse.classList.remove("active-facility");
+}
+
+
+function showWarehouse() {
+
+    const iframe = document.getElementById("googleMapIframe");
+    const directLink = document.getElementById("mapDirectLink");
+
+    const warehouseButton = document.getElementById("btnWarehouse");
+    const showroomButton = document.getElementById("btnShowroom");
+
+    const cardShowroom = document.getElementById("cardShowroomTiming");
+    const cardWarehouse = document.getElementById("cardWarehouseTiming");
+
+    /* Single Exact Coordinate Pin for Warehouse */
+    iframe.src =
+        "https://maps.google.com/maps?q=25.2938803,55.4288672&hl=en&z=17&output=embed";
+
+    directLink.href = "https://www.google.com/maps/place/Sharjah+Industrial+area+11/@25.2938803,55.4288672,17z/";
+
+    warehouseButton.classList.add("active");
+    showroomButton.classList.remove("active");
+
+    cardWarehouse.classList.add("active-facility");
+    cardShowroom.classList.remove("active-facility");
 }
 
 

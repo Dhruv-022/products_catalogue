@@ -14,7 +14,7 @@
 
     <title>
         {% block title %}
-            Al Baraq
+            AL BARAQ ELECT WARE TR.
         {% endblock %}
     </title>
 
@@ -147,11 +147,6 @@
         transition: color 0.25s ease;
     }
 
-    .brand-name span {
-        color: var(--brand-span);
-        transition: color 0.25s ease;
-    }
-
 
     /* =========================
        NAVIGATION LINKS
@@ -162,7 +157,7 @@
         align-items: center;
         gap: 42px;
         list-style: none;
-        margin-left: 60px;
+        margin-left: 120px;
         position: relative;
         z-index: 2;
     }
@@ -362,25 +357,24 @@
         transition: background 0.35s ease;
     }
 
-    .footer-content {
-        max-width: 1360px;
-        margin: 0 auto;
-        display: grid;
-        grid-template-columns: 1.1fr 1.2fr 1fr;
-        gap: 70px;
-        align-items: start;
-    }
+    /* Update the footer grid column ratios */
+.footer-content {
+    max-width: 1360px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1.4fr 1.1fr 1fr; /* Increased first column width */
+    gap: 50px;
+    align-items: start;
+}
 
-    .footer-brand h2 {
-        font-family: "Baskerville Old Face", Baskerville, "Garamond", "Times New Roman", serif;
-        font-size: 27px;
-        margin-bottom: 12px;
-        color: white;
-    }
-
-    .footer-brand h2 span {
-        color: var(--brand-span);
-    }
+/* Ensure the footer heading stays on one line */
+.footer-brand h2 {
+    font-family: "Baskerville Old Face", Baskerville, "Garamond", "Times New Roman", serif;
+    font-size: 22px; /* Adjusted font size */
+    margin-bottom: 12px;
+    color: white;
+    white-space: nowrap; /* Prevents text from breaking into multiple lines */
+}
 
     .footer-brand p {
         color: var(--footer-text);
@@ -567,9 +561,9 @@
 
             <!-- LOGO + COMPANY NAME -->
             <a href="{% url 'public:home' %}" class="brand">
-                <img src="{% static 'public/images/logo.png' %}" alt="Al Baraq Elect Ware TR" class="brand-logo">
+                <img src="{% static 'public/images/logo.png' %}" alt="AL BARAQ ELECT WARE TR." class="brand-logo">
                 <div class="brand-name">
-                    Al Baraq <span>Elect Ware Tr.</span>
+                    AL BARAQ ELECT WARE TR.
                 </div>
             </a>
 
@@ -680,7 +674,7 @@
 
             <!-- COMPANY -->
             <div class="footer-brand">
-                <h2>Al Baraq <span>Elect Ware Tr.</span></h2>
+                <h2>AL BARAQ ELECT WARE TR.</h2>
                 <p>Quality electrical products and solutions for retail, commercial and bulk requirements across the UAE.</p>
             </div>
 
@@ -688,10 +682,10 @@
             <div class="footer-section">
                 <h3>Our Locations</h3>
                 <div class="footer-location">
-                    <strong>Showroom:</strong> Shop No. 14 &amp; 15, Hafida Ibrahim St, Al Ghuwair, Sharjah - U.A.E.
+                    <strong>Showroom:</strong> Shop No. 14 &amp; 15, Hafida Ibrahim St. Al ghuwair, Sharjah
                 </div>
                 <div class="footer-location">
-                    <strong>Warehouse:</strong> Shed No. L11, Ind. Area 12, Sharjah, U.A.E.
+                    <strong>Warehouse:</strong> Shed No. L-11, Near Tasjeel, Industrial area-12, Sharjah
                 </div>
             </div>
 
@@ -725,7 +719,7 @@
         </div>
 
         <div class="footer-bottom">
-            © {% now "Y" %} Al Baraq. All rights reserved.
+            © {% now "Y" %} AL BARAQ ELECT WARE TR. All rights reserved.
         </div>
 
     </footer>
