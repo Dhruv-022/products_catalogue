@@ -101,7 +101,8 @@
 
 .contact-hero {
     position: relative;
-    min-height: calc(100vh - 88px);
+    min-height: 100vh; /* Or min-height: 100vh */
+    padding-top: 88px; /* Offsets padding so title text isn't covered by logo */
     display: flex;
     align-items: center;
     overflow: hidden;

@@ -105,7 +105,8 @@
 
 .about-hero {
     position: relative;
-    height: calc(100vh - 88px);
+    height: 100vh; /* Or min-height: 100vh */
+padding-top: 88px; /* Offsets padding so title text isn't covered by logo */
     min-height: 560px;
     display: flex;
     align-items: center;
