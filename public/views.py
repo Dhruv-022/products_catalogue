@@ -31,9 +31,11 @@ def about(request):
 
 def products(request):
 
+    # Prefetch active brands and order subcategories
     active_subcategories = (
         SubCategory.objects
         .filter(is_active=True)
+        .prefetch_related("brands")
         .order_by(
             "display_order",
             "name",
@@ -62,7 +64,6 @@ def products(request):
             "categories": categories,
         },
     )
-
 
 def contact(request):
     if request.method == 'POST':

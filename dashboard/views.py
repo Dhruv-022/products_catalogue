@@ -9,16 +9,18 @@ from products.models import Category, SubCategory
 
 @login_required
 def home(request):
+    from products.models import Brand, Category, SubCategory
+
     if request.user.get_role_display() == "Owner":
         context = {
             "user": request.user,
             "categories_count": Category.objects.count(),
             "subcategories_count": SubCategory.objects.count(),
+            "brands_count": Brand.objects.count(),
             "users_count": User.objects.count(),
         }
         return render(request, "dashboard/owner_home.html", context)
 
-    # Context for System Admin Dashboard
     context = {
         "user": request.user,
         "users_count": User.objects.count(),
@@ -26,6 +28,7 @@ def home(request):
         "owner_count": User.objects.filter(role=User.Role.OWNER).count(),
         "categories_count": Category.objects.count(),
         "subcategories_count": SubCategory.objects.count(),
+        "brands_count": Brand.objects.count(),
     }
     return render(request, "dashboard/home.html", context)
 

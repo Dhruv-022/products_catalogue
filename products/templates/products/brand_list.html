@@ -1,0 +1,168 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brand Management | Al Baraq</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            min-height: 100vh;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: #f8fafc;
+            background-image: 
+                radial-gradient(circle at 15% 15%, rgba(37, 99, 235, 0.05) 0%, transparent 40%),
+                radial-gradient(circle at 85% 85%, rgba(96, 165, 250, 0.07) 0%, transparent 40%);
+            color: #0f172a;
+            padding-bottom: 40px;
+        }
+        .navbar {
+            height: 66px; background: #ffffff; border-bottom: 1px solid #e2e8f0;
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0 32px; box-shadow: 0 2px 12px rgba(15, 23, 42, 0.03);
+            position: sticky; top: 0; z-index: 100; gap: 20px;
+        }
+        .navbar-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: #0f172a; flex-shrink: 0; }
+        .navbar-logo-container {
+            width: 40px; height: 40px; border-radius: 50%; overflow: hidden;
+            background: #ffffff; border: 1px solid #e2e8f0; display: flex;
+            align-items: center; justify-content: center; box-shadow: 0 2px 6px rgba(37, 99, 235, 0.1);
+        }
+        .navbar-logo-img { width: 100%; height: 100%; object-fit: cover; }
+        .brand-text { font-size: 19px; font-weight: 850; letter-spacing: -0.5px; }
+        .brand-text .highlight { color: #2563eb; }
+        .back-link {
+            display: inline-flex; align-items: center; gap: 6px; color: #2563eb;
+            font-size: 14px; font-weight: 750; text-decoration: none; padding: 8px 14px;
+            border-radius: 9px; background: rgba(37, 99, 235, 0.06);
+            border: 1px solid rgba(37, 99, 235, 0.18); transition: all 0.25s ease;
+        }
+        .back-link:hover { background: #2563eb; color: #ffffff; transform: translateX(-2px); }
+        .container { max-width: 1140px; margin: 0 auto; padding: 28px 24px; }
+        .page-header { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; margin-bottom: 24px; }
+        .page-title h1 { font-size: clamp(22px, 3vw, 28px); font-weight: 850; letter-spacing: -0.6px; color: #0f172a; }
+        .page-title p { color: #64748b; font-size: 14px; margin-top: 2px; }
+        .btn {
+            display: inline-flex; align-items: center; gap: 6px; padding: 9px 16px;
+            border-radius: 9px; font-size: 13.5px; font-weight: 750; cursor: pointer;
+            text-decoration: none; border: 1px solid transparent; transition: all 0.2s ease;
+        }
+        .btn-primary { background: #2563eb; color: #ffffff; box-shadow: 0 2px 8px rgba(37, 99, 235, 0.2); }
+        .btn-primary:hover { background: #1d4ed8; transform: translateY(-1px); }
+        .btn-secondary { background: #ffffff; color: #475569; border-color: #cbd5e1; }
+        .btn-secondary:hover { background: #f1f5f9; color: #0f172a; }
+        .btn-sm { padding: 5px 10px; font-size: 12.5px; border-radius: 6px; }
+        .btn-danger-sm { background: rgba(220, 38, 38, 0.06); color: #dc2626; border-color: rgba(220, 38, 38, 0.2); }
+        .btn-danger-sm:hover { background: #dc2626; color: #ffffff; }
+        .table-card { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 14px; box-shadow: 0 4px 16px rgba(15, 23, 42, 0.03); overflow: hidden; }
+        .data-table { width: 100%; border-collapse: collapse; text-align: left; table-layout: fixed; }
+        .data-table th:nth-child(1) { width: 50px; }
+        .data-table th:nth-child(2) { width: 200px; }
+        .data-table th:nth-child(3) { width: auto; }
+        .data-table th:nth-child(4) { width: 80px; }
+        .data-table th:nth-child(5) { width: 110px; }
+        .data-table th:nth-child(6) { width: 190px; }
+        .data-table th { background: #f8fafc; color: #475569; font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.6px; padding: 14px 18px; border-bottom: 1px solid #e2e8f0; }
+        .data-table td { padding: 14px 18px; font-size: 14px; color: #0f172a; border-bottom: 1px solid #f1f5f9; vertical-align: middle; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .data-table tr:hover td { background: #f8fafc; }
+        .sno-badge { font-weight: 700; color: #64748b; }
+        .brand-name { font-size: 14.5px; font-weight: 850; color: #2563eb; }
+        .brand-name.inactive { color: #94a3b8; }
+        .status-badge { display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 750; min-width: 80px; }
+        .status-badge.active { background: #dcfce7; color: #15803d; }
+        .status-badge.hidden { background: #f1f5f9; color: #64748b; }
+        .status-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+        .status-badge.active .status-dot { background: #16a34a; }
+        .status-badge.hidden .status-dot { background: #94a3b8; }
+        .action-cell { display: flex; align-items: center; gap: 10px; }
+        .switch { position: relative; display: inline-block; width: 42px; height: 22px; margin: 0; flex-shrink: 0; }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #cbd5e1; transition: .3s ease; border-radius: 22px; }
+        .slider:before { position: absolute; content: ""; height: 16px; width: 16px; left: 3px; bottom: 3px; background-color: white; transition: .3s ease; border-radius: 50%; box-shadow: 0 1px 3px rgba(0,0,0,0.2); }
+        input:checked + .slider { background-color: #2563eb; }
+        input:checked + .slider:before { transform: translateX(20px); }
+        .empty-state { text-align: center; padding: 48px 24px; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 14px; color: #64748b; }
+        .empty-state h3 { font-size: 18px; color: #0f172a; margin-bottom: 6px; }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="navbar-brand">
+            <div class="navbar-logo-container">
+                <img src="/media/logo/logo.png" alt="Al Baraq Logo" class="navbar-logo-img">
+            </div>
+            <span class="brand-text">Al Baraq <span class="highlight">Dashboard</span></span>
+        </div>
+        <a href="{% url 'dashboard:home' %}" class="back-link">← Back to Dashboard</a>
+    </nav>
+
+    <main class="container">
+        <div class="page-header">
+            <div class="page-title">
+                <h1>Brand Registry</h1>
+                <p>Register and manage official manufacturer brands for catalogue sub-categories.</p>
+            </div>
+            <a href="{% url 'products:brand_create' %}" class="btn btn-primary">+ Register Brand</a>
+        </div>
+
+        {% if brands %}
+            <div class="table-card">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>S.No.</th>
+                            <th>Brand Name</th>
+                            <th>Description</th>
+                            <th>Order</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for brand in brands %}
+                            <tr>
+                                <td class="sno-badge">{{ forloop.counter }}</td>
+                                <td>
+                                    <span class="brand-name {% if not brand.is_active %}inactive{% endif %}">
+                                        {{ brand.name }}
+                                    </span>
+                                </td>
+                                <td>{{ brand.description|default:"—" }}</td>
+                                <td>{{ brand.display_order }}</td>
+                                <td>
+                                    {% if brand.is_active %}
+                                        <span class="status-badge active"><span class="status-dot"></span>Active</span>
+                                    {% else %}
+                                        <span class="status-badge hidden"><span class="status-dot"></span>Hidden</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <div class="action-cell">
+                                        <a href="{% url 'products:brand_edit' brand.id %}" class="btn btn-secondary btn-sm">Edit</a>
+                                        <form method="POST" action="{% url 'products:brand_toggle_status' brand.id %}" style="display: inline-flex;">
+                                            {% csrf_token %}
+                                            <label class="switch" title="{% if brand.is_active %}Hide{% else %}Show{% endif %}">
+                                                <input type="checkbox" {% if brand.is_active %}checked{% endif %} onchange="this.form.submit();">
+                                                <span class="slider"></span>
+                                            </label>
+                                        </form>
+                                        <a href="{% url 'products:brand_delete' brand.id %}" class="btn btn-danger-sm btn-sm">Delete</a>
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <div class="empty-state">
+                <h3>No brands registered yet</h3>
+                <p>Click "+ Register Brand" above to add your first product brand.</p>
+            </div>
+        {% endif %}
+    </main>
+</body>
+</html>

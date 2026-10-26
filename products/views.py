@@ -391,3 +391,144 @@ def subcategory_delete(request, subcategory_id):
             "subcategory": subcategory,
         },
     )
+
+
+# (In imports at top of products/views.py)
+from .forms import BrandForm, CategoryForm, SubCategoryForm
+from .models import Brand, Category, SubCategory
+
+# ... (Keep existing Category and SubCategory view functions as they are) ...
+
+
+# ============================================================
+# BRAND MANAGEMENT
+# ============================================================
+
+@owner_or_admin_required
+def brand_list(request):
+
+    brands = Brand.objects.all().order_by(
+        "display_order",
+        "name",
+    )
+
+    return render(
+        request,
+        "products/brand_list.html",
+        {
+            "brands": brands,
+        },
+    )
+
+
+@owner_or_admin_required
+def brand_create(request):
+
+    if request.method == "POST":
+        form = BrandForm(
+            request.POST,
+            request.FILES,
+        )
+        if form.is_valid():
+            brand = form.save()
+            messages.success(
+                request,
+                f"Brand '{brand.name}' registered successfully.",
+            )
+            return redirect("products:brand_list")
+    else:
+        form = BrandForm()
+
+    return render(
+        request,
+        "products/brand_form.html",
+        {
+            "form": form,
+            "title": "Register Brand",
+        },
+    )
+
+
+@owner_or_admin_required
+def brand_edit(request, brand_id):
+
+    brand = get_object_or_404(
+        Brand,
+        id=brand_id,
+    )
+
+    if request.method == "POST":
+        form = BrandForm(
+            request.POST,
+            request.FILES,
+            instance=brand,
+        )
+        if form.is_valid():
+            brand = form.save()
+            messages.success(
+                request,
+                f"Brand '{brand.name}' updated successfully.",
+            )
+            return redirect("products:brand_list")
+    else:
+        form = BrandForm(instance=brand)
+
+    return render(
+        request,
+        "products/brand_form.html",
+        {
+            "form": form,
+            "title": f"Edit Brand: {brand.name}",
+            "brand": brand,
+        },
+    )
+
+
+@owner_or_admin_required
+def brand_toggle_status(request, brand_id):
+
+    if request.method != "POST":
+        return redirect("products:brand_list")
+
+    brand = get_object_or_404(
+        Brand,
+        id=brand_id,
+    )
+
+    brand.is_active = not brand.is_active
+    brand.save()
+
+    status = "activated" if brand.is_active else "hidden"
+
+    messages.info(
+        request,
+        f"Brand '{brand.name}' has been {status}.",
+    )
+
+    return redirect("products:brand_list")
+
+
+@owner_or_admin_required
+def brand_delete(request, brand_id):
+
+    brand = get_object_or_404(
+        Brand,
+        id=brand_id,
+    )
+
+    if request.method == "POST":
+        brand_name = brand.name
+        brand.delete()
+        messages.success(
+            request,
+            f"Brand '{brand_name}' was deleted permanently.",
+        )
+        return redirect("products:brand_list")
+
+    return render(
+        request,
+        "products/brand_confirm_delete.html",
+        {
+            "brand": brand,
+        },
+    )

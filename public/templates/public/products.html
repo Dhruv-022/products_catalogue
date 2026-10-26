@@ -93,8 +93,8 @@
 
 .products-hero {
     position: relative;
-    min-height: 100vh; /* Or min-height: 100vh */
-    padding-top: 88px; /* Offsets padding so title text isn't covered by logo */
+    min-height: 100vh;
+    padding-top: 88px;
     display: flex;
     align-items: center;
     overflow: hidden;
@@ -411,7 +411,7 @@
     width: fit-content;
     max-width: max-content;
     position: relative;
-    margin-bottom: 15px;
+    margin-bottom: 6px;
     padding: 1.5px;
     border-radius: 30px;
     overflow: hidden;
@@ -440,22 +440,22 @@
     z-index: 1;
     display: inline-flex;
     align-items: center;
-    gap: 8px;
-    padding: 7px 18px;
+    gap: 6px;
+    padding: 5px 14px;
     border-radius: 30px;
     background: var(--badge-bg);
     color: var(--accent-cyan);
-    font-size: 12.5px;
+    font-size: 11px;
     font-weight: 750;
-    letter-spacing: 1.5px;
+    letter-spacing: 1.2px;
     text-transform: uppercase;
     box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
     white-space: nowrap;
 }
 
 .section-tag-dot {
-    width: 7px;
-    height: 7px;
+    width: 6px;
+    height: 6px;
     border-radius: 50%;
     background: var(--accent-cyan);
     box-shadow: 0 0 10px var(--accent-cyan), 0 0 18px var(--accent-cyan);
@@ -651,24 +651,24 @@
     border: 1px solid var(--accent-cyan);
     border-radius: 12px;
     background: var(--accent-cyan);
-    color: #030712;
+    color: #ffffff; /* Ensures crisp text readability on light and dark mode */
     font-size: 14px;
-    font-weight: 800;
+    font-weight: 700;
     cursor: pointer;
-    transition: transform 0.25s ease, background 0.25s ease, box-shadow 0.25s ease, color 0.25s ease;
+    transition: transform 0.25s ease, background 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
     box-shadow: 0 4px 14px var(--accent-cyan-shadow);
 }
 
 .view-products-btn:hover {
-    background: #00d2ff;
-    border-color: #00d2ff;
-    transform: scale(1.04);
-    box-shadow: 0 6px 20px var(--accent-cyan-shadow);
+    background: #154c79; /* Slightly darker shade on hover for tactile feel */
+    border-color: #154c79;
+    color: #ffffff;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px var(--accent-cyan-shadow);
 }
 
-
 /* =========================================================
-   MODAL PORTAL & OVERLAY
+   MODAL PORTAL & OVERLAY WITH REVEAL ANIMATIONS
 ========================================================= */
 
 .product-modal-overlay {
@@ -685,16 +685,24 @@
     justify-content: center;
     padding: 20px;
     z-index: 99999;
+    opacity: 0;
+    transition: opacity 0.3s ease;
 }
 
 .product-modal-overlay.active {
     display: flex !important;
+    opacity: 1;
+}
+
+/* Layer sub-detail modals smoothly above parent category modals */
+.product-modal-overlay.sub-detail-overlay {
+    z-index: 100000;
 }
 
 .product-modal {
     width: 100%;
     max-width: 860px;
-    max-height: 85vh;
+    max-height: 88vh;
     margin: auto;
     overflow-y: auto;
     background: var(--modal-bg);
@@ -702,25 +710,49 @@
     border-radius: 22px;
     box-shadow: 0 30px 80px rgba(0, 0, 0, 0.55);
     position: relative;
-    animation: modalAppear 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    transform: scale(0.92) translateY(18px);
+    opacity: 0;
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-@keyframes modalAppear {
-    from {
-        opacity: 0;
-        transform: scale(0.95);
-    }
-    to {
-        opacity: 1;
-        transform: scale(1);
-    }
+.product-modal-overlay.active .product-modal {
+    transform: scale(1) translateY(0);
+    opacity: 1;
 }
+
+.product-modal-no-scroll {
+    max-width: 640px;
+    overflow-y: hidden;
+}
+
+
+/* =========================================================
+   STAGGERED REVEAL ANIMATIONS INSIDE MODALS
+========================================================= */
+
+.modal-anim-item {
+    opacity: 0;
+    transform: translateY(14px);
+    transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1), transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.product-modal-overlay.active .modal-anim-item {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.modal-anim-delay-1 { transition-delay: 0.08s; }
+.modal-anim-delay-2 { transition-delay: 0.16s; }
+.modal-anim-delay-3 { transition-delay: 0.24s; }
+.modal-anim-delay-4 { transition-delay: 0.32s; }
+
 
 .product-modal-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 24px 30px;
+    gap: 16px;
+    padding: 18px 26px;
     border-bottom: 1px solid var(--brand-border);
     background: var(--card-surface);
     position: sticky;
@@ -732,30 +764,84 @@
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    gap: 8px;
+    gap: 6px;
     text-align: left;
+    flex: 1;
 }
 
-.product-modal-header h3 {
+/* Horizontal Row Aligning Main Category Title & Brand Logos Baseline */
+.modal-title-brands-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    width: 100%;
+}
+
+.modal-title-brands-row h3 {
     margin: 0;
     color: var(--text-primary);
-    font-size: 24px;
+    font-size: 21px;
     font-weight: 800;
+    white-space: nowrap;
 }
 
+
+/* Direct Left-Aligned Brand Logos Strip */
+.category-header-brands-strip {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    overflow-x: auto;
+    padding: 2px 0;
+    scrollbar-width: none;
+}
+
+.category-header-brands-strip::-webkit-scrollbar {
+    display: none;
+}
+
+.category-header-brand-pill {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 32px;
+    min-width: 58px;
+    padding: 3px 8px;
+    background: #ffffff;
+    border-radius: 8px;
+    border: 1px solid var(--brand-border);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+    flex-shrink: 0;
+}
+
+.category-header-brand-pill img {
+    max-height: 20px;
+    max-width: 60px;
+    object-fit: contain;
+}
+
+.category-header-brand-pill span {
+    color: #0f172a;
+    font-size: 11px;
+    font-weight: 800;
+    white-space: nowrap;
+}
+
+
 .modal-close {
-    width: 38px;
-    height: 38px;
+    width: 34px;
+    height: 34px;
     border: 1px solid var(--brand-border);
     border-radius: 50%;
     background: var(--card-inner-bg);
     color: var(--text-secondary);
-    font-size: 22px;
+    font-size: 20px;
     line-height: 1;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-shrink: 0;
     transition: all 0.2s ease;
 }
 
@@ -768,7 +854,7 @@
 
 
 /* =========================================================
-   SUBCATEGORY GRID
+   SUBCATEGORY GRID (CLICKABLE CARDS)
 ========================================================= */
 
 .subcategory-grid {
@@ -787,11 +873,12 @@
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
     display: flex;
     flex-direction: column;
+    cursor: pointer;
     transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
 }
 
 .subcategory-card:hover {
-    transform: translateY(-3px);
+    transform: translateY(-4px);
     border-color: var(--accent-cyan);
     box-shadow: 0 10px 24px var(--accent-cyan-shadow);
 }
@@ -812,7 +899,7 @@
 }
 
 .subcategory-card:hover .subcategory-image img {
-    transform: scale(1.05);
+    transform: scale(1.06);
 }
 
 .subcategory-image-placeholder {
@@ -830,20 +917,132 @@
 .subcategory-content {
     padding: 16px;
     flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .subcategory-content h4 {
-    margin: 0;
+    margin: 0 0 6px 0;
     color: var(--text-primary);
     font-size: 16.5px;
     font-weight: 750;
 }
 
 .subcategory-content p {
-    margin: 6px 0 0 0;
+    margin: 0;
     color: var(--text-body);
     font-size: 13.5px;
     line-height: 1.5;
+}
+
+
+/* =========================================================
+   REFINED PROPORTIONAL SUBCATEGORY DETAIL POPUP
+========================================================= */
+
+.product-detail-body {
+    padding: 22px 26px 26px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+/* Reduced Horizontal Image Width & Natural Centered Fit */
+.product-detail-hero-image {
+    width: 100%;
+    max-width: 78%;
+    height: 190px;
+    margin: 0 auto;
+    border-radius: 16px;
+    overflow: hidden;
+    background: var(--card-inner-bg);
+    border: 1px solid var(--brand-border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+}
+
+.product-detail-hero-image img {
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    display: block;
+}
+
+.product-detail-section-title {
+    font-size: 12.5px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--accent-cyan);
+    margin: 0 0 6px 0;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.product-detail-description {
+    color: var(--text-body);
+    font-size: 14px;
+    line-height: 1.55;
+    margin: 0;
+}
+
+.product-brands-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 12px;
+    margin-top: 6px;
+}
+
+.product-brand-card {
+    background: var(--card-surface);
+    border: 1px solid var(--brand-border);
+    border-radius: 12px;
+    padding: 12px 10px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.06);
+    transition: transform 0.25s ease, border-color 0.25s ease;
+}
+
+.product-brand-card:hover {
+    transform: translateY(-2px);
+    border-color: var(--accent-cyan);
+}
+
+.product-brand-logo-box {
+    width: 100%;
+    height: 48px;
+    border-radius: 8px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #ffffff;
+    padding: 6px;
+    box-sizing: border-box;
+    border: 1px solid var(--brand-border);
+}
+
+.product-brand-logo-box img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+.product-brand-title {
+    font-size: 12.5px;
+    font-weight: 800;
+    color: var(--text-primary);
 }
 
 
@@ -941,10 +1140,28 @@
         padding: 20px;
     }
     .product-modal-header {
-        padding: 18px 22px;
+        padding: 14px 18px;
+    }
+    .category-header-brands-strip {
+        display: none;
     }
     .product-modal-overlay {
-        padding: 15px;
+        padding: 12px;
+    }
+    .product-detail-body {
+        padding: 16px;
+        gap: 12px;
+    }
+    .product-brands-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .product-detail-hero-image {
+        max-width: 100%;
+        height: 160px;
+    }
+    .product-modal-no-scroll {
+        max-width: 100%;
+        overflow-y: auto;
     }
 }
 
@@ -1249,6 +1466,7 @@
 
     <div class="modal-portal-container">
 
+        <!-- 1. CATEGORY OVERVIEW MODALS -->
         {% for category in categories %}
 
         <div
@@ -1259,7 +1477,7 @@
 
             <div class="product-modal">
 
-                <div class="product-modal-header">
+                <div class="product-modal-header modal-anim-item modal-anim-delay-1">
 
                     <div class="modal-header-text">
 
@@ -1270,9 +1488,26 @@
                             </div>
                         </div>
 
-                        <h3>
-                            {{ category.name }}
-                        </h3>
+                        <!-- TITLE + BRAND LOGOS ROW -->
+                        <div class="modal-title-brands-row">
+                            <h3>{{ category.name }}</h3>
+
+                            <div class="category-header-brands-strip">
+                                {% for subcategory in category.subcategories.all %}
+                                    {% for brand in subcategory.brands.all %}
+                                        {% if brand.is_active %}
+                                        <div class="category-header-brand-pill" title="{{ brand.name }}">
+                                            {% if brand.logo %}
+                                            <img src="{{ brand.logo.url }}" alt="{{ brand.name }}">
+                                            {% else %}
+                                            <span>{{ brand.name }}</span>
+                                            {% endif %}
+                                        </div>
+                                        {% endif %}
+                                    {% endfor %}
+                                {% endfor %}
+                            </div>
+                        </div>
 
                     </div>
 
@@ -1289,81 +1524,165 @@
                 </div>
 
 
-                {% with subcategories=category.subcategories.all %}
+                <!-- SUBCATEGORIES GRID -->
+                <div>
 
-                    {% if subcategories %}
+                    {% with subcategories=category.subcategories.all %}
 
-                    <div class="subcategory-grid">
+                        {% if subcategories %}
 
-                        {% for subcategory in subcategories %}
+                        <div class="subcategory-grid modal-anim-item modal-anim-delay-2">
 
-                        <div class="subcategory-card">
+                            {% for subcategory in subcategories %}
 
-                            {% if subcategory.image %}
+                            <!-- CLICKABLE SUBCATEGORY CARD -->
+                            <div
+                                class="subcategory-card"
+                                onclick="openSubcategoryDetail('sub-detail-{{ subcategory.id }}', 'category-{{ category.id }}')"
+                            >
 
-                            <div class="subcategory-image">
-
-                                <img
-                                    src="{{ subcategory.image.url }}"
-                                    alt="{{ subcategory.name }}"
-                                    loading="lazy"
-                                >
-
-                            </div>
-
-                            {% else %}
-
-                            <div class="subcategory-image-placeholder">
-
-                                <span>No Preview Image</span>
-
-                            </div>
-
-                            {% endif %}
-
-
-                            <div class="subcategory-content">
-
-                                <h4>
-                                    {{ subcategory.name }}
-                                </h4>
-
-
-                                {% if subcategory.description %}
-
-                                <p>
-                                    {{ subcategory.description }}
-                                </p>
-
+                                {% if subcategory.image %}
+                                <div class="subcategory-image">
+                                    <img
+                                        src="{{ subcategory.image.url }}"
+                                        alt="{{ subcategory.name }}"
+                                        loading="lazy"
+                                    >
+                                </div>
+                                {% else %}
+                                <div class="subcategory-image-placeholder">
+                                    <span>No Preview Image</span>
+                                </div>
                                 {% endif %}
 
+                                <div class="subcategory-content">
+                                    <h4>{{ subcategory.name }}</h4>
+                                    {% if subcategory.description %}
+                                    <p>{{ subcategory.description|truncatewords:12 }}</p>
+                                    {% endif %}
+                                </div>
+
                             </div>
+
+                            {% endfor %}
 
                         </div>
 
-                        {% endfor %}
+                        {% else %}
 
-                    </div>
+                        <div class="empty-products modal-anim-item modal-anim-delay-2">
 
-                    {% else %}
+                            <h3>Products Coming Soon</h3>
 
-                    <div class="empty-products">
+                            <p>
+                                Subcategories under this category will be available shortly.
+                            </p>
 
-                        <h3>Products Coming Soon</h3>
+                        </div>
 
-                        <p>
-                            Subcategories under this category will be available shortly.
-                        </p>
+                        {% endif %}
 
-                    </div>
+                    {% endwith %}
 
-                    {% endif %}
-
-                {% endwith %}
+                </div>
 
             </div>
 
         </div>
+
+
+        <!-- 2. PRODUCT SUBCATEGORY DETAIL MODALS -->
+        {% for subcategory in category.subcategories.all %}
+
+        <div
+            id="sub-detail-{{ subcategory.id }}"
+            class="product-modal-overlay sub-detail-overlay"
+            onclick="closeCategoryOnOverlay(event, 'sub-detail-{{ subcategory.id }}')"
+        >
+
+            <div class="product-modal product-modal-no-scroll">
+
+                <div class="product-modal-header modal-anim-item modal-anim-delay-1">
+
+                    <div class="modal-header-text">
+
+                        <div class="section-tag-wrapper">
+                            <div class="section-tag-badge">
+                                <span class="section-tag-dot"></span>
+                                {{ category.name }}
+                            </div>
+                        </div>
+
+                        <h3>{{ subcategory.name }}</h3>
+
+                    </div>
+
+                    <button
+                        type="button"
+                        class="modal-close"
+                        onclick="closeSubcategoryDetail('sub-detail-{{ subcategory.id }}')"
+                        aria-label="Close detail modal"
+                    >
+                        &times;
+                    </button>
+
+                </div>
+
+
+                <!-- COMPACT ANIMATED PRODUCT DETAIL CONTENT -->
+                <div class="product-detail-body">
+
+                    <!-- HERO PREVIEW IMAGE (REFINED PROPORTIONS) -->
+                    {% if subcategory.image %}
+                    <div class="product-detail-hero-image modal-anim-item modal-anim-delay-2">
+                        <img src="{{ subcategory.image.url }}" alt="{{ subcategory.name }}">
+                    </div>
+                    {% endif %}
+
+                    <!-- DESCRIPTION SECTION -->
+                    {% if subcategory.description %}
+                    <div class="modal-anim-item modal-anim-delay-3">
+                        <h4 class="product-detail-section-title">Description</h4>
+                        <p class="product-detail-description">{{ subcategory.description }}</p>
+                    </div>
+                    {% endif %}
+
+                    <!-- BRANDS SECTION -->
+                    {% with active_brands=subcategory.brands.all %}
+                        {% if active_brands %}
+                        <div class="modal-anim-item modal-anim-delay-4">
+                            <h4 class="product-detail-section-title">Available Brands</h4>
+
+                            <div class="product-brands-grid">
+                                {% for brand in active_brands %}
+                                    {% if brand.is_active %}
+                                    <div class="product-brand-card">
+                                        {% if brand.logo %}
+                                        <div class="product-brand-logo-box">
+                                            <img src="{{ brand.logo.url }}" alt="{{ brand.name }}">
+                                        </div>
+                                        {% else %}
+                                        <div class="brand-initial-avatar">
+                                            {{ brand.name|slice:":1" }}
+                                        </div>
+                                        {% endif %}
+
+                                        <span class="product-brand-title">{{ brand.name }}</span>
+                                    </div>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        </div>
+                        {% endif %}
+                    {% endwith %}
+
+                </div>
+
+            </div>
+
+        </div>
+
+        {% endfor %}
 
         {% endfor %}
 
@@ -1609,7 +1928,7 @@ function handleCategoryDropdownSelect(categoryId) {
 
 
 /* =========================================================
-   7. MODAL TRIGGER FUNCTIONS
+   7. MODAL SWITCHER FUNCTIONS (FLICKER-FREE OVERLAY FIX)
 ========================================================= */
 
 function openCategoryModal(modalId) {
@@ -1637,7 +1956,10 @@ function closeCategoryModal(modalId) {
 
     modal.classList.remove("active");
 
-    document.body.style.overflow = "";
+    /* Only restore page scrolling if no other modal (e.g. sub-detail) remains open */
+    if (!document.querySelector(".product-modal-overlay.active")) {
+        document.body.style.overflow = "";
+    }
 
 }
 
@@ -1646,10 +1968,36 @@ function closeCategoryOnOverlay(event, modalId) {
 
     if (event.target === event.currentTarget) {
 
-        closeCategoryModal(modalId);
+        if (modalId.startsWith("sub-detail-")) {
+            closeSubcategoryDetail(modalId);
+        } else {
+            closeCategoryModal(modalId);
+        }
 
     }
 
+}
+
+
+/* Open detail modal layered cleanly over the parent category modal */
+function openSubcategoryDetail(detailModalId, parentCategoryId) {
+    /* Keep parent category modal visible underneath while opening detail overlay */
+    openCategoryModal(parentCategoryId);
+
+    const detailModal = document.getElementById(detailModalId);
+    if (detailModal) {
+        detailModal.classList.add("active");
+        document.body.style.overflow = "hidden";
+    }
+}
+
+
+/* Instantly close detail modal, leaving parent category subcategories modal visible */
+function closeSubcategoryDetail(detailModalId) {
+    const detailModal = document.getElementById(detailModalId);
+    if (detailModal) {
+        detailModal.classList.remove("active");
+    }
 }
 
 
@@ -1661,6 +2009,18 @@ document.addEventListener("keydown", function(event) {
         return;
     }
 
+    /* Dismiss top sub-detail modal first if open */
+    const activeSubDetail = document.querySelector(".product-modal-overlay.sub-detail-overlay.active");
+
+    if (activeSubDetail) {
+
+        activeSubDetail.classList.remove("active");
+
+        return;
+
+    }
+
+    /* Otherwise dismiss active category modal */
     const activeModal = document.querySelector(".product-modal-overlay.active");
 
     if (activeModal) {
