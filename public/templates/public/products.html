@@ -47,13 +47,15 @@
     --text-primary: #0f172a;
     --text-secondary: #475569;
     --text-body: #64748b;
-    --accent-cyan: #2563eb;
-    --accent-cyan-shadow: rgba(37, 99, 235, 0.25);
+
+    /* Soft ocean slate blue for light mode */
+    --accent-cyan: #1e6091;
+    --accent-cyan-shadow: rgba(30, 96, 145, 0.2);
     --brand-border: #e2e8f0;
     --brand-border-wrapper: #dbe4f0;
     --modal-bg: #ffffff;
     --modal-overlay-bg: rgba(15, 23, 42, 0.75);
-    --conic-glow: conic-gradient(transparent, rgba(37, 99, 235, 0.25), #2563eb, #3b82f6, #0284c7, transparent 45%);
+    --conic-glow: conic-gradient(transparent, rgba(30, 96, 145, 0.2), #1e6091, #3b82f6, #0284c7, transparent 45%);
 }
 
 
@@ -651,7 +653,7 @@
     border: 1px solid var(--accent-cyan);
     border-radius: 12px;
     background: var(--accent-cyan);
-    color: #ffffff; /* Ensures crisp text readability on light and dark mode */
+    color: #ffffff;
     font-size: 14px;
     font-weight: 700;
     cursor: pointer;
@@ -660,12 +662,13 @@
 }
 
 .view-products-btn:hover {
-    background: #154c79; /* Slightly darker shade on hover for tactile feel */
+    background: #154c79;
     border-color: #154c79;
     color: #ffffff;
     transform: translateY(-2px);
     box-shadow: 0 6px 18px var(--accent-cyan-shadow);
 }
+
 
 /* =========================================================
    MODAL PORTAL & OVERLAY WITH REVEAL ANIMATIONS
@@ -948,7 +951,6 @@
     gap: 16px;
 }
 
-/* Reduced Horizontal Image Width & Natural Centered Fit */
 .product-detail-hero-image {
     width: 100%;
     max-width: 78%;
@@ -1488,21 +1490,23 @@
                             </div>
                         </div>
 
-                        <!-- TITLE + BRAND LOGOS ROW -->
+                        <!-- TITLE + DEDUPLICATED BRAND LOGOS ROW -->
                         <div class="modal-title-brands-row">
                             <h3>{{ category.name }}</h3>
 
                             <div class="category-header-brands-strip">
                                 {% for subcategory in category.subcategories.all %}
-                                    {% for brand in subcategory.brands.all %}
+                                    {% for brand in subcategory.brands.all|dictsort:"id" %}
                                         {% if brand.is_active %}
-                                        <div class="category-header-brand-pill" title="{{ brand.name }}">
-                                            {% if brand.logo %}
-                                            <img src="{{ brand.logo.url }}" alt="{{ brand.name }}">
-                                            {% else %}
-                                            <span>{{ brand.name }}</span>
-                                            {% endif %}
-                                        </div>
+                                            {% ifchanged brand.id %}
+                                            <div class="category-header-brand-pill" title="{{ brand.name }}">
+                                                {% if brand.logo %}
+                                                <img src="{{ brand.logo.url }}" alt="{{ brand.name }}">
+                                                {% else %}
+                                                <span>{{ brand.name }}</span>
+                                                {% endif %}
+                                            </div>
+                                            {% endifchanged %}
                                         {% endif %}
                                     {% endfor %}
                                 {% endfor %}
