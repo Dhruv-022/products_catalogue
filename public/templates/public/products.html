@@ -1490,23 +1490,21 @@
                             </div>
                         </div>
 
-                        <!-- TITLE + DEDUPLICATED BRAND LOGOS ROW -->
+                        <!-- TITLE + BRAND LOGOS ROW -->
                         <div class="modal-title-brands-row">
                             <h3>{{ category.name }}</h3>
 
                             <div class="category-header-brands-strip">
                                 {% for subcategory in category.subcategories.all %}
-                                    {% for brand in subcategory.brands.all|dictsort:"id" %}
+                                    {% for brand in subcategory.brands.all %}
                                         {% if brand.is_active %}
-                                            {% ifchanged brand.id %}
-                                            <div class="category-header-brand-pill" title="{{ brand.name }}">
-                                                {% if brand.logo %}
-                                                <img src="{{ brand.logo.url }}" alt="{{ brand.name }}">
-                                                {% else %}
-                                                <span>{{ brand.name }}</span>
-                                                {% endif %}
-                                            </div>
-                                            {% endifchanged %}
+                                        <div class="category-header-brand-pill" data-brand-id="{{ brand.id }}" title="{{ brand.name }}">
+                                            {% if brand.logo %}
+                                            <img src="{{ brand.logo.url }}" alt="{{ brand.name }}">
+                                            {% else %}
+                                            <span>{{ brand.name }}</span>
+                                            {% endif %}
+                                        </div>
                                         {% endif %}
                                     {% endfor %}
                                 {% endfor %}
@@ -1706,6 +1704,27 @@
 <script>
 
 document.addEventListener("DOMContentLoaded", function() {
+
+    /* ---------------------------------------------------------
+       0. GUARANTEED DEDUPLICATION OF HEADER BRAND LOGO PILLS
+    --------------------------------------------------------- */
+    const brandStrips = document.querySelectorAll('.category-header-brands-strip');
+    brandStrips.forEach(function(strip) {
+        const seenBrandIds = new Set();
+        const brandPills = strip.querySelectorAll('.category-header-brand-pill');
+
+        brandPills.forEach(function(pill) {
+            const brandId = pill.getAttribute('data-brand-id');
+            if (brandId) {
+                if (seenBrandIds.has(brandId)) {
+                    pill.remove();
+                } else {
+                    seenBrandIds.add(brandId);
+                }
+            }
+        });
+    });
+
 
     /* ---------------------------------------------------------
        1. HIGH-PERFORMANCE ULTRA-SMOOTH 3D TILT EFFECT
