@@ -509,7 +509,7 @@
 
 
 /* =========================================================
-   ELECTRIC CATEGORY CARD & 3D TILT
+   ELECTRIC CATEGORY CARD & 3D TILT (SPACING FIX)
 ========================================================= */
 
 .electric-category-wrapper {
@@ -561,10 +561,11 @@
     transition: background 0.35s ease;
 }
 
+/* Reduced height from 230px to 200px for balanced layout */
 .category-image {
     position: relative;
     width: 100%;
-    height: 230px;
+    height: 200px;
     background: var(--card-inner-bg);
     overflow: hidden;
 }
@@ -612,19 +613,30 @@
     z-index: 2;
 }
 
+/* Category Content - Compact Flex Column with No Stray Vertical Gaps */
 .category-content {
-    padding: 28px;
+    padding: 24px 22px;
     flex: 1;
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
+    justify-content: space-between;
+    gap: 14px;
+}
+
+.category-content-text {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
 }
 
 .category-content h3 {
     margin: 0;
     color: var(--text-primary);
-    font-size: 24px;
+    font-size: 22px;
     line-height: 1.25;
     font-weight: 800;
     transition: color 0.3s ease, text-shadow 0.3s ease;
@@ -635,21 +647,26 @@
     text-shadow: 0 0 12px var(--accent-cyan-shadow);
 }
 
+/* Controlled 3-Line Description without flex-grow stretching */
 .category-content p {
-    margin: 12px 0 24px 0;
+    margin: 0;
     color: var(--text-body);
-    font-size: 15px;
-    line-height: 1.6;
-    flex: 1;
+    font-size: 14px;
+    line-height: 1.5;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .view-products-btn {
     align-self: center;
-    margin: 0 auto;
+    margin-top: 4px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: 11px 26px;
+    padding: 10px 24px;
     border: 1px solid var(--accent-cyan);
     border-radius: 12px;
     background: var(--accent-cyan);
@@ -1152,7 +1169,7 @@
         gap: 22px;
     }
     .category-image {
-        height: 210px;
+        height: 190px;
     }
     .subcategory-grid {
         grid-template-columns: 1fr;
@@ -1419,22 +1436,24 @@
 
                     </div>
 
-                    <!-- CATEGORY INFORMATION -->
+                    <!-- CATEGORY INFORMATION (STRUCTURED COMPACT FLEX LAYOUT) -->
                     <div class="category-content">
 
-                        <h3>
-                            {{ category.name }}
-                        </h3>
+                        <div class="category-content-text">
+                            <h3>
+                                {{ category.name }}
+                            </h3>
 
-                        {% if category.description %}
-                            <p>
-                                {{ category.description }}
-                            </p>
-                        {% else %}
-                            <p>
-                                Explore products and subcategories available in this line.
-                            </p>
-                        {% endif %}
+                            {% if category.description %}
+                                <p>
+                                    {{ category.description }}
+                                </p>
+                            {% else %}
+                                <p>
+                                    Explore products and subcategories available in this line.
+                                </p>
+                            {% endif %}
+                        </div>
 
                         <button
                             type="button"
