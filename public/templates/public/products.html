@@ -723,9 +723,17 @@
     opacity: 1;
 }
 
+/* Modal Scroll Bar Fine-Tuning */
+.product-modal::-webkit-scrollbar {
+    width: 6px;
+}
+.product-modal::-webkit-scrollbar-thumb {
+    background: var(--brand-border);
+    border-radius: 4px;
+}
+
 .product-modal-no-scroll {
     max-width: 640px;
-    overflow-y: hidden;
 }
 
 
@@ -857,7 +865,7 @@
 
 
 /* =========================================================
-   SUBCATEGORY GRID (CLICKABLE CARDS)
+   SUBCATEGORY GRID (CLICKABLE CARDS - UNIFORM HEIGHT & GAP FIX)
 ========================================================= */
 
 .subcategory-grid {
@@ -878,6 +886,7 @@
     flex-direction: column;
     cursor: pointer;
     transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+    height: 100%;
 }
 
 .subcategory-card:hover {
@@ -922,21 +931,29 @@
     flex: 1;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: flex-start;
+    gap: 6px;
 }
 
 .subcategory-content h4 {
-    margin: 0 0 6px 0;
+    margin: 0;
     color: var(--text-primary);
-    font-size: 16.5px;
+    font-size: 16px;
     font-weight: 750;
+    line-height: 1.3;
 }
 
+/* Clean Line Truncation (Strict 3 Lines Limit, No Whitespace Gaps) */
 .subcategory-content p {
     margin: 0;
     color: var(--text-body);
-    font-size: 13.5px;
-    line-height: 1.5;
+    font-size: 13px;
+    line-height: 1.45;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 
@@ -1163,7 +1180,6 @@
     }
     .product-modal-no-scroll {
         max-width: 100%;
-        overflow-y: auto;
     }
 }
 
@@ -1560,7 +1576,7 @@
                                 <div class="subcategory-content">
                                     <h4>{{ subcategory.name }}</h4>
                                     {% if subcategory.description %}
-                                    <p>{{ subcategory.description|truncatewords:12 }}</p>
+                                    <p>{{ subcategory.description }}</p>
                                     {% endif %}
                                 </div>
 
