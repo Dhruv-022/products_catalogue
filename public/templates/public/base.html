@@ -1,7 +1,7 @@
 {% load static %}
 
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en" data-theme="light">
 
 <head>
 
@@ -18,52 +18,27 @@
         {% endblock %}
     </title>
 
-    <!-- Instant theme sync script to prevent page flash -->
-    <script>
-        (function() {
-            var savedTheme = localStorage.getItem("albaraq-theme") || "dark";
-            document.documentElement.setAttribute("data-theme", savedTheme);
-        })();
-    </script>
-
 
    <style>
 
     /* =========================
-       CSS THEME VARIABLES
+       CSS THEME VARIABLES (PERMANENT LIGHT THEME)
     ========================= */
 
-    /* DARK THEME (DEFAULT) */
-    :root, [data-theme="dark"] {
-    --bg-body: #030712;
-    --text-color: #f8fafc;
-    --text-muted: #94a3b8;
-    --nav-bg: transparent; /* Updated to transparent */
-    --nav-border: transparent; /* Removed border line */
-    --nav-text: #ffffff;
-    --brand-span: #00e5ff;
-    --dropdown-bg: rgba(15, 23, 42, 0.96);
-    --dropdown-border: rgba(0, 229, 255, 0.25);
-    --footer-bg: linear-gradient(135deg, #050a14, #090e1a);
-    --footer-text: #94a3b8;
-    --card-bg: #0f172a;
-}
-
-    /* LIGHT THEME OVERRIDES */
-    [data-theme="light"] {
-    --bg-body: #f8fafc;
-    --text-color: #0f172a;
-    --text-muted: #475569;
-    --nav-bg: transparent; /* Updated to transparent in Light Mode */
-    --nav-border: transparent; /* Removed border line */
-    --nav-text: #ffffff; /* White text so it remains visible on hero images */
-    --brand-span: #00e5ff;
-    --dropdown-bg: rgba(255, 255, 255, 0.98);
-    --dropdown-border: rgba(226, 232, 240, 0.9);
-    --footer-bg: linear-gradient(135deg, #0f2342, #123f68);
-    --footer-text: #dbeafe;
-    --card-bg: #ffffff;
-}
+    :root {
+        --bg-body: #f8fafc;
+        --text-color: #0f172a;
+        --text-muted: #475569;
+        --nav-bg: transparent;
+        --nav-border: transparent;
+        --nav-text: #ffffff;
+        --brand-span: #00e5ff;
+        --dropdown-bg: rgba(255, 255, 255, 0.98);
+        --dropdown-border: rgba(226, 232, 240, 0.9);
+        --footer-bg: linear-gradient(135deg, #0f2342, #123f68);
+        --footer-text: #dbeafe;
+        --card-bg: #ffffff;
+    }
 
     /* =========================
        RESET & GLOBAL STYLES
@@ -89,23 +64,24 @@
     ========================= */
 
     .navbar {
-    height: 88px;
-    background: transparent !important;
-    backdrop-filter: none !important;
-    -webkit-backdrop-filter: none !important;
-    border-bottom: none !important;
-    box-shadow: none !important;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 60px;
-    position: absolute; /* Overlays the navbar directly on top of the hero image */
-    top: 0;
-    left: 0;
-    width: 100%;
-    z-index: 1000;
-    overflow: visible;
-}
+        height: 88px;
+        background: transparent !important;
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+        border-bottom: none !important;
+        box-shadow: none !important;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 60px;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        z-index: 1000;
+        overflow: visible;
+    }
+
     .navbar-left {
         display: flex;
         align-items: center;
@@ -138,13 +114,13 @@
     }
 
     .brand-name {
-    font-family: "Baskerville Old Face", Baskerville, "Garamond", "Times New Roman", serif;
-    font-size: 25px;
-    font-weight: 700;
-    color: #ffffff;
-    white-space: nowrap;
-    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.6); /* Ensures high contrast over hero pictures */
-}
+        font-family: "Baskerville Old Face", Baskerville, "Garamond", "Times New Roman", serif;
+        font-size: 25px;
+        font-weight: 700;
+        color: #ffffff;
+        white-space: nowrap;
+        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
+    }
 
 
     /* =========================
@@ -162,15 +138,16 @@
     }
 
     .nav-links a {
-    position: relative;
-    text-decoration: none;
-    color: #ffffff;
-    font-size: 15px;
-    font-weight: 600;
-    padding: 8px 0;
-    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
-    transition: color 0.25s ease;
-}
+        position: relative;
+        text-decoration: none;
+        color: #ffffff;
+        font-size: 15px;
+        font-weight: 600;
+        padding: 8px 0;
+        text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+        transition: color 0.25s ease;
+    }
+
     .nav-links a.active,
     .nav-links a:hover {
         color: var(--brand-span);
@@ -195,7 +172,7 @@
 
 
     /* =========================
-       THEME SWITCHER DROPDOWN
+       MOBILE TOGGLE BUTTON
     ========================= */
 
     .navbar-right {
@@ -206,112 +183,6 @@
         z-index: 2;
     }
 
-    .theme-dropdown-wrapper {
-        position: relative;
-    }
-
-    .theme-toggle-btn {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        gap: 8px;
-        background: rgba(255, 255, 255, 0.08);
-        border: 1.5px solid var(--nav-border);
-        color: var(--nav-text);
-        padding: 9px 16px;
-        border-radius: 24px;
-        cursor: pointer;
-        font-size: 13.5px;
-        font-weight: 700;
-        backdrop-filter: blur(10px);
-        -webkit-backdrop-filter: blur(10px);
-        transition: all 0.3s ease;
-    }
-
-    .theme-toggle-btn:hover {
-        background: rgba(0, 229, 255, 0.15);
-        border-color: var(--brand-span);
-        color: var(--brand-span);
-        box-shadow: 0 0 15px rgba(0, 229, 255, 0.25);
-    }
-
-    .theme-toggle-btn svg {
-        width: 18px;
-        height: 18px;
-        fill: none;
-        stroke: currentColor;
-        stroke-width: 2;
-        stroke-linecap: round;
-        stroke-linejoin: round;
-    }
-
-    .theme-menu {
-        position: absolute;
-        top: calc(100% + 10px);
-        right: 0;
-        width: 150px;
-        background: var(--dropdown-bg);
-        border: 1px solid var(--dropdown-border);
-        border-radius: 14px;
-        padding: 6px;
-        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
-        display: none;
-        flex-direction: column;
-        gap: 4px;
-        z-index: 2000;
-        backdrop-filter: blur(16px);
-        -webkit-backdrop-filter: blur(16px);
-    }
-
-    .theme-menu.show {
-        display: flex;
-        animation: menuFadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-    }
-
-    @keyframes menuFadeIn {
-        0% { opacity: 0; transform: translateY(-8px); }
-        100% { opacity: 1; transform: translateY(0); }
-    }
-
-    .theme-option {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        width: 100%;
-        padding: 9px 14px;
-        border: none;
-        background: transparent;
-        color: var(--nav-text);
-        font-size: 13.5px;
-        font-weight: 600;
-        border-radius: 8px;
-        cursor: pointer;
-        text-align: left;
-        transition: all 0.2s ease;
-    }
-
-    .theme-option:hover {
-        background: rgba(0, 229, 255, 0.12);
-        color: var(--brand-span);
-    }
-
-    .theme-option.active {
-        background: var(--brand-span);
-        color: #ffffff !important;
-    }
-
-    .theme-option svg {
-        width: 16px;
-        height: 16px;
-        fill: none;
-        stroke: currentColor;
-        stroke-width: 2;
-        stroke-linecap: round;
-        stroke-linejoin: round;
-    }
-
-
-    /* Mobile Toggle Button */
     .nav-toggle-btn {
         display: none;
         background: transparent;
@@ -356,24 +227,22 @@
         transition: background 0.35s ease;
     }
 
-    /* Update the footer grid column ratios */
-.footer-content {
-    max-width: 1360px;
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: 1.4fr 1.1fr 1fr; /* Increased first column width */
-    gap: 50px;
-    align-items: start;
-}
+    .footer-content {
+        max-width: 1360px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: 1.4fr 1.1fr 1fr;
+        gap: 50px;
+        align-items: start;
+    }
 
-/* Ensure the footer heading stays on one line */
-.footer-brand h2 {
-    font-family: "Baskerville Old Face", Baskerville, "Garamond", "Times New Roman", serif;
-    font-size: 22px; /* Adjusted font size */
-    margin-bottom: 12px;
-    color: white;
-    white-space: nowrap; /* Prevents text from breaking into multiple lines */
-}
+    .footer-brand h2 {
+        font-family: "Baskerville Old Face", Baskerville, "Garamond", "Times New Roman", serif;
+        font-size: 22px;
+        margin-bottom: 12px;
+        color: white;
+        white-space: nowrap;
+    }
 
     .footer-brand p {
         color: var(--footer-text);
@@ -534,8 +403,6 @@
         .navbar { padding: 0 12px; }
         .brand-logo { width: 48px; height: 48px; }
         .brand-name { font-size: 16px; }
-        .theme-toggle-btn span { display: none; }
-        .theme-toggle-btn { padding: 8px 10px; }
     }
 
 </style>
@@ -599,42 +466,8 @@
         </div>
 
 
-        <!-- RIGHT SIDE: THEME SWITCHER & MOBILE TOGGLE -->
+        <!-- RIGHT SIDE: MOBILE TOGGLE -->
         <div class="navbar-right">
-
-            <!-- THEME SWITCHER DROPDOWN -->
-            <div class="theme-dropdown-wrapper">
-                <button id="themeToggleBtn" class="theme-toggle-btn" type="button" aria-label="Select Theme">
-                    <svg viewBox="0 0 24 24">
-                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-                    </svg>
-                    <span id="themeLabelText">Dark</span>
-                </button>
-
-                <div id="themeMenu" class="theme-menu">
-                    <button class="theme-option" data-theme-val="dark" type="button">
-                        <svg viewBox="0 0 24 24">
-                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-                        </svg>
-                        Dark
-                    </button>
-                    <button class="theme-option" data-theme-val="light" type="button">
-                        <svg viewBox="0 0 24 24">
-                            <circle cx="12" cy="12" r="5"></circle>
-                            <line x1="12" y1="1" x2="12" y2="3"></line>
-                            <line x1="12" y1="21" x2="12" y2="23"></line>
-                            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-                            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-                            <line x1="1" y1="12" x2="3" y2="12"></line>
-                            <line x1="21" y1="12" x2="23" y2="12"></line>
-                            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-                            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-                        </svg>
-                        Light
-                    </button>
-                </div>
-            </div>
-
 
             <!-- MOBILE HAMBURGER TOGGLE -->
             <button id="mobile-nav-toggle" class="nav-toggle-btn" type="button" aria-label="Toggle Navigation Menu">
@@ -733,12 +566,8 @@
             function initNav() {
                 var toggleBtn = document.getElementById("mobile-nav-toggle");
                 var navLinks = document.getElementById("main-nav-links");
-                var themeToggleBtn = document.getElementById("themeToggleBtn");
-                var themeMenu = document.getElementById("themeMenu");
-                var themeLabelText = document.getElementById("themeLabelText");
-                var themeOptions = document.querySelectorAll(".theme-option");
 
-                // 1. Mobile Menu Toggle
+                // Mobile Menu Toggle
                 if (toggleBtn && navLinks) {
                     toggleBtn.addEventListener("click", function (e) {
                         e.stopPropagation();
@@ -748,50 +577,6 @@
                     document.addEventListener("click", function (e) {
                         if (!navLinks.contains(e.target) && !toggleBtn.contains(e.target)) {
                             navLinks.classList.remove("active");
-                        }
-                    });
-                }
-
-                // 2. Theme Dropdown Toggle & Selector
-                function applyTheme(themeName) {
-                    document.documentElement.setAttribute("data-theme", themeName);
-                    localStorage.setItem("albaraq-theme", themeName);
-
-                    if (themeLabelText) {
-                        themeLabelText.textContent = themeName === "light" ? "Light" : "Dark";
-                    }
-
-                    themeOptions.forEach(function(opt) {
-                        if (opt.getAttribute("data-theme-val") === themeName) {
-                            opt.classList.add("active");
-                        } else {
-                            opt.classList.remove("active");
-                        }
-                    });
-                }
-
-                // Load saved or default theme
-                var activeTheme = localStorage.getItem("albaraq-theme") || "dark";
-                applyTheme(activeTheme);
-
-                if (themeToggleBtn && themeMenu) {
-                    themeToggleBtn.addEventListener("click", function(e) {
-                        e.stopPropagation();
-                        themeMenu.classList.toggle("show");
-                    });
-
-                    themeOptions.forEach(function(opt) {
-                        opt.addEventListener("click", function(e) {
-                            e.stopPropagation();
-                            var selectedVal = this.getAttribute("data-theme-val");
-                            applyTheme(selectedVal);
-                            themeMenu.classList.remove("show");
-                        });
-                    });
-
-                    document.addEventListener("click", function(e) {
-                        if (!themeMenu.contains(e.target) && !themeToggleBtn.contains(e.target)) {
-                            themeMenu.classList.remove("show");
                         }
                     });
                 }

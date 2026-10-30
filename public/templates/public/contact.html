@@ -18,31 +18,10 @@
 <style>
 
 /* =========================================================
-   THEME VARIABLES FOR CONTACT PAGE
+   THEME VARIABLES FOR CONTACT PAGE (PERMANENT LIGHT MODE)
 ========================================================= */
 
-:root, [data-theme="dark"] {
-    --page-bg: #050a14;
-    --hero-bg: #030712;
-    --hero-overlay-grad: linear-gradient(90deg, rgba(3, 7, 18, 0.96) 0%, rgba(15, 23, 42, 0.88) 45%, rgba(15, 23, 42, 0.52) 100%);
-    --card-surface: #0f172a;
-    --card-surface-hover: #111a2e;
-    --card-surface-overlay: rgba(11, 19, 38, 0.88);
-    --card-inner-bg: #080f21;
-    --badge-bg: #090d16;
-    --text-primary: #f8fafc;
-    --text-secondary: #94a3b8;
-    --text-body: #cbd5e1;
-    --accent-cyan: #00e5ff;
-    --accent-cyan-shadow: rgba(0, 229, 255, 0.45);
-    --brand-border: #1e293b;
-    --brand-border-wrapper: rgba(30, 41, 59, 0.85);
-    --input-bg: #080f21;
-    --input-border: #1e293b;
-    --conic-glow: conic-gradient(transparent, rgba(0, 229, 255, 0.35), #00e5ff, #3b82f6, #00d2ff, transparent 45%);
-}
-
-[data-theme="light"] {
+:root {
     --page-bg: #f8fafc;
     --hero-bg: #03122d;
     --hero-overlay-grad: linear-gradient(90deg, rgba(3, 18, 45, 0.88) 0%, rgba(5, 28, 62, 0.72) 45%, rgba(5, 28, 62, 0.35) 100%);
@@ -582,7 +561,7 @@
     border: 1px solid var(--accent-cyan);
     border-radius: 12px;
     background: var(--accent-cyan);
-    color: #030712;
+    color: #ffffff;
     font-size: 15.5px;
     font-weight: 750;
     letter-spacing: 0.2px;
@@ -592,8 +571,8 @@
 }
 
 .submit-button:hover {
-    background: #00d2ff;
-    border-color: #00d2ff;
+    background: #1d4ed8;
+    border-color: #1d4ed8;
     transform: translateY(-2px);
     box-shadow: 0 8px 22px var(--accent-cyan-shadow);
 }
@@ -665,7 +644,7 @@
 .map-button.active {
     border-color: var(--accent-cyan);
     background: var(--accent-cyan);
-    color: #030712;
+    color: #ffffff;
     box-shadow: 0 4px 14px var(--accent-cyan-shadow);
 }
 
@@ -703,7 +682,7 @@
 
 .map-external-link:hover {
     background: var(--accent-cyan);
-    color: #030712;
+    color: #ffffff;
     border-color: var(--accent-cyan);
     transform: translateY(-2px);
     box-shadow: 0 6px 20px var(--accent-cyan-shadow);
@@ -762,7 +741,7 @@
     font-size: 11px;
     font-weight: 700;
     color: var(--accent-cyan);
-    background: rgba(0, 229, 255, 0.1);
+    background: rgba(37, 99, 235, 0.1);
     padding: 3px 8px;
     border-radius: 6px;
 }

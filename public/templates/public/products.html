@@ -13,30 +13,10 @@
 <style>
 
 /* =========================================================
-   THEME VARIABLES FOR PRODUCTS PAGE
+   THEME VARIABLES FOR PRODUCTS PAGE (PERMANENT LIGHT MODE)
 ========================================================= */
 
-:root, [data-theme="dark"] {
-    --page-bg: #050a14;
-    --hero-bg: #030712;
-    --hero-overlay-grad: linear-gradient(90deg, rgba(3, 7, 18, 0.96) 0%, rgba(15, 23, 42, 0.88) 45%, rgba(15, 23, 42, 0.52) 100%);
-    --card-surface: #0f172a;
-    --card-surface-hover: #111a2e;
-    --card-inner-bg: #080f21;
-    --badge-bg: #090d16;
-    --text-primary: #f8fafc;
-    --text-secondary: #94a3b8;
-    --text-body: #cbd5e1;
-    --accent-cyan: #00e5ff;
-    --accent-cyan-shadow: rgba(0, 229, 255, 0.45);
-    --brand-border: #1e293b;
-    --brand-border-wrapper: rgba(30, 41, 59, 0.85);
-    --modal-bg: #0a1120;
-    --modal-overlay-bg: rgba(3, 7, 18, 0.88);
-    --conic-glow: conic-gradient(transparent, rgba(0, 229, 255, 0.35), #00e5ff, #3b82f6, #00d2ff, transparent 45%);
-}
-
-[data-theme="light"] {
+:root {
     --page-bg: #f8fafc;
     --hero-bg: #03122d;
     --hero-overlay-grad: linear-gradient(90deg, rgba(3, 18, 45, 0.88) 0%, rgba(5, 28, 62, 0.72) 45%, rgba(5, 28, 62, 0.35) 100%);
@@ -56,6 +36,8 @@
     --modal-bg: #ffffff;
     --modal-overlay-bg: rgba(15, 23, 42, 0.75);
     --conic-glow: conic-gradient(transparent, rgba(30, 96, 145, 0.2), #1e6091, #3b82f6, #0284c7, transparent 45%);
+    --scrollbar-thumb: rgba(15, 23, 42, 0.18);
+    --scrollbar-thumb-hover: rgba(30, 96, 145, 0.45);
 }
 
 
@@ -509,7 +491,7 @@
 
 
 /* =========================================================
-   ELECTRIC CATEGORY CARD & 3D TILT (SPACING FIX)
+   ELECTRIC CATEGORY CARD & 3D TILT
 ========================================================= */
 
 .electric-category-wrapper {
@@ -561,7 +543,6 @@
     transition: background 0.35s ease;
 }
 
-/* Reduced height from 230px to 200px for balanced layout */
 .category-image {
     position: relative;
     width: 100%;
@@ -613,7 +594,6 @@
     z-index: 2;
 }
 
-/* Category Content - Compact Flex Column with No Stray Vertical Gaps */
 .category-content {
     padding: 24px 22px;
     flex: 1;
@@ -647,7 +627,6 @@
     text-shadow: 0 0 12px var(--accent-cyan-shadow);
 }
 
-/* Controlled 3-Line Description without flex-grow stretching */
 .category-content p {
     margin: 0;
     color: var(--text-body);
@@ -688,7 +667,7 @@
 
 
 /* =========================================================
-   MODAL PORTAL & OVERLAY WITH REVEAL ANIMATIONS
+   MODAL PORTAL & OVERLAY WITH PERFECT CORNER CLIPPING
 ========================================================= */
 
 .product-modal-overlay {
@@ -714,22 +693,24 @@
     opacity: 1;
 }
 
-/* Layer sub-detail modals smoothly above parent category modals */
 .product-modal-overlay.sub-detail-overlay {
     z-index: 100000;
 }
 
+/* Enforce hard overflow clipping on modal container to respect border-radius */
 .product-modal {
     width: 100%;
     max-width: 860px;
     max-height: 88vh;
     margin: auto;
-    overflow-y: auto;
     background: var(--modal-bg);
     border: 1px solid var(--brand-border);
     border-radius: 22px;
     box-shadow: 0 30px 80px rgba(0, 0, 0, 0.55);
     position: relative;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden; /* Clips child scrollbars inside curved corners */
     transform: scale(0.92) translateY(18px);
     opacity: 0;
     transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1);
@@ -740,17 +721,34 @@
     opacity: 1;
 }
 
-/* Modal Scroll Bar Fine-Tuning */
-.product-modal::-webkit-scrollbar {
-    width: 6px;
-}
-.product-modal::-webkit-scrollbar-thumb {
-    background: var(--brand-border);
-    border-radius: 4px;
-}
-
 .product-modal-no-scroll {
     max-width: 640px;
+}
+
+/* Internal Scroll Area for Modals with Floating Inset Scrollbar */
+.product-modal-scroll-area {
+    flex: 1;
+    overflow-y: auto;
+    padding-right: 4px; /* Keeps scrollbar safely inward from curved borders */
+}
+
+/* Custom Floating Inset Scrollbar Styling */
+.product-modal-scroll-area::-webkit-scrollbar {
+    width: 6px;
+}
+
+.product-modal-scroll-area::-webkit-scrollbar-track {
+    background: transparent;
+    margin: 12px 0; /* Padding top & bottom prevents thumb from hitting curved edges */
+}
+
+.product-modal-scroll-area::-webkit-scrollbar-thumb {
+    background: var(--scrollbar-thumb);
+    border-radius: 10px;
+}
+
+.product-modal-scroll-area::-webkit-scrollbar-thumb:hover {
+    background: var(--scrollbar-thumb-hover);
 }
 
 
@@ -786,6 +784,7 @@
     position: sticky;
     top: 0;
     z-index: 10;
+    flex-shrink: 0;
 }
 
 .modal-header-text {
@@ -797,7 +796,6 @@
     flex: 1;
 }
 
-/* Horizontal Row Aligning Main Category Title & Brand Logos Baseline */
 .modal-title-brands-row {
     display: flex;
     align-items: center;
@@ -813,8 +811,6 @@
     white-space: nowrap;
 }
 
-
-/* Direct Left-Aligned Brand Logos Strip */
 .category-header-brands-strip {
     display: flex;
     align-items: center;
@@ -855,7 +851,6 @@
     white-space: nowrap;
 }
 
-
 .modal-close {
     width: 34px;
     height: 34px;
@@ -882,7 +877,7 @@
 
 
 /* =========================================================
-   SUBCATEGORY GRID (CLICKABLE CARDS - UNIFORM HEIGHT & GAP FIX)
+   SUBCATEGORY GRID (CLICKABLE CARDS)
 ========================================================= */
 
 .subcategory-grid {
@@ -960,7 +955,6 @@
     line-height: 1.3;
 }
 
-/* Clean Line Truncation (Strict 3 Lines Limit, No Whitespace Gaps) */
 .subcategory-content p {
     margin: 0;
     color: var(--text-body);
@@ -1436,7 +1430,7 @@
 
                     </div>
 
-                    <!-- CATEGORY INFORMATION (STRUCTURED COMPACT FLEX LAYOUT) -->
+                    <!-- CATEGORY INFORMATION -->
                     <div class="category-content">
 
                         <div class="category-content-text">
@@ -1561,8 +1555,8 @@
                 </div>
 
 
-                <!-- SUBCATEGORIES GRID -->
-                <div>
+                <!-- SUBCATEGORIES SCROLL AREA -->
+                <div class="product-modal-scroll-area">
 
                     {% with subcategories=category.subcategories.all %}
 
@@ -1666,52 +1660,56 @@
                 </div>
 
 
-                <!-- COMPACT ANIMATED PRODUCT DETAIL CONTENT -->
-                <div class="product-detail-body">
+                <!-- COMPACT ANIMATED PRODUCT DETAIL CONTENT WITH INSET SCROLL -->
+                <div class="product-modal-scroll-area">
 
-                    <!-- HERO PREVIEW IMAGE (REFINED PROPORTIONS) -->
-                    {% if subcategory.image %}
-                    <div class="product-detail-hero-image modal-anim-item modal-anim-delay-2">
-                        <img src="{{ subcategory.image.url }}" alt="{{ subcategory.name }}">
-                    </div>
-                    {% endif %}
+                    <div class="product-detail-body">
 
-                    <!-- DESCRIPTION SECTION -->
-                    {% if subcategory.description %}
-                    <div class="modal-anim-item modal-anim-delay-3">
-                        <h4 class="product-detail-section-title">Description</h4>
-                        <p class="product-detail-description">{{ subcategory.description }}</p>
-                    </div>
-                    {% endif %}
-
-                    <!-- BRANDS SECTION -->
-                    {% with active_brands=subcategory.brands.all %}
-                        {% if active_brands %}
-                        <div class="modal-anim-item modal-anim-delay-4">
-                            <h4 class="product-detail-section-title">Available Brands</h4>
-
-                            <div class="product-brands-grid">
-                                {% for brand in active_brands %}
-                                    {% if brand.is_active %}
-                                    <div class="product-brand-card">
-                                        {% if brand.logo %}
-                                        <div class="product-brand-logo-box">
-                                            <img src="{{ brand.logo.url }}" alt="{{ brand.name }}">
-                                        </div>
-                                        {% else %}
-                                        <div class="brand-initial-avatar">
-                                            {{ brand.name|slice:":1" }}
-                                        </div>
-                                        {% endif %}
-
-                                        <span class="product-brand-title">{{ brand.name }}</span>
-                                    </div>
-                                    {% endif %}
-                                {% endfor %}
-                            </div>
+                        <!-- HERO PREVIEW IMAGE -->
+                        {% if subcategory.image %}
+                        <div class="product-detail-hero-image modal-anim-item modal-anim-delay-2">
+                            <img src="{{ subcategory.image.url }}" alt="{{ subcategory.name }}">
                         </div>
                         {% endif %}
-                    {% endwith %}
+
+                        <!-- DESCRIPTION SECTION -->
+                        {% if subcategory.description %}
+                        <div class="modal-anim-item modal-anim-delay-3">
+                            <h4 class="product-detail-section-title">Description</h4>
+                            <p class="product-detail-description">{{ subcategory.description }}</p>
+                        </div>
+                        {% endif %}
+
+                        <!-- BRANDS SECTION -->
+                        {% with active_brands=subcategory.brands.all %}
+                            {% if active_brands %}
+                            <div class="modal-anim-item modal-anim-delay-4">
+                                <h4 class="product-detail-section-title">Available Brands</h4>
+
+                                <div class="product-brands-grid">
+                                    {% for brand in active_brands %}
+                                        {% if brand.is_active %}
+                                        <div class="product-brand-card">
+                                            {% if brand.logo %}
+                                            <div class="product-brand-logo-box">
+                                                <img src="{{ brand.logo.url }}" alt="{{ brand.name }}">
+                                            </div>
+                                            {% else %}
+                                            <div class="brand-initial-avatar">
+                                                {{ brand.name|slice:":1" }}
+                                            </div>
+                                            {% endif %}
+
+                                            <span class="product-brand-title">{{ brand.name }}</span>
+                                        </div>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            {% endif %}
+                        {% endwith %}
+
+                    </div>
 
                 </div>
 
@@ -2014,7 +2012,6 @@ function closeCategoryModal(modalId) {
 
     modal.classList.remove("active");
 
-    /* Only restore page scrolling if no other modal (e.g. sub-detail) remains open */
     if (!document.querySelector(".product-modal-overlay.active")) {
         document.body.style.overflow = "";
     }
@@ -2037,9 +2034,8 @@ function closeCategoryOnOverlay(event, modalId) {
 }
 
 
-/* Open detail modal layered cleanly over the parent category modal */
 function openSubcategoryDetail(detailModalId, parentCategoryId) {
-    /* Keep parent category modal visible underneath while opening detail overlay */
+
     openCategoryModal(parentCategoryId);
 
     const detailModal = document.getElementById(detailModalId);
@@ -2047,19 +2043,19 @@ function openSubcategoryDetail(detailModalId, parentCategoryId) {
         detailModal.classList.add("active");
         document.body.style.overflow = "hidden";
     }
+
 }
 
 
-/* Instantly close detail modal, leaving parent category subcategories modal visible */
 function closeSubcategoryDetail(detailModalId) {
+
     const detailModal = document.getElementById(detailModalId);
     if (detailModal) {
         detailModal.classList.remove("active");
     }
+
 }
 
-
-/* Escape Key Modal Dismissal */
 
 document.addEventListener("keydown", function(event) {
 
@@ -2067,7 +2063,6 @@ document.addEventListener("keydown", function(event) {
         return;
     }
 
-    /* Dismiss top sub-detail modal first if open */
     const activeSubDetail = document.querySelector(".product-modal-overlay.sub-detail-overlay.active");
 
     if (activeSubDetail) {
@@ -2078,7 +2073,6 @@ document.addEventListener("keydown", function(event) {
 
     }
 
-    /* Otherwise dismiss active category modal */
     const activeModal = document.querySelector(".product-modal-overlay.active");
 
     if (activeModal) {

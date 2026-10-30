@@ -13,45 +13,10 @@
 <style>
 
 /* =========================================================
-   THEME VARIABLES (DARK IS THE PRIMARY MASTER REGIME)
+   THEME VARIABLES (PERMANENT LIGHT REGIME)
 ========================================================= */
 
-:root, [data-theme="dark"] {
-    --hero-bg: #030712;
-    --hero-overlay-grad: linear-gradient(90deg, rgba(3, 7, 18, 0.96) 0%, rgba(15, 23, 42, 0.88) 45%, rgba(15, 23, 42, 0.52) 100%);
-    --stats-bg: #080f21;
-    --stats-border: #1e293b;
-    --intro-bg: #050a14;
-    --products-bg: #090e1a;
-    --brands-bg: linear-gradient(180deg, #090e1a 0%, #050a14 100%);
-    --card-surface: #111a2e;
-    --card-surface-hover: #070d19;
-    --intro-card-bg: #0f172a;
-    --badge-bg: #090d16;
-    --text-primary: #f8fafc;
-    --text-secondary: #94a3b8;
-    --text-card-body: #cbd5e1;
-    --text-brand-pill: #e2e8f0;
-    --accent-cyan: #00e5ff;
-    --accent-cyan-shadow: rgba(0, 229, 255, 0.45);
-    --brand-border: #1e293b;
-    --brand-border-wrapper: rgba(30, 41, 59, 0.85);
-    --marquee-mask-left: linear-gradient(90deg, #090e1a 0%, rgba(9, 14, 26, 0) 100%);
-    --marquee-mask-right: linear-gradient(-90deg, #050a14 0%, rgba(5, 10, 20, 0) 100%);
-    --hero-scroll-bg: transparent;
-    --card-product-bg: rgba(9, 14, 26, 0.85);
-    --card-product-overlay: linear-gradient(180deg, rgba(17, 26, 46, 0.88) 0%, rgba(9, 14, 26, 0.96) 100%);
-    --card-product-title: #f8fafc;
-    --card-product-desc: #cbd5e1;
-    --card-product-footer: #00e5ff;
-    --conic-glow: conic-gradient(transparent, rgba(0, 229, 255, 0.35), #00e5ff, #3b82f6, #00d2ff, transparent 45%);
-}
-
-/* =========================================================
-   LIGHT THEME DESIGN POLISH (DARK THEME RETAINS ORIGINAL)
-========================================================= */
-
-[data-theme="light"] {
+:root {
     --hero-bg: #03122d;
     --hero-overlay-grad: linear-gradient(90deg, rgba(3, 18, 45, 0.88) 0%, rgba(5, 28, 62, 0.72) 45%, rgba(5, 28, 62, 0.35) 100%);
     --stats-bg: #ffffff;
@@ -74,41 +39,39 @@
     --marquee-mask-left: linear-gradient(90deg, #ffffff 0%, rgba(255, 255, 255, 0) 100%);
     --marquee-mask-right: linear-gradient(-90deg, #f1f5f9 0%, rgba(241, 245, 249, 0) 100%);
     --hero-scroll-bg: transparent;
-    --card-product-bg: #ffffff;
-    --card-product-overlay: none;
-    --card-product-title: #0f172a;
-    --card-product-desc: #475569;
-    --card-product-footer: #2563eb;
+    --card-product-bg: rgba(255, 255, 255, 0.9);
+    --card-product-overlay: linear-gradient(180deg, rgba(15, 23, 42, 0.65) 0%, rgba(15, 23, 42, 0.88) 100%);
+    --card-product-title: #ffffff;
+    --card-product-desc: #e2e8f0;
+    --card-product-footer: #38bdf8;
     --conic-glow: conic-gradient(transparent, rgba(37, 99, 235, 0.25), #2563eb, #3b82f6, #0284c7, transparent 45%);
 }
 
-/* Light Mode Overrides for Crisp Modern Cards */
-[data-theme="light"] .product-cat-card {
-    background-image: none !important;
-    background: #ffffff !important;
+/* Light Mode Styling for Crisp Modern Cards with Background Images */
+.product-cat-card {
     border: 1px solid #e2e8f0;
     box-shadow: 0 4px 18px rgba(15, 23, 42, 0.05), 0 1px 3px rgba(15, 23, 42, 0.03);
 }
 
-[data-theme="light"] .product-cat-card::before {
-    display: none !important;
+.product-cat-card::before {
+    display: block !important;
 }
 
-[data-theme="light"] .electric-card-wrapper {
+.electric-card-wrapper {
     background: #e2e8f0;
     border-radius: 18px;
 }
 
-[data-theme="light"] .electric-card-wrapper:hover {
+.electric-card-wrapper:hover {
     box-shadow: 0 12px 32px rgba(37, 99, 235, 0.15);
 }
 
-[data-theme="light"] .product-cat-badge {
-    background: #f0f6ff;
+.product-cat-badge {
+    background: rgba(255, 255, 255, 0.95);
     border: 1px solid #dbeafe;
 }
 
-[data-theme="light"] .intro-card {
+.intro-card {
     background: #ffffff;
     border: 1px solid #e2e8f0;
     box-shadow: 0 10px 25px rgba(15, 23, 42, 0.06);
@@ -120,8 +83,8 @@
 ========================================================= */
 
 .hero {
-    height: 100vh; /* Or min-height: 100vh */
-padding-top: 88px; /* Offsets padding so title text isn't covered by logo */
+    height: 100vh;
+    padding-top: 88px;
     min-height: 580px;
     position: relative;
     display: flex;
@@ -340,7 +303,6 @@ padding-top: 88px; /* Offsets padding so title text isn't covered by logo */
     text-shadow: 0 0 10px rgba(0, 229, 255, 0.4);
 }
 
-/* Allow text-shadow to bleed naturally past the mask bounds */
 .hero h1 .text-word-mask:has(.highlight) {
     overflow: visible;
 }
@@ -564,11 +526,6 @@ padding-top: 88px; /* Offsets padding so title text isn't covered by logo */
     width: 4px;
     height: 4px;
     border-radius: 50%;
-    background: rgba(0, 229, 255, 0.45);
-    box-shadow: 0 0 6px rgba(0, 229, 255, 0.85);
-}
-
-[data-theme="light"] .stats-bar-divider {
     background: rgba(37, 99, 235, 0.35);
     box-shadow: 0 0 6px rgba(37, 99, 235, 0.3);
 }
@@ -861,7 +818,6 @@ padding-top: 88px; /* Offsets padding so title text isn't covered by logo */
         transform 0.35s ease;
 }
 
-/* Background Overlay Dynamic per Theme */
 .product-cat-card::before {
     content: "";
     position: absolute;
@@ -921,7 +877,7 @@ padding-top: 88px; /* Offsets padding so title text isn't covered by logo */
 }
 
 .electric-card-wrapper:hover h3 {
-    color: var(--card-product-footer);
+    color: #38bdf8;
     text-shadow: 0 0 12px var(--accent-cyan-shadow);
     transform: translateX(3px);
 }
@@ -956,7 +912,7 @@ padding-top: 88px; /* Offsets padding so title text isn't covered by logo */
 
 
 /* =========================================================
-   TRUSTED BRANDS SECTION (DYNAMIC THEME LOGO SWITCHING)
+   TRUSTED BRANDS SECTION (LIGHT LOGOS DISPLAY)
 ========================================================= */
 
 .brands-section {
@@ -995,7 +951,6 @@ padding-top: 88px; /* Offsets padding so title text isn't covered by logo */
     padding: 20px 0;
 }
 
-/* Linear edge fade masks */
 .brands-marquee::before,
 .brands-marquee::after {
     content: "";
@@ -1049,21 +1004,12 @@ padding-top: 88px; /* Offsets padding so title text isn't covered by logo */
     border-radius: 6px;
 }
 
-/* Dynamic theme logo visibility control */
+/* Light Theme Logos Displayed Permanently */
 .brand-logo-dark {
-    display: block;
+    display: none;
 }
 
 .brand-logo-light {
-    display: none;
-}
-
-/* Show light theme (_d) images when data-theme="light" */
-[data-theme="light"] .brand-logo-dark {
-    display: none;
-}
-
-[data-theme="light"] .brand-logo-light {
     display: block;
 }
 
@@ -1109,7 +1055,6 @@ padding-top: 88px; /* Offsets padding so title text isn't covered by logo */
     }
 }
 
-/* LOCKED SYMMETRICAL MOBILE LAYOUT (<= 768px ONLY) */
 @media (max-width: 768px) {
 
     .hero {
@@ -1119,7 +1064,8 @@ padding-top: 88px; /* Offsets padding so title text isn't covered by logo */
         display: flex;
         flex-direction: column;
         align-items: center;
-        padding: 24px 0 20px;
+        padding-top: 110px !important;
+        padding-bottom: 30px !important;
         box-sizing: border-box;
     }
 
@@ -1128,7 +1074,7 @@ padding-top: 88px; /* Offsets padding so title text isn't covered by logo */
         flex-direction: column;
         align-items: flex-start;
         padding: 0 18px;
-        margin-top: 0;
+        margin-top: 10px;
         width: 100%;
     }
 
@@ -1285,7 +1231,6 @@ padding-top: 88px; /* Offsets padding so title text isn't covered by logo */
         padding: 18px;
     }
 
-    /* COMPACT MOBILE HORIZONTAL FOOTPRINT FOR PRODUCT CARDS */
     .products-grid {
         gap: 14px;
         width: 100%;
@@ -1803,135 +1748,113 @@ padding-top: 88px; /* Offsets padding so title text isn't covered by logo */
         <div class="brands-track">
 
 
-            <!-- FIRST SET (All 26 Logos with Theme Pairs) -->
+            <!-- FIRST SET (All 27 Logos with Light Assets) -->
 
             <div class="brand-logo-item">
-                <img src="{% static 'public/logo/abb.png' %}" alt="ABB" class="brand-logo-img brand-logo-dark">
                 <img src="{% static 'public/logo/abb_d.png' %}" alt="ABB" class="brand-logo-img brand-logo-light">
             </div>
 
             <div class="brand-logo-item">
-                <img src="{% static 'public/logo/alfanar.png' %}" alt="Alfanar" class="brand-logo-img brand-logo-dark">
                 <img src="{% static 'public/logo/alfanar_d.png' %}" alt="Alfanar" class="brand-logo-img brand-logo-light">
             </div>
 
             <div class="brand-logo-item">
-                <img src="{% static 'public/logo/barton.png' %}" alt="Barton" class="brand-logo-img brand-logo-dark">
                 <img src="{% static 'public/logo/barton_d.png' %}" alt="Barton" class="brand-logo-img brand-logo-light">
             </div>
 
             <div class="brand-logo-item">
-                <img src="{% static 'public/logo/bicc.png' %}" alt="BICC" class="brand-logo-img brand-logo-dark">
                 <img src="{% static 'public/logo/bicc_d.png' %}" alt="BICC" class="brand-logo-img brand-logo-light">
             </div>
 
             <div class="brand-logo-item">
-                <img src="{% static 'public/logo/caparon.png' %}" alt="Caparo" class="brand-logo-img brand-logo-dark">
                 <img src="{% static 'public/logo/caparo_d.png' %}" alt="Caparo" class="brand-logo-img brand-logo-light">
             </div>
 
             <div class="brand-logo-item">
-                <img src="{% static 'public/logo/cellpack.png' %}" alt="Cellpack" class="brand-logo-img brand-logo-dark">
                 <img src="{% static 'public/logo/cellpack_d.png' %}" alt="Cellpack" class="brand-logo-img brand-logo-light">
             </div>
 
             <div class="brand-logo-item">
-                <img src="{% static 'public/logo/dd.png' %}" alt="Decoduct" class="brand-logo-img brand-logo-dark">
                 <img src="{% static 'public/logo/dd_d.png' %}" alt="Decoduct" class="brand-logo-img brand-logo-light">
             </div>
 
             <div class="brand-logo-item">
-                <img src="{% static 'public/logo/ducab.png' %}" alt="DUCAB" class="brand-logo-img brand-logo-dark">
                 <img src="{% static 'public/logo/ducab_d.png' %}" alt="DUCAB" class="brand-logo-img brand-logo-light">
             </div>
 
             <div class="brand-logo-item">
-                <img src="{% static 'public/logo/eaton.png' %}" alt="Eaton" class="brand-logo-img brand-logo-dark">
                 <img src="{% static 'public/logo/eaton_d.png' %}" alt="Eaton" class="brand-logo-img brand-logo-light">
             </div>
 
             <div class="brand-logo-item">
-                <img src="{% static 'public/logo/furse.png' %}" alt="Furse" class="brand-logo-img brand-logo-dark">
                 <img src="{% static 'public/logo/furse_d.png' %}" alt="Furse" class="brand-logo-img brand-logo-light">
             </div>
 
             <div class="brand-logo-item">
-                <img src="{% static 'public/logo/gewiss.png' %}" alt="Gewiss" class="brand-logo-img brand-logo-dark">
                 <img src="{% static 'public/logo/gewiss_d.png' %}" alt="Gewiss" class="brand-logo-img brand-logo-light">
             </div>
 
             <div class="brand-logo-item">
-                <img src="{% static 'public/logo/hager.png' %}" alt="Hager" class="brand-logo-img brand-logo-dark">
                 <img src="{% static 'public/logo/hager_d.png' %}" alt="Hager" class="brand-logo-img brand-logo-light">
             </div>
 
             <div class="brand-logo-item">
-                <img src="{% static 'public/logo/hex.png' %}" alt="HEX" class="brand-logo-img brand-logo-dark">
                 <img src="{% static 'public/logo/hex_d.png' %}" alt="HEX" class="brand-logo-img brand-logo-light">
             </div>
 
             <div class="brand-logo-item">
-                <img src="{% static 'public/logo/images.png' %}" alt="Brand Logo" class="brand-logo-img brand-logo-dark">
                 <img src="{% static 'public/logo/images_d.png' %}" alt="Brand Logo" class="brand-logo-img brand-logo-light">
             </div>
 
             <div class="brand-logo-item">
-                <img src="{% static 'public/logo/legrand.png' %}" alt="Legrand" class="brand-logo-img brand-logo-dark">
                 <img src="{% static 'public/logo/legrand_d.png' %}" alt="Legrand" class="brand-logo-img brand-logo-light">
             </div>
 
             <div class="brand-logo-item">
-                <img src="{% static 'public/logo/mesc.png' %}" alt="MESC" class="brand-logo-img brand-logo-dark">
                 <img src="{% static 'public/logo/mecs_d.png' %}" alt="MESC" class="brand-logo-img brand-logo-light">
             </div>
 
             <div class="brand-logo-item">
-                <img src="{% static 'public/logo/mk.png' %}" alt="MK" class="brand-logo-img brand-logo-dark">
                 <img src="{% static 'public/logo/mk_d.png' %}" alt="MK" class="brand-logo-img brand-logo-light">
             </div>
 
             <div class="brand-logo-item">
-                <img src="{% static 'public/logo/nci.png' %}" alt="NCI" class="brand-logo-img brand-logo-dark">
                 <img src="{% static 'public/logo/nci_d.png' %}" alt="NCI" class="brand-logo-img brand-logo-light">
             </div>
 
             <div class="brand-logo-item">
-                <img src="{% static 'public/logo/oman.png' %}" alt="Oman Cables" class="brand-logo-img brand-logo-dark">
                 <img src="{% static 'public/logo/oman_d.png' %}" alt="Oman Cables" class="brand-logo-img brand-logo-light">
             </div>
 
             <div class="brand-logo-item">
-                <img src="{% static 'public/logo/panasonic.png' %}" alt="Panasonic" class="brand-logo-img brand-logo-dark">
                 <img src="{% static 'public/logo/panasonic_d.png' %}" alt="Panasonic" class="brand-logo-img brand-logo-light">
             </div>
 
             <div class="brand-logo-item">
-                <img src="{% static 'public/logo/rexton.png' %}" alt="Rexton" class="brand-logo-img brand-logo-dark">
                 <img src="{% static 'public/logo/rexton_d.png' %}" alt="Rexton" class="brand-logo-img brand-logo-light">
             </div>
 
             <div class="brand-logo-item">
-                <img src="{% static 'public/logo/rr.png' %}" alt="RR Kabel" class="brand-logo-img brand-logo-dark">
                 <img src="{% static 'public/logo/rr_d.png' %}" alt="RR Kabel" class="brand-logo-img brand-logo-light">
             </div>
 
             <div class="brand-logo-item">
-                <img src="{% static 'public/logo/sch.png' %}" alt="Schneider Electric" class="brand-logo-img brand-logo-dark">
                 <img src="{% static 'public/logo/sch_d.png' %}" alt="Schneider Electric" class="brand-logo-img brand-logo-light">
             </div>
 
             <div class="brand-logo-item">
-                <img src="{% static 'public/logo/tenby.png' %}" alt="Tenby" class="brand-logo-img brand-logo-dark">
                 <img src="{% static 'public/logo/tenby_d.png' %}" alt="Tenby" class="brand-logo-img brand-logo-light">
             </div>
 
             <div class="brand-logo-item">
-                <img src="{% static 'public/logo/vortice.png' %}" alt="Vortice" class="brand-logo-img brand-logo-dark">
+                <img src="{% static 'public/logo/tenex_d.png' %}" alt="Tenex" class="brand-logo-img brand-logo-light">
+            </div>
+
+            <div class="brand-logo-item">
                 <img src="{% static 'public/logo/vortice_d.png' %}" alt="Vortice" class="brand-logo-img brand-logo-light">
             </div>
 
             <div class="brand-logo-item">
-                <img src="{% static 'public/logo/wd-40.png' %}" alt="WD-40" class="brand-logo-img brand-logo-dark">
                 <img src="{% static 'public/logo/wd-40_d.png' %}" alt="WD-40" class="brand-logo-img brand-logo-light">
             </div>
 
@@ -1939,132 +1862,110 @@ padding-top: 88px; /* Offsets padding so title text isn't covered by logo */
             <!-- SECOND SET (Exact Duplicate for Infinite Loop) -->
 
             <div class="brand-logo-item">
-                <img src="{% static 'public/logo/abb.png' %}" alt="ABB" class="brand-logo-img brand-logo-dark">
                 <img src="{% static 'public/logo/abb_d.png' %}" alt="ABB" class="brand-logo-img brand-logo-light">
             </div>
 
             <div class="brand-logo-item">
-                <img src="{% static 'public/logo/alfanar.png' %}" alt="Alfanar" class="brand-logo-img brand-logo-dark">
                 <img src="{% static 'public/logo/alfanar_d.png' %}" alt="Alfanar" class="brand-logo-img brand-logo-light">
             </div>
 
             <div class="brand-logo-item">
-                <img src="{% static 'public/logo/barton.png' %}" alt="Barton" class="brand-logo-img brand-logo-dark">
                 <img src="{% static 'public/logo/barton_d.png' %}" alt="Barton" class="brand-logo-img brand-logo-light">
             </div>
 
             <div class="brand-logo-item">
-                <img src="{% static 'public/logo/bicc.png' %}" alt="BICC" class="brand-logo-img brand-logo-dark">
                 <img src="{% static 'public/logo/bicc_d.png' %}" alt="BICC" class="brand-logo-img brand-logo-light">
             </div>
 
             <div class="brand-logo-item">
-                <img src="{% static 'public/logo/caparon.png' %}" alt="Caparo" class="brand-logo-img brand-logo-dark">
                 <img src="{% static 'public/logo/caparo_d.png' %}" alt="Caparo" class="brand-logo-img brand-logo-light">
             </div>
 
             <div class="brand-logo-item">
-                <img src="{% static 'public/logo/cellpack.png' %}" alt="Cellpack" class="brand-logo-img brand-logo-dark">
                 <img src="{% static 'public/logo/cellpack_d.png' %}" alt="Cellpack" class="brand-logo-img brand-logo-light">
             </div>
 
             <div class="brand-logo-item">
-                <img src="{% static 'public/logo/dd.png' %}" alt="Decoduct" class="brand-logo-img brand-logo-dark">
                 <img src="{% static 'public/logo/dd_d.png' %}" alt="Decoduct" class="brand-logo-img brand-logo-light">
             </div>
 
             <div class="brand-logo-item">
-                <img src="{% static 'public/logo/ducab.png' %}" alt="DUCAB" class="brand-logo-img brand-logo-dark">
                 <img src="{% static 'public/logo/ducab_d.png' %}" alt="DUCAB" class="brand-logo-img brand-logo-light">
             </div>
 
             <div class="brand-logo-item">
-                <img src="{% static 'public/logo/eaton.png' %}" alt="Eaton" class="brand-logo-img brand-logo-dark">
                 <img src="{% static 'public/logo/eaton_d.png' %}" alt="Eaton" class="brand-logo-img brand-logo-light">
             </div>
 
             <div class="brand-logo-item">
-                <img src="{% static 'public/logo/furse.png' %}" alt="Furse" class="brand-logo-img brand-logo-dark">
                 <img src="{% static 'public/logo/furse_d.png' %}" alt="Furse" class="brand-logo-img brand-logo-light">
             </div>
 
             <div class="brand-logo-item">
-                <img src="{% static 'public/logo/gewiss.png' %}" alt="Gewiss" class="brand-logo-img brand-logo-dark">
                 <img src="{% static 'public/logo/gewiss_d.png' %}" alt="Gewiss" class="brand-logo-img brand-logo-light">
             </div>
 
             <div class="brand-logo-item">
-                <img src="{% static 'public/logo/hager.png' %}" alt="Hager" class="brand-logo-img brand-logo-dark">
                 <img src="{% static 'public/logo/hager_d.png' %}" alt="Hager" class="brand-logo-img brand-logo-light">
             </div>
 
             <div class="brand-logo-item">
-                <img src="{% static 'public/logo/hex.png' %}" alt="HEX" class="brand-logo-img brand-logo-dark">
                 <img src="{% static 'public/logo/hex_d.png' %}" alt="HEX" class="brand-logo-img brand-logo-light">
             </div>
 
             <div class="brand-logo-item">
-                <img src="{% static 'public/logo/images.png' %}" alt="Brand Logo" class="brand-logo-img brand-logo-dark">
                 <img src="{% static 'public/logo/images_d.png' %}" alt="Brand Logo" class="brand-logo-img brand-logo-light">
             </div>
 
             <div class="brand-logo-item">
-                <img src="{% static 'public/logo/legrand.png' %}" alt="Legrand" class="brand-logo-img brand-logo-dark">
                 <img src="{% static 'public/logo/legrand_d.png' %}" alt="Legrand" class="brand-logo-img brand-logo-light">
             </div>
 
             <div class="brand-logo-item">
-                <img src="{% static 'public/logo/mesc.png' %}" alt="MESC" class="brand-logo-img brand-logo-dark">
                 <img src="{% static 'public/logo/mecs_d.png' %}" alt="MESC" class="brand-logo-img brand-logo-light">
             </div>
 
             <div class="brand-logo-item">
-                <img src="{% static 'public/logo/mk.png' %}" alt="MK" class="brand-logo-img brand-logo-dark">
                 <img src="{% static 'public/logo/mk_d.png' %}" alt="MK" class="brand-logo-img brand-logo-light">
             </div>
 
             <div class="brand-logo-item">
-                <img src="{% static 'public/logo/nci.png' %}" alt="NCI" class="brand-logo-img brand-logo-dark">
                 <img src="{% static 'public/logo/nci_d.png' %}" alt="NCI" class="brand-logo-img brand-logo-light">
             </div>
 
             <div class="brand-logo-item">
-                <img src="{% static 'public/logo/oman.png' %}" alt="Oman Cables" class="brand-logo-img brand-logo-dark">
                 <img src="{% static 'public/logo/oman_d.png' %}" alt="Oman Cables" class="brand-logo-img brand-logo-light">
             </div>
 
             <div class="brand-logo-item">
-                <img src="{% static 'public/logo/panasonic.png' %}" alt="Panasonic" class="brand-logo-img brand-logo-dark">
                 <img src="{% static 'public/logo/panasonic_d.png' %}" alt="Panasonic" class="brand-logo-img brand-logo-light">
             </div>
 
             <div class="brand-logo-item">
-                <img src="{% static 'public/logo/rexton.png' %}" alt="Rexton" class="brand-logo-img brand-logo-dark">
                 <img src="{% static 'public/logo/rexton_d.png' %}" alt="Rexton" class="brand-logo-img brand-logo-light">
             </div>
 
             <div class="brand-logo-item">
-                <img src="{% static 'public/logo/rr.png' %}" alt="RR Kabel" class="brand-logo-img brand-logo-dark">
                 <img src="{% static 'public/logo/rr_d.png' %}" alt="RR Kabel" class="brand-logo-img brand-logo-light">
             </div>
 
             <div class="brand-logo-item">
-                <img src="{% static 'public/logo/sch.png' %}" alt="Schneider Electric" class="brand-logo-img brand-logo-dark">
                 <img src="{% static 'public/logo/sch_d.png' %}" alt="Schneider Electric" class="brand-logo-img brand-logo-light">
             </div>
 
             <div class="brand-logo-item">
-                <img src="{% static 'public/logo/tenby.png' %}" alt="Tenby" class="brand-logo-img brand-logo-dark">
                 <img src="{% static 'public/logo/tenby_d.png' %}" alt="Tenby" class="brand-logo-img brand-logo-light">
             </div>
 
             <div class="brand-logo-item">
-                <img src="{% static 'public/logo/vortice.png' %}" alt="Vortice" class="brand-logo-img brand-logo-dark">
+                <img src="{% static 'public/logo/tenex_d.png' %}" alt="Tenex" class="brand-logo-img brand-logo-light">
+            </div>
+
+            <div class="brand-logo-item">
                 <img src="{% static 'public/logo/vortice_d.png' %}" alt="Vortice" class="brand-logo-img brand-logo-light">
             </div>
 
             <div class="brand-logo-item">
-                <img src="{% static 'public/logo/wd-40.png' %}" alt="WD-40" class="brand-logo-img brand-logo-dark">
                 <img src="{% static 'public/logo/wd-40_d.png' %}" alt="WD-40" class="brand-logo-img brand-logo-light">
             </div>
 
@@ -2119,7 +2020,6 @@ document.addEventListener(
             });
         }
 
-        // Trigger mobile hero counter numbers right on page load
         if (window.innerWidth <= 768) {
             startCounters();
         }
