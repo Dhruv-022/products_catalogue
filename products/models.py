@@ -2,6 +2,19 @@ from django.db import models
 from django.utils.text import slugify
 
 
+def generate_unique_slug(instance, base_text):
+    base_slug = slugify(base_text) or "item"
+    slug = base_slug
+    ModelClass = instance.__class__
+    counter = 1
+
+    while ModelClass.objects.filter(slug=slug).exclude(pk=instance.pk).exists():
+        slug = f"{base_slug}-{counter}"
+        counter += 1
+
+    return slug
+
+
 class Brand(models.Model):
     name = models.CharField(max_length=150, unique=True)
     slug = models.SlugField(unique=True, blank=True)
@@ -20,7 +33,7 @@ class Brand(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.slug:
-            self.slug = slugify(self.name)
+            self.slug = generate_unique_slug(self, self.name)
         super().save(*args, **kwargs)
 
     def __str__(self):
@@ -40,8 +53,7 @@ class Category(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.slug:
-            self.slug = slugify(self.name)
-
+            self.slug = generate_unique_slug(self, self.name)
         super().save(*args, **kwargs)
 
     def __str__(self):
@@ -80,8 +92,7 @@ class SubCategory(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.slug:
-            self.slug = slugify(self.name)
-
+            self.slug = generate_unique_slug(self, self.name)
         super().save(*args, **kwargs)
 
     def __str__(self):
