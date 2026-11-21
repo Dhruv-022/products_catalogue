@@ -813,11 +813,26 @@
 
 @media (max-width: 650px) {
     .contact-hero {
-        min-height: calc(100vh - 72px);
+        height: auto;
+        min-height: unset;
+        flex-direction: column;
+        padding-top: 96px;
+        padding-bottom: 24px;
     }
     .contact-hero-inner {
         width: 88%;
-        padding: 30px 0 50px;
+        padding: 12px 0 0;
+    }
+    .hero-scroll-wrapper {
+        position: relative;
+        bottom: auto;
+        left: auto;
+        transform: none;
+        width: 100%;
+        margin: 22px auto 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
     .contact-hero h1 {
         font-size: 38px;
@@ -1540,3 +1555,4 @@ async function handleFormSubmit(event) {
 </script>
 
 {% endblock %}
+```[cite: 8]
